@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>index</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'backend/css/style_index.css' %}">
+</head>
+<body>
+    
+    <img src="{% static 'backend/images/logo.png' %}" alt="logo" />
+    <p> <a href="{% url 'login' %}">Sing in</a></p> 
+    <p id="p1">We create healthy weekly menus exclusively for you based on your preferences and needs.</p>
+
+    <ol id="index">
+        <li><a href="#subtitle1">How should a balanced diet be?</a></li>
+        <li><a href="#subtitle2">How to maintain a balanced diet?</a></li>
+        <li>What is the relationship between mental health and nutrition?</li>
+        <li>Essential ingredients.</li>
+        <li>Plate method.</li>
+        <li>Tips for following a healthy and balanced diet.</li>
+        <li>More information about our diets.</li>
+    
+    </ol>
+
+    <hr>
+
+    <h3>¿DO YOU WANT A PERSONALIZED DIET? <a href="{% url 'registration' %}"><strong>SIGN UP HERE</strong></a> </h3>
+    <hr>
+    <hr>
+    <hr>
+    <hr>
+    <hr>
+    <hr>
+    <hr>
+    <h2 id="subtitle1">¿HOW SHOULD A BALANCED DIET BE?</h2>
+    <div class = "box">
+        <p>A balanced diet is distinguished by possessing six essential attributes: </p>
+            <ol id="essencialAttributes">
+                <li><strong>Personalized</strong></li>
+                    <p>The diet should completely adapt to the individual characteristics of each person, 
+                        considering factors such as schedules, economic conditions, emotional state, among others.</p>
+                <li><strong>Complete</strong></li>
+                    <p>It should provide all the necessary nutrients and fiber in appropriate amounts for the proper 
+                        functioning of our body.</p>
+                <li><strong>Satisfactory</strong></li>
+                    <p>It's crucial to remember that enjoying food is a pleasure. Therefore, it's important that the foods, 
+                        portions, and preparations are suitable and enjoyable to meet our needs.</p>
+                <li><strong>Varied</strong></li>
+                    <p>To avoid monotony, it is recommended to diversify the range of foods, prioritizing fresh and seasonal options.</p>
+                <li><strong>Adequate in energy</strong></li>
+                    <p>It is fundamental that the diet supplies the necessary energy to maintain the proper functioning 
+                        of the organism and prevent excess weight, as well as ailments and associated pathologies. 
+                        In the case of seeking weight loss, the most favorable option is to follow a balanced diet that controls 
+                        both calorie intake and nutrient intake, avoiding nutritional deficits and safeguarding health.</p>
+                <li><strong>Safe</strong></li>
+                    <p>The diet should not compromise health; it should prevent food poisoning and avoid the ingestion of harmful components.</p>
+            </ol>
+        <img src="{% static 'backend/images/imagen1.jpg' %}" alt="imagen1">
+        
+    </div>
+
+    <hr>
+    <hr>
+    <hr>
+
+    <!-- <h2 id="subtitle2">¿WHY MAINTAIN A BALANCED DIET?</h2>
+    <div class = "box">
+        <p>A good diet improves and maintains our health. Maintaining a healthy and balanced diet 
+            is essential for maintaining good health and overall well-being. Here are several reasons why 
+            it's important to adopt healthy eating habits: </p>
+            <ol id="whygooddiet">
+                <li><strong>Provides essential nutrients</strong></li>
+                    <p>A balanced diet provides all the essential nutrients that the body needs to function properly, 
+                        including vitamins, minerals, proteins, carbohydrates, and healthy fats.</p>
+                <li><strong>Weight control</strong></li>
+                    <p>A balanced diet contributes to controlling body weight. Maintaining a healthy weight reduces 
+                        the risk of developing health problems such as heart disease, type 2 diabetes, and metabolic disorders.</p>
+                <li><strong>Disease prevention</strong></li>
+                    <p>Adopting a healthy diet can help prevent various chronic diseases, such as cardiovascular diseases, 
+                        high blood pressure, certain types of cancer, and osteoporosis.</p>
+                <li><strong>Energy and performance</strong></li>
+                    <p>A balanced diet provides the energy needed to perform daily activities 
+                        and maintain good physical and mental performance.</p>
+                <li><strong>Improves digestive health</strong></li>
+                    <p>The fiber present in a balanced diet promotes digestive health, preventing problems such 
+                        as constipation and improving nutrient absorption.</p>
+                <li><strong>Strengthens the immune system</strong></li>
+                    <p>A healthy diet strengthens the immune system, helping the body defend against infections and diseases.</p>
+                <li><strong>Promotes mental health</strong></li>
+                    <p>There is a connection between diet and mental health. A balanced diet can improve mood, 
+                        reduce the risk of depression, and provide the necessary nutrients for proper brain function.</p>
+                <li><strong>Promotes healthy lifestyle habits</strong></li>
+                    <p>Adopting a balanced diet often goes hand in hand with other healthy lifestyle habits, 
+                        such as regular physical activity and adequate hydration.</p>
+                <li><strong>Longevity</strong></li>
+                    <p>Maintaining a balanced diet over time can contribute to a longer and healthier life.</p>
+                <li><strong>Quality of life</strong></li>
+                    <p>Proper nutrition not only affects physical health but also overall quality of life, 
+                        improving energy, concentration, and the ability to enjoy daily life.</p>
+            </ol>
+        <img src="{% static 'backend/images/imagen1.jpg' %}" alt="imagen1">
+        
+    </div> -->
+
+    </section>
+
+
+</body>
+</html>

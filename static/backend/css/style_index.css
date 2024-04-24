@@ -1,0 +1,71 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #e0ffe0; /* Fondo verde clarito */
+    font-family: Arial, sans-serif; 
+}
+
+#p1 {
+    text-align: center;
+}
+
+#index {
+    text-align: center;
+    list-style-type: none;
+    padding: 0;
+}
+
+#index li {
+    margin-bottom: 10px;
+}
+
+#subtitle1 {
+    text-align: center;
+}
+
+#essencialAttributes {
+    /* text-align: center; */
+    list-style-type: none;
+    padding: 0;
+}
+
+
+.box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    height: 500px; 
+    border: 3px solid #ccc;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-right: 400px;
+  }
+  
+  #essentialAttributes {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  #essentialAttributes li {
+    margin-bottom: 10px;
+  }
+
+ /*  #whygooddiet {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  #whygooddiet li {
+    margin-bottom: 10px;
+  } */
+
+h3 a:hover {
+    text-decoration: underline;
+}
