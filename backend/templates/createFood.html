@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Alimento</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'backend/css/style_createFood.css' %}"></head>
+</head>
+<body>
+
+<h2>Crear Alimento</h2>
+
+<form action="{% url 'createFood' %}" method="post">
+    {% csrf_token %}
+    <label for="group_code">Código de Grupo:</label>
+    <input type="number" id="group_code" name="group_code" required><br><br>
+
+    <label for="subgroup_code">Código de Subgrupo:</label>
+    <input type="number" id="subgroup_code" name="subgroup_code" required><br><br>
+
+    <label for="group_name">Nombre de Grupo:</label>
+    <input type="text" id="group_name" name="group_name" required><br><br>
+
+    <label for="subgroup_name">Nombre de Subgrupo:</label>
+    <input type="text" id="subgroup_name" name="subgroup_name" required><br><br>
+
+    <label for="food_code">Código de Alimento:</label>
+    <input type="number" id="food_code" name="food_code" required><br><br>
+
+    <label for="food_name">Nombre de Alimento:</label>
+    <input type="text" id="food_name" name="food_name" required><br><br>
+
+    <label for="water">Agua:</label>
+    <input type="number" id="water" name="water" required><br><br>
+
+    <label for="protein">Proteína:</label>
+    <input type="number" id="protein" name="protein" required><br><br>
+
+    <label for="carbohydrates">Carbohidratos:</label>
+    <input type="number" id="carbohydrates" name="carbohydrates" required><br><br>
+
+    <label for="fats">Grasas:</label>
+    <input type="number" id="fats" name="fats" required><br><br>
+
+    <label for="sugars">Azúcares:</label>
+    <input type="number" id="sugars" name="sugars" required><br><br>
+
+    <label for="glucose">Glucosa:</label>
+    <input type="number" id="glucose" name="glucose" required><br><br>
+
+    <label for="lactose">Lactosa:</label>
+    <input type="number" id="lactose" name="lactose" required><br><br>
+
+    <button type="submit">Crear Alimento</button>
+</form>
+
+</body>
+</html>

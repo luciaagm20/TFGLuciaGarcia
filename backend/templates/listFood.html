@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Alimentos</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'backend/css/style_listFood.css' %}"></head>
+</head>
+<body>
+
+<div class="food-container">
+    <h2>Lista de Alimentos</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Grupo</th>
+                <th>Subgrupo</th>
+                <th>Nombre</th>
+                <th>Agua (%)</th>
+                <th>Proteína (g)</th>
+                <th>Carbohidratos (g)</th>
+                <th>Grasas (g)</th>
+                <th>Azúcares (g)</th>
+                <th>Glucosa (g)</th>
+                <th>Lactosa (g)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for food in db_data %}
+            <tr>
+                <td>{{ food.group_name }}</td>
+                <td>{{ food.subgroup_name }}</td>
+                <td>{{ food.food_name }}</td>
+                <td>{{ food.water }}</td>
+                <td>{{ food.protein }}</td>
+                <td>{{ food.carbohydrates }}</td>
+                <td>{{ food.fats }}</td>
+                <td>{{ food.sugars }}</td>
+                <td>{{ food.glucose }}</td>
+                <td>{{ food.lactose }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

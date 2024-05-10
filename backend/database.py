@@ -14,7 +14,7 @@ def meterCSV():
         next(reader)  # Omitir la primera fila si contiene encabezados de columna
         for row in reader:
             # Generar la consulta SQL para insertar esta fila en la tabla
-            cur.execute("INSERT INTO backend_alimento VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", row)
+            cur.execute("INSERT INTO backend_food VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", row)
 
     # Confirmar la inserción y cerrar la conexión
     con.commit()
@@ -24,15 +24,15 @@ def columnaLactosa():
     con = sql.connect("prueba.db")
     cur = con.cursor()
     cur.execute(
-        """ALTER TABLE backend_alimento
-        ADD COLUMN tiene_lactosa INTEGER
+        """ALTER TABLE backend_food
+        ADD COLUMN have_lactose INTEGER
         """
     )
     # Actualizar los valores de la nueva columna basados en otra columna
     cur.execute(
-        """UPDATE backend_alimento
-        SET tiene_lactosa = CASE
-            WHEN lactosa = 0 THEN 0
+        """UPDATE backend_food
+        SET have_lactose = CASE
+            WHEN lactose < 0.5 THEN 0
             ELSE 1
         END
         """
@@ -50,5 +50,5 @@ def borrarTabla():
 
 '''crearBD()'''
 meterCSV()
-'''columnaLactosa()'''
+columnaLactosa()
 '''borrarTabla()'''

@@ -83,6 +83,9 @@ DATABASES = {
     }
 }
 
+REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'backend.handler.custom_exception_handler'
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -100,6 +103,10 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+]
+
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.ScryptPasswordHasher",
 ]
 
 
@@ -127,3 +134,4 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+

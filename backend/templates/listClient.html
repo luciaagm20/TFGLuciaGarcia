@@ -13,11 +13,12 @@
         <thead>
             <tr>
                 <th>User name</th>
+                <th>Gender</th>
                 <th>e-mail</th>
                 <th>Weight (kg)</th>
                 <th>Age</th>
                 <th>Height (cm)</th>
-                <th>Objetive</th>
+                <th>Goal</th>
                 <th>Allergies</th>
             </tr>
         </thead>
@@ -26,15 +27,16 @@
             <!-- Aquí se mostrarán los datos de los clientes -->
             <tr>
                 <td>{{ data.name }}</td>
+                <td>{{ data.gender }}</td>
                 <td>{{ data.email }}</td>
                 <td>{{ data.weight }}</td>
                 <td>{{ data.age }}</td>
                 <td>{{ data.height }}</td>
-                <td>{{ data.objective }}</td>
+                <td>{{ data.goal }}</td>
                 <td>{{ data.allergies }}</td>
                 <td>
-                    <a href="#" class="btn btn-primary">Update</a>
-                    <a href="{% url 'delete' data.user_ptr_id %}" class="btn btn-danger">Delete</a>
+                    <a href="{% url 'profileClient' data.user_ptr_id %}" class="btn btn-primary">Profile</a>
+                    <a href="{% url 'deleteClient' data.user_ptr_id %}" class="btn btn-danger">Delete</a>
                 </td>
 
             </tr>
