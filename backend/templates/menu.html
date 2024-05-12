@@ -15,12 +15,14 @@
             <th>Día de la Semana</th>
             <th>Comida</th>
             <th>Alimento</th>
+            <th>Calorias</th>
         </tr>
         {% for alimento in alimento %}
         <tr>
             <td>{{ alimento.day_of_week }}</td>
             <td>{{ alimento.meal }}</td>
             <td>{{ alimento.food.food_name }}</td>
+            <td>{{ alimento.calories }}</td>
         </tr>
         {% endfor %}
     </table>

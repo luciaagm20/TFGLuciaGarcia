@@ -40,6 +40,7 @@ def columnaLactosa():
     con.commit()
     con.close()
 
+
 def borrarTabla():
     con = sql.connect("prueba.db")
     cur = con.cursor()

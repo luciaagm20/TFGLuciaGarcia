@@ -23,10 +23,11 @@ def createClient(request):
         weight = request.POST["weight"]
         age = request.POST["age"]
         height = request.POST["height"]
+        number_meals = request.POST["number_meals"]
         goal = request.POST["goal"]
         allergies= request.POST["allergies"]
 
-        client = ClientService.save(name, gender, email, password, weight, age, height, goal, allergies)
+        client = ClientService.save(name, gender, email, password, weight, age, height, number_meals, goal, allergies)
 
         if(client.allergies == 2):
             MenuService.create_weekly_menu_without_lactose(client)
@@ -60,6 +61,7 @@ def updateClient(request, client_id):
         weight = request.POST.get("weight")
         age = request.POST.get("age")
         height = request.POST.get("height")
+        number_meals = request.POST.get("number_meals")
         goal = request.POST.get("goal")
         allergies = request.POST.get("allergies")
         
@@ -71,11 +73,12 @@ def updateClient(request, client_id):
             password != client.password or
             weight != client.weight or
             age != client.age or
+            number_meals != client.number_meals or
             height != client.height or
             goal != client.goal or
             allergies != client.allergies):
             # Llamar al método del servicio para actualizar el cliente
-            ClientService.update(client_id, name, email, password, weight, age, height, goal, client.insertion_date, client.is_admin, allergies)
+            ClientService.update(client_id, name, email, password, weight, age, height, number_meals, goal, client.insertion_date, client.is_admin, allergies)
 
             # Redirigir a la página de lista de clientes
             return HttpResponseRedirect(reverse("listClient"))

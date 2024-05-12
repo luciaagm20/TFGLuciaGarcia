@@ -11,11 +11,11 @@ class ClientService:
           return ClientRepository.read(client_id)
 
 
-     def save(name, gender, email, password, weight, age, height, goal, allergies):
+     def save(name, gender, email, password, weight, age, height, number_meals, goal, allergies):
 
           #aqui podemos validar campos, hacer logica de app
 
-          client = ClientRepository.save(name, gender, email, password, weight, age, height, goal, timezone.now().date(), False, allergies)
+          client = ClientRepository.save(name, gender, email, password, weight, age, height, number_meals, goal, timezone.now().date(), False, allergies)
           return client
 
      def delete(client_id):

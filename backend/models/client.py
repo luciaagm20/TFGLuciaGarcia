@@ -6,7 +6,8 @@ from backend.models.user import User
 from backend.models.gender import Gender
 
 class Client(User):
-    weight = models.FloatField()
+    number_meals = models.TextField()
+    weight = models.IntegerField()
     age = models.IntegerField()
     height = models.IntegerField()
     gender = models.IntegerField(choices=Gender.CHOICES)
