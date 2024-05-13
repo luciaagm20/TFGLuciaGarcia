@@ -2,16 +2,25 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
+from backend.serializers.ClientSerializer import ClientSerializer
 from backend.services.clientService import ClientService 
 from backend.services.menuService import MenuService
 
+from ..models import *
+from rest_framework import viewsets
 
-def listClient(request):
+
+''' def listClient(request):
     listData = ClientService.listClient()
     context = {
             "db_data": listData[::-1]
         }
     return render(request, 'listClient.html', context)
+'''
+
+class ListClient(viewsets.ModelViewSet):
+        queryset = ClientService.listClient() 
+        serializer_class = ClientSerializer
 
 
 def createClient(request):

@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # 'backend',
-    'backend.apps.BackendConfig'
+    'backend.apps.BackendConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -85,7 +86,10 @@ DATABASES = {
 
 REST_FRAMEWORK = {
     # 'EXCEPTION_HANDLER': 'backend.handler.custom_exception_handler'
-    'EXCEPTION_HANDLER': 'backend.handler.ExceptionHandler'
+    'EXCEPTION_HANDLER': 'backend.handler.ExceptionHandler',
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
 }
 
 # Password validation

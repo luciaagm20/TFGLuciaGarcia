@@ -2,7 +2,14 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
+from backend.serializers.FoodSerializer import FoodSerializer
 from backend.services.foodService import FoodService 
+
+from rest_framework import viewsets
+
+class ListFood(viewsets.ModelViewSet):
+        queryset = FoodService.listFood() 
+        serializer_class = FoodSerializer
 
 
 def listFood(request):
