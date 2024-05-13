@@ -1,14 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
-import LandingPage from './components/LandingPage/LandingPage';
-import RegistrationPage from './components/RegistrationPage/RegistrationPage';
-import MenuPage from './components/MenuPage/MenuPage';
+import { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LandingPage from "./components/LandingPage/LandingPage";
+import MenuPage from "./components/MenuPage/MenuPage";
+import './App.css'
 
 function App() {
+  const [isLoggedIn, setLoggedIn] = useState(false);
+
   return (
-    <div className="App">        
-      <LandingPage />
-    </div>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            index
+            element={
+              <LandingPage isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
+            }
+          />
+          <Route
+            path="/home"
+            element={
+              <LandingPage isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
+            }
+          />
+          <Route
+            path="/menus"
+            element={
+              <MenuPage isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 
