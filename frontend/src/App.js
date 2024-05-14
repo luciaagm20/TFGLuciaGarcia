@@ -1,30 +1,37 @@
-import './App.css';
-import { useState, useEffect } from react
-import LandingPage from './components/LandingPage/LandingPage';
-import RegistrationPage from './components/RegistrationPage/RegistrationPage';
-import MenuPage from './components/MenuPage/MenuPage';
-import ClientPage from './components/ClientPage/ClientPage';
+import { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LandingPage from "./components/LandingPage/LandingPage";
+import MenuPage from "./components/MenuPage/MenuPage";
+import './App.css'
 
 function App() {
- /*  return (
-    <div className="App">        
-      <ClientPage />
-    </div>
-  ); */ 
-
-  const [userData, setUserData] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:8000/listClient/")
-      .then((response) => response.json())
-      .then((data) => setUserData(data))
-      .catch((error) => console.error("Error:", error));
-  }, []);
+  const [isLoggedIn, setLoggedIn] = useState(false);
 
   return (
-    <div className="App">
-      <ClientPage userData={userData} />
-    </div>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            index
+            element={
+              <LandingPage isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
+            }
+          />
+          <Route
+            path="/home"
+            element={
+              <LandingPage isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
+            }
+          />
+          <Route
+            path="/menus"
+            element={
+              <MenuPage isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 
