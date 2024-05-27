@@ -5,14 +5,72 @@ from django.urls import reverse
 from backend.serializers.FoodSerializer import FoodSerializer
 from backend.services.foodService import FoodService 
 
-from rest_framework import viewsets
-
-class ListFood(viewsets.ModelViewSet):
-        queryset = FoodService.listFood() 
-        serializer_class = FoodSerializer
+from rest_framework import viewsets, permissions, status
+from rest_framework.response import Response
 
 
-def listFood(request):
+class FoodViewSet(viewsets.ModelViewSet):
+    queryset = FoodService.listFood()
+    permission_classes = [permissions.AllowAny]
+    serializer_class = FoodSerializer
+
+    def list(self, request):
+        food = FoodService.listFood()
+        serializer = FoodSerializer(food, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        food = FoodService.read(pk)
+        serializer = FoodSerializer(food)
+        return Response(serializer.data)
+
+    def create(self, request):
+        data = request.data
+        food = FoodService.save(
+            group_code = data.get("group_code"),
+            subgroup_code = data.get("subgroup_code"),
+            group_name = data.get("group_name"),
+            subgroup_name = data.get("subgroup_name"),
+            food_code = data.get("food_code"),
+            food_name = data.get("food_name"),
+            water = data.get("water"),
+            protein = data.get("protein"),
+            carbohydrates = data.get("carbohydrates"),
+            fats = data.get("fats"),
+            sugars = data.get("sugars"),
+            glucose = data.get("glucose"),
+            lactose = data.get("lactose")
+        )
+        serializer = FoodSerializer(food)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def update(self, request, pk=None):
+        data = request.data
+        food = FoodService.update(
+            id=pk,
+            group_code = data.get("group_code"),
+            subgroup_code = data.get("subgroup_code"),
+            group_name = data.get("group_name"),
+            subgroup_name = data.get("subgroup_name"),
+            food_code = data.get("food_code"),
+            food_name = data.get("food_name"),
+            water = data.get("water"),
+            protein = data.get("protein"),
+            carbohydrates = data.get("carbohydrates"),
+            fats = data.get("fats"),
+            sugars = data.get("sugars"),
+            glucose = data.get("glucose"),
+            lactose = data.get("lactose")
+        )
+        serializer = FoodSerializer(food)
+        return Response(serializer.data)
+
+    def destroy(self, request, pk=None):
+        FoodService.delete(pk)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+''' def listFood(request):
     listData = FoodService.listFood()
     context = {
             "db_data": listData[::-1]
@@ -46,7 +104,7 @@ def createFood(request):
 def deleteFood(request, food_id):
     FoodService.delete(food_id)
 
-    return HttpResponseRedirect(reverse("listFood"))
+    return HttpResponseRedirect(reverse("listFood")) '''
 
 # def readFood(request, food_id):
 #     FoodService.read(food_id)

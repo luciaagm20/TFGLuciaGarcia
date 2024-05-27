@@ -1,9 +1,16 @@
+from itertools import chain, product
 from random import choice
 from datetime import timedelta, datetime
 from ..models import Food, FoodIntake, WeeklyMenu
 
 class MenuRepository:
 
+    def find_closest_number(dictionary, calories):
+        closest_number = min(dictionary.keys(), key=lambda x: abs(x - calories))
+    
+        diccionario_resultado = {closest_number: dictionary[closest_number]}
+        return diccionario_resultado
+    
     def basal_metabolic_rate(client):
         if(client.gender == "FEMALE"):
             caloriasBasales = (10 * int(client.weight)) + (6.25 * int(client.height)) + (5 * int(client.age)) - 161
@@ -36,7 +43,7 @@ class MenuRepository:
             kcal_fats = fats * 9
 
         # Sumar las kilocalorías de los macronutrientes
-        total_kcal = kcal_protein + kcal_carbohydrates + kcal_fats
+        total_kcal = (kcal_protein + kcal_carbohydrates + kcal_fats) * 2
 
         return total_kcal
     
@@ -56,6 +63,22 @@ class MenuRepository:
         cereales = alimentos.filter(group_code = 3)
         proteinas = alimentos.filter(group_code = 4)
 
+
+        verduras_platos = product(verduras, platos)
+        
+        verduras_platos_kcal = []
+        kcal_dict = {}
+
+        for verdura, plato in verduras_platos:
+            kcal_totales = round(MenuRepository.calculate_kilocal(verdura) + MenuRepository.calculate_kilocal(plato))
+            verduras_platos_kcal.append((verdura, plato, kcal_totales))
+
+            if kcal_totales not in kcal_dict:
+                kcal_dict[kcal_totales] = []
+
+            kcal_dict[kcal_totales].append([verdura.id, plato.id])
+
+        print(kcal_dict)
         # Porcentaje de kilocalorias por comida
         kcal_desayuno = caloriasBasales * 0.2
         kcal_comida = caloriasBasales * 0.4
@@ -83,10 +106,15 @@ class MenuRepository:
 
                     elif comida == 'MEAL':
                         while(calories < kcal_comida):
-                            alimento_almuerzo = choice(verduras or hidrato or proteinas or platos)
-                            caloriasAlimento = MenuRepository.calculate_kilocal(alimento_almuerzo)
-                            FoodIntake.objects.create(weeklyMenu=menu_semanal, food=alimento_almuerzo, calories=caloriasAlimento, day_of_week=nombre_dia, meal=comida)
-                            calories += caloriasAlimento
+                            minimo = MenuRepository.find_closest_number(kcal_dict, kcal_comida)
+                            # alimento_almuerzo = [(verdura, plato, kcal_totales) for verdura, plato, kcal_totales in verduras_platos_kcal if kcal_totales == minimo]                            
+                            alimento = verduras.get(id=minimo[0][0])
+                            alimento2 = platos.get(id=minimo[0][0])
+                            caloriasAlimento = MenuRepository.calculate_kilocal(alimento)
+                            caloriasAlimento2 = MenuRepository.calculate_kilocal(alimento2)
+                            FoodIntake.objects.create(weeklyMenu=menu_semanal, food=alimento, calories=caloriasAlimento, day_of_week=nombre_dia, meal=comida)
+                            FoodIntake.objects.create(weeklyMenu=menu_semanal, food=alimento2, calories=caloriasAlimento2, day_of_week=nombre_dia, meal=comida)
+                            calories += alimento_almuerzo[2]
 
                     elif comida == 'DINNER':
                         while(calories < kcal_cena):

@@ -22,8 +22,8 @@ from django.contrib.auth.models import *
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('backend.urls'))
+    # path('admin/', admin.site.urls),
+    path('api/', include('backend.urls'))
 ]
 
 

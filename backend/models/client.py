@@ -10,6 +10,6 @@ class Client(User):
     weight = models.IntegerField()
     age = models.IntegerField()
     height = models.IntegerField()
-    gender = models.IntegerField(choices=Gender.CHOICES)
+    gender = models.CharField(max_length=10,choices=Gender.CHOICES)
     goal = models.IntegerField(choices=Goal.CHOICES)
     allergies = models.IntegerField(choices=Allergies.CHOICES)

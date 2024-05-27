@@ -4,4 +4,4 @@ from ..models import *
 class FoodSerializer(serializers.ModelSerializer):
     class Meta:
         model = Food 
-        fields = ['id', 'food_name']
+        fields = '__all__'

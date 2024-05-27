@@ -23,7 +23,5 @@ class ClientService:
 
      def update(client_id, name, email, password, weight, age, height, goal, insertion_date, is_admin, allergies):
 
-          print(name)
-          print(age)
           client = ClientRepository.update(client_id, name, email, password, weight, age, height, goal, insertion_date, is_admin, allergies)
           return client

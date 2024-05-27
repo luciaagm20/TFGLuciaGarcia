@@ -86,10 +86,14 @@ DATABASES = {
 
 REST_FRAMEWORK = {
     # 'EXCEPTION_HANDLER': 'backend.handler.custom_exception_handler'
-    'EXCEPTION_HANDLER': 'backend.handler.ExceptionHandler',
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    # 'EXCEPTION_HANDLER': 'backend.handler.ExceptionHandler',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ]
 }
 
 # Password validation

@@ -7,12 +7,12 @@ class ClientRepository:
         return Client.objects.all()
 
     def read(client_id):
-        try:
+        # try:
             client = Client.objects.get(user_ptr_id=client_id)
             return client
         
-        except Client.DoesNotExist:
-            raise ClientDoesntExistException()
+        # except Client.DoesNotExist:
+        #     raise ClientDoesntExistException()
         
     @staticmethod
     def save(name, gender, email, password, weight, age, height, number_meals, goal, insertion_date, is_admin, allergies):
