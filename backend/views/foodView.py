@@ -33,7 +33,7 @@ class FoodViewSet(viewsets.ModelViewSet):
             subgroup_name = data.get("subgroup_name"),
             food_code = data.get("food_code"),
             food_name = data.get("food_name"),
-            water = data.get("water"),
+            # water = data.get("water"),
             protein = data.get("protein"),
             carbohydrates = data.get("carbohydrates"),
             fats = data.get("fats"),

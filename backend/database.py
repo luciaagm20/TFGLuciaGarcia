@@ -14,7 +14,7 @@ def meterCSV():
         next(reader)  # Omitir la primera fila si contiene encabezados de columna
         for row in reader:
             # Generar la consulta SQL para insertar esta fila en la tabla
-            cur.execute("INSERT INTO backend_food VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", row)
+            cur.execute("INSERT INTO backend_food VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", row)
 
     # Confirmar la inserción y cerrar la conexión
     con.commit()
@@ -44,12 +44,19 @@ def columnaLactosa():
 def borrarTabla():
     con = sql.connect("prueba.db")
     cur = con.cursor()
-    cur.execute("""DROP TABLE IF EXISTS backend_alimento""")
+    cur.execute("""DROP TABLE IF EXISTS backend_food""")
     con.commit()
     con.close()
 
+def borrarContenido():
+    con = sql.connect("prueba.db")
+    cur = con.cursor()
+    cur.execute("""DELETE FROM backend_food""")
+    con.commit()
+    con.close()
 
 '''crearBD()'''
 meterCSV()
 columnaLactosa()
 '''borrarTabla()'''
+# borrarContenido()
