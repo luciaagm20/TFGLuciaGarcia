@@ -1,7 +1,5 @@
 from rest_framework import serializers
 
-from backend.services.clientService import ClientService
-from backend.services.menuService import MenuService
 from ..models import *
 
 class ClientSerializer(serializers.ModelSerializer):

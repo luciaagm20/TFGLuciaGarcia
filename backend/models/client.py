@@ -1,9 +1,9 @@
 from django.db import models
 
-from backend.models.allergies import Allergies
-from backend.models.goal import Goal
-from backend.models.user import User
-from backend.models.gender import Gender
+from backend.models.Allergies import Allergies
+from backend.models.Goal import Goal
+from backend.models.User import User
+from backend.models.Gender import Gender
 
 class Client(User):
     number_meals = models.TextField()

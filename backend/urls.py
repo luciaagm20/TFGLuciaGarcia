@@ -1,7 +1,7 @@
 from django.urls import include, path
-from .views.index import *
+from .views.IndexView import *
 from .views.clientView import *
-from .views.user import *
+from .views.UserView import *
 from .views.foodView import *
 from .views.menuView import *
 from django.contrib.auth.models import *

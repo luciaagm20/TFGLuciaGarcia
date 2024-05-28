@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 from backend.serializers.FoodSerializer import FoodSerializer
-from backend.services.foodService import FoodService 
+from backend.services.FoodService import FoodService 
 
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response

@@ -3,8 +3,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 from backend.serializers.ClientSerializer import ClientSerializer
-from backend.services.clientService import ClientService 
-from backend.services.menuService import MenuService
+from backend.services.ClientService import ClientService 
+from backend.services.MenuService import MenuService
 
 from ..models import *
 

@@ -48,15 +48,8 @@ def borrarTabla():
     con.commit()
     con.close()
 
-def borrarContenido():
-    con = sql.connect("prueba.db")
-    cur = con.cursor()
-    cur.execute("""DELETE FROM backend_food""")
-    con.commit()
-    con.close()
 
 '''crearBD()'''
 meterCSV()
 columnaLactosa()
 '''borrarTabla()'''
-# borrarContenido()

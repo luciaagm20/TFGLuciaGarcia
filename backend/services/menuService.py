@@ -1,4 +1,4 @@
-from backend.repositories.menuRepository import MenuRepository
+from backend.repositories.MenuRepository import MenuRepository
 
 class MenuService:
     

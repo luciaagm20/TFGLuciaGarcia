@@ -1,8 +1,8 @@
 from django.db import models
-from backend.models.dayOfWeek import DayOfWeek
-from backend.models.food import Food
-from backend.models.meal import Meal
-from backend.models.weeklyMenu import WeeklyMenu
+from backend.models.DayOfWeek import DayOfWeek
+from backend.models.Food import Food
+from backend.models.Meal import Meal
+from backend.models.WeeklyMenu import WeeklyMenu
 
 
 class FoodIntake(models.Model):

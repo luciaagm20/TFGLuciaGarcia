@@ -1,5 +1,5 @@
 from django.utils import timezone
-from backend.repositories.foodRepository import FoodRepository
+from backend.repositories.FoodRepository import FoodRepository
 
 class FoodService:
     

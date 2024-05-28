@@ -1,4 +1,4 @@
-from backend.models.client import Client
+from backend.models.Client import Client
 from django.db import models
 
 

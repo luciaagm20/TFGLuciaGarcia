@@ -1,6 +1,6 @@
 
 from django.utils import timezone
-from backend.repositories.clientRepository import ClientRepository
+from backend.repositories.ClientRepository import ClientRepository
 
 class ClientService:
     
