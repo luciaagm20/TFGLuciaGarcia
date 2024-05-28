@@ -9,3 +9,5 @@ class Allergies(models.Model):
         (4, 'Egg allergy'),
         (5, 'None')
     )
+
+    

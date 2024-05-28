@@ -1,9 +1,9 @@
 from django.urls import include, path
 from .views.IndexView import *
-from .views.clientView import *
+from .views.ClientView import *
 from .views.UserView import *
-from .views.foodView import *
-from .views.menuView import *
+from .views.FoodView import *
+from .views.MenuView import *
 from django.contrib.auth.models import *
 from rest_framework import routers
 
