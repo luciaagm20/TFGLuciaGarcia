@@ -2,8 +2,12 @@ from django.db import models
 
 
 class Goal(models.Model):
+    Maintenance = 'Maintenance'
+    MuscleGain = 'Muscle gain'
+    FatLoss = 'Fat loss'
+    
     CHOICES = (
-        (1, 'Maintenance'),
-        (2, 'Muscle gain'),
-        (3, 'Fat loss'),
+        (Maintenance, 'Maintenance'),
+        (MuscleGain, 'Muscle gain'),
+        (FatLoss, 'Fat loss')
     )

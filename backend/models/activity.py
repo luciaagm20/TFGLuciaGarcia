@@ -2,10 +2,17 @@ from django.db import models
 
 
 class Activity(models.Model):
+    Sedentary = 'Sedentary'
+    LightActivity = 'Light activity'
+    ModerateActivity = 'Moderate activity'
+    DailyExercise = 'Daily exercise'
+    IntenseExercise = 'Intense exercise'
+   
+    
     CHOICES = (
-        (1, 'Sedentary'),
-        (2, 'Light activity'),
-        (3, 'Moderate activity'),
-        (4, 'Daily exercise'),
-        (5, 'Intense exercise'),
+        (Sedentary, 'Sedentary'),
+        (LightActivity, 'Light activity'),
+        (ModerateActivity, 'Moderate activity'),
+        (DailyExercise, 'Daily exercise'),
+        (IntenseExercise, 'Intense exercise')
     )

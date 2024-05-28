@@ -1,4 +1,5 @@
 from django.urls import include, path
+
 from .views.IndexView import *
 from .views.ClientView import *
 from .views.UserView import *

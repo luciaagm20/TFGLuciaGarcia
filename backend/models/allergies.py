@@ -1,13 +1,18 @@
 from django.db import models
 
-
 class Allergies(models.Model):
-    CHOICES = (
-        (1, 'Celiac disease'),
-        (2, 'Lactose intolerant'),
-        (3, 'Seafood'),
-        (4, 'Egg allergy'),
-        (5, 'None')
-    )
-
+    CeliacDisease = 'Celiac disease'
+    LactoseIntolerant = 'Lactose intolerant'
+    Seafood = 'Seafood'
+    EggAllergy = 'Egg allergy'
+    NONE = 'None'
     
+    CHOICES = (
+        (NONE, 'None'),
+        (CeliacDisease, 'Celiac disease'),
+        (LactoseIntolerant, 'Lactose intolerant'),
+        (Seafood, 'Seafood'),
+        (EggAllergy, 'Egg allergy')
+    )
+    allergy_type = models.CharField(max_length=50)
+

@@ -48,8 +48,30 @@ def borrarTabla():
     con.commit()
     con.close()
 
+def meterAlergias():
+    con = sql.connect("prueba.db")
+    cur = con.cursor()
+    allergies = [
+        ('Celiac disease',),
+        ('Lactose intolerant',),
+        ('Seafood',),
+        ('Egg allergy',),
+        ('None',)
+    ]
+    cur.executemany("INSERT INTO backend_allergies (allergy_type) VALUES (?)", allergies)
+    con.commit()
+    con.close()
+# # Crear instancias de alergias y guardarlas en la base de datos
+# Allergies.objects.bulk_create([
+#     Allergies(allergy_type=Allergies.CeliacDisease),
+#     Allergies(allergy_type=Allergies.LactoseIntolerant),
+#     Allergies(allergy_type=Allergies.Seafood),
+#     Allergies(allergy_type=Allergies.EggAllergy),
+#     Allergies(allergy_type=Allergies.NONE),
+# ])
 
 '''crearBD()'''
-meterCSV()
-columnaLactosa()
+# meterCSV()
+# columnaLactosa()
+meterAlergias()
 '''borrarTabla()'''

@@ -16,3 +16,5 @@ class Food(models.Model):
     glucose = models.SmallIntegerField(null=True)  
     lactose = models.SmallIntegerField(null=True)
 
+    def __str__(self):
+        return self.food_code
