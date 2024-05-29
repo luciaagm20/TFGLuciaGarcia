@@ -2,6 +2,8 @@ from itertools import chain, product
 from random import choice
 from datetime import timedelta, datetime
 from ..models import Food, FoodIntake, WeeklyMenu
+from celery import shared_task
+
 
 class MenuRepository:
 
@@ -147,6 +149,7 @@ class MenuRepository:
 
 
     @staticmethod
+    @shared_task
     def create_weekly_menu(cliente):
         fecha_actual = datetime.now().date()
         # Calcular el primer día de la semana (lunes)

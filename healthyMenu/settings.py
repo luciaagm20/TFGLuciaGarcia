@@ -144,3 +144,17 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Configuración de Celery
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_BEAT_SCHEDULE = {
+    'run_my_method_every_sunday': {
+        'task': 'backend.repositories.MenuRepository.create_weekly_menu',
+        'schedule': {
+            'type': 'crontab',
+            'minute': 59,
+            'hour': 23,
+            'day_of_week': 'sunday',
+        },
+    },
+}
