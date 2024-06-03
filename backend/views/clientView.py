@@ -6,8 +6,6 @@ from backend.serializers.ClientSerializer import ClientSerializer
 from backend.services.ClientService import ClientService 
 from backend.services.MenuService import MenuService
 
-from ..models import *
-
 from rest_framework import status, permissions, viewsets 
 from rest_framework.response import Response
 
@@ -29,43 +27,43 @@ class ClientViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
         data = request.data
-        client = ClientService.save(
-            name=data.get('name'),
-            gender=data.get('gender'),
-            email=data.get('email'),
-            password=data.get('password'),
-            weight=data.get('weight'),
-            age=data.get('age'),
-            height=data.get('height'),
-            number_meals=data.get('number_meals'),
-            goal=data.get('goal'),
-            allergies=data.get('allergies')
-        )
-
-        # Lógica adicional para crear el menú basado en las alergias
-        # if client.allergies == 2:
-        #     MenuService.create_weekly_menu_without_lactose(client)
-        # else:
-        #     MenuService.create_weekly_menu(client)
+        serializer = ClientSerializer(data=data)
+        print(serializer)
+        if serializer.is_valid():
+            client = ClientService.save(
+                name=serializer.data.get('name'),
+                gender=serializer.data.get('gender'),
+                email=serializer.data.get('email'),
+                password=data.get('password'),
+                weight=serializer.data.get('weight'),
+                age=serializer.data.get('age'),
+                height=serializer.data.get('height'),
+                number_meals=serializer.data.get('number_meals'),
+                goal=serializer.data.get('goal'),
+                allergies=serializer.data.get('allergies'), 
+                is_admin=serializer.data.get('is_admin')
+            )
 
         serializer = ClientSerializer(client)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def update(self, request, pk=None):
         data = request.data
-        client = ClientService.update(
-            client_id=pk,
-            name=data.get('name'),
-            email=data.get('email'),
-            password=data.get('password'),
-            weight=data.get('weight'),
-            age=data.get('age'),
-            height=data.get('height'),
-            goal=data.get('goal'),
-            insertion_date=data.get('insertion_date'),
-            is_admin=data.get('is_admin'),
-            allergies=data.get('allergies')
-        )
+        serializer = ClientSerializer(data)
+        if serializer.is_valid(raise_exception=True):
+            client = ClientService.update(
+                client_id=pk,
+                name=data.get('name'),
+                email=data.get('email'),
+                password=data.get('password'),
+                weight=data.get('weight'),
+                age=data.get('age'),
+                height=data.get('height'),
+                goal=data.get('goal'),
+                insertion_date=data.get('insertion_date'),
+                is_admin=data.get('is_admin'),
+                allergies=data.get('allergies')
+            )
         serializer = ClientSerializer(client)
         return Response(serializer.data)
 

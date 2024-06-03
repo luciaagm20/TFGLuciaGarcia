@@ -12,11 +12,12 @@ class ClientSerializer(serializers.ModelSerializer):
     weight = serializers.FloatField(required=True)  
     age = serializers.IntegerField(required=True)
     height = serializers.FloatField(required=True)
+    is_admin = serializers.BooleanField(required=False)
 
 
     class Meta:
         model = Client
-        fields = ['name', 'email', 'password', 'number_meals', 'weight', 'age', 'height', 'gender', 'activity', 'goal', 'allergies']
+        fields = ['name', 'email', 'password', 'number_meals', 'weight', 'age', 'height', 'gender', 'activity', 'goal', 'allergies', 'is_admin']
 
     def validate_password(self, value):
         return make_password(value)
@@ -40,6 +41,12 @@ class ClientSerializer(serializers.ModelSerializer):
         if len(value) < 8:
             raise serializers.ValidationError("Password must be at least 8 characters.")
         return value
+    
+    def validate_is_admin(self, value):
+        if (value and (value == 'true')):
+            return True 
+        else:
+            return False
     
     # def validate(self, data):
     #     password = data.get('password')

@@ -7,16 +7,12 @@ class ClientRepository:
         return Client.objects.all()
 
     def read(client_id):
-        # try:
             client = Client.objects.get(user_ptr_id=client_id)
             return client
         
-        # except Client.DoesNotExist:
-        #     raise ClientDoesntExistException()
-        
     @staticmethod
-    def save(name, gender, email, password, weight, age, height, number_meals, goal, insertion_date, is_admin, allergies):
-        client = Client.objects.create(name=name, email=email, password=password, insertion_date=insertion_date, is_admin=is_admin, weight=weight, age=age, height=height, gender=gender, number_meals=number_meals, goal=goal, allergies=allergies)
+    def save(name, gender, email, password, weight, age, height, number_meals, goal, allergies, is_admin):
+        client = Client.objects.create(name=name, email=email, password=password, is_admin=is_admin, weight=weight, age=age, height=height, gender=gender, number_meals=number_meals, goal=goal, allergies=allergies)
         return client
     
     def delete(client_id):
