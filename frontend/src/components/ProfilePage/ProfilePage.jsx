@@ -1,47 +1,201 @@
-import React from 'react';
-import "./clientPage.css";
+import { useState, useEffect } from "react";
+import Dropdown from "../Dropdown/Dropdown";
+import Input from "../Input/Input";
+import Navbar from "../Navbar/Navbar";
+import { useClientInfo } from "./ProfilePage.hooks";
+import "./profilePage.css";
 
-const ClientPage = ({ userData }) => {
+const genderOptions = [
+  { label: "Female", value: "Female" },
+  { label: "Male", value: "Male" },
+];
+const allergyOptions = [
+  { label: "None", value: "None" },
+  { label: "Celiac disease", value: "Celiac disease" },
+  { label: "Lactose intolerant", value: "Lactose intolerant" },
+  { label: "Egg allergies", value: "Egg allergies" },
+];
+const mealOptions = [
+  { label: "Breakfast", value: "Breakfast" },
+  { label: "Meal", value: "Meal" },
+  { label: "Dinner", value: "Dinner" },
+  { label: "Snack", value: "Snack" },
+];
+const goalOptions = [
+  { label: "Maintenance", value: "Maintenance" },
+  { label: "Muscle gain", value: "Muscle gain" },
+  { label: "Fat loss", value: "Fat loss" },
+];
+const activityOptions = [
+  { label: "Sedentary", value: "Sedentary" },
+  { label: "Light activity", value: "Light activity" },
+  { label: "Moderate activity", value: "Moderate activity" },
+  { label: "Daily exercise", value: "Daily exercise" },
+  { label: "Intense exercise", value: "Intense exercise" },
+];
+
+const ProfilePage = ({ isLoggedIn, setLoggedIn }) => {
+  const [updatedName, setUpdatedName] = useState("");
+  const [updatedEmail, setUpdatedEmail] = useState("");
+  const [updatedWeight, setUpdatedWeight] = useState(0);
+  const [updatedAge, setUpdatedAge] = useState(0);
+  const [updatedHeight, setUpdatedHeight] = useState(0);
+
+  const [selectedGender, setSelectedGender] = useState(null);
+  const [selectedAllergy, setSelectedAllergy] = useState(null);
+  const [selectedMeals, setSelectedMeals] = useState([]);
+  const [selectedGoal, setSelectedGoal] = useState(null);
+  const [selectedActivity, setSelectedActivity] = useState(null);
+  const clientInfo = useClientInfo();
+  useEffect(() => {
+    if (clientInfo.name) {
+      setUpdatedName(clientInfo.name);
+    }
+    if (clientInfo.email) {
+      setUpdatedEmail(clientInfo.email);
+    }
+    if (clientInfo.weight) {
+      setUpdatedWeight(clientInfo.weight);
+    }
+    if (clientInfo.age) {
+      setUpdatedAge(clientInfo.age);
+    }
+    if (clientInfo.height) {
+      setUpdatedHeight(clientInfo.height);
+    }
+    if (clientInfo.gender) {
+      setSelectedGender({
+        label: clientInfo.gender,
+        value: clientInfo.gender,
+      });
+    }
+    if (clientInfo.allergies) {
+      setSelectedAllergy({
+        label: clientInfo.allergies,
+        value: clientInfo.allergies,
+      });
+    }
+    if (clientInfo.number_meals) {
+      const preselectedMeals = mealOptions.filter((option) =>
+        clientInfo.number_meals.includes(option.value)
+      );
+      setSelectedMeals(preselectedMeals);
+    }
+    if (clientInfo.goal) {
+      setSelectedGoal({
+        label: clientInfo.goal,
+        value: clientInfo.goal,
+      });
+    }
+    if (clientInfo.activity) {
+      setSelectedActivity({
+        label: clientInfo.activity,
+        value: clientInfo.activity,
+      });
+    }
+  }, [clientInfo]);
   return (
-    <div className="clientPageContainer">
-      <h2>List of registered users</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>User name</th>
-            <th>Gender</th>
-            <th>e-mail</th>
-            <th>Number of meals</th>
-            <th>Weight (kg)</th>
-            <th>Age</th>
-            <th>Height (cm)</th>
-            <th>Goal</th>
-            <th>Allergies</th>
-          </tr>
-        </thead>
-        <tbody>
-          {userData.map((data) => (
-            <tr key={data.id}>
-              <td>{data.name}</td>
-              <td>{data.gender}</td>
-              <td>{data.email}</td>
-              <td>{data.number_meals}</td>
-              <td>{data.weight}</td>
-              <td>{data.age}</td>
-              <td>{data.height}</td>
-              <td>{data.goal}</td>
-              <td>{data.allergies}</td>
-              <td>
-                <a href={`/profile/${data.id}`} className="btn btn-primary">Profile</a>
-                <a href={`/delete/${data.id}`} className="btn btn-danger">Delete</a>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-        
-    </div>
+    <>
+      <Navbar isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
+      <div className="formWrapper">
+        <Input
+          label="Name"
+          value={updatedName}
+          type="text"
+          placeholder="Type your Username"
+          required={true}
+          onChange={setUpdatedName}
+        />
+        <Input
+          label="Email"
+          value={updatedEmail}
+          type="email"
+          placeholder="Type your Email"
+          required={true}
+          onChange={setUpdatedEmail}
+        />
+        <Input
+          label="Weight"
+          value={updatedWeight}
+          type="number"
+          placeholder="Type your weight"
+          required={true}
+          onChange={setUpdatedWeight}
+        />
+        <Input
+          label="Age"
+          value={updatedAge}
+          type="number"
+          placeholder="Type your age"
+          required={true}
+          onChange={setUpdatedAge}
+        />
+        <Input
+          label="Height"
+          value={updatedHeight}
+          type="number"
+          placeholder="Type your height"
+          required={true}
+          onChange={setUpdatedHeight}
+        />
+        <Dropdown
+          options={genderOptions}
+          onChange={setSelectedGender}
+          placeholder="Select gender"
+          multipleSelect={false}
+          value={selectedGender}
+          label="Gender"
+        />
+        <Dropdown
+          options={allergyOptions}
+          onChange={setSelectedAllergy}
+          placeholder="Select allergy"
+          multipleSelect={false}
+          value={selectedAllergy}
+          label="Allergies"
+        />
+        <Dropdown
+          options={mealOptions}
+          onChange={(selection) => setSelectedMeals(selection)}
+          placeholder="Select Meals"
+          multipleSelect={true}
+          value={selectedMeals}
+          label="Meals"
+        />
+        <Dropdown
+          options={goalOptions}
+          onChange={setSelectedGoal}
+          placeholder="Select goal"
+          multipleSelect={false}
+          value={selectedGoal}
+          label="Goal"
+        />
+        <Dropdown
+          options={activityOptions}
+          onChange={setSelectedActivity}
+          placeholder="Select activity level"
+          multipleSelect={false}
+          value={selectedActivity}
+          label="Activity"
+        />
+      </div>
+      <button
+        onClick={() => {
+          // TODO: Open modal
+        }}
+      >
+        Change password
+      </button>
+      <button
+        onClick={() => {
+          // TODO: Send post with updated info
+          // useSaveProfile({name: updatedName, email:updatedEmail, gender: selectedGender.value})
+        }}
+      >
+        Save changes
+      </button>
+    </>
   );
 };
 
-export default ClientPage;
+export default ProfilePage;

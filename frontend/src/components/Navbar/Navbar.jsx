@@ -8,7 +8,7 @@ const Navbar = ({ isLoggedIn, setLoggedIn, setSignUpModalOpen, signUpModalOpen }
     if (isLoggedIn) {
       navigate("/home");
     } else {
-      navigate("/menus");
+      navigate("/client_page");
     }
     setLoggedIn(!isLoggedIn);
   };
@@ -22,7 +22,11 @@ const Navbar = ({ isLoggedIn, setLoggedIn, setSignUpModalOpen, signUpModalOpen }
         <button onClick={handleLoginClick}>
           {isLoggedIn ? "Log out" : "Log in"}
         </button>
-        {!isLoggedIn && (
+        {isLoggedIn ?
+          <button onClick={() => navigate("/profile")}>
+          Profile
+          </button>
+        : (
           <button onClick={() => setSignUpModalOpen(!signUpModalOpen)}>
             Sign up
           </button>
