@@ -5,7 +5,7 @@ from django.contrib.auth.hashers import make_password
 from ..models import *
 
 class ClientSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
+    password = serializers.CharField(required=True, style={'input_type': 'password'})
     email = serializers.EmailField(required=True)
     name = serializers.CharField(required=True)
     # Poniendo esto ya se asegura de que no puedas poner letras y que age no pueda tener decimales y salta un mensaje de error 
@@ -20,6 +20,8 @@ class ClientSerializer(serializers.ModelSerializer):
         fields = ['name', 'email', 'password', 'number_meals', 'weight', 'age', 'height', 'gender', 'activity', 'goal', 'allergies', 'is_admin']
 
     def validate_password(self, value):
+        if len(value) < 8:
+            raise serializers.ValidationError("Password must be at least 8 characters.")
         return make_password(value)
 
     def validate_email(self, value):
@@ -35,11 +37,6 @@ class ClientSerializer(serializers.ModelSerializer):
     def validate_username(self, value):
         if Client.objects.filter(name = value).exists():
             raise serializers.ValidationError("Username already exists")
-        return value
-
-    def validate_password(self, value):
-        if len(value) < 8:
-            raise serializers.ValidationError("Password must be at least 8 characters.")
         return value
     
     def validate_is_admin(self, value):
