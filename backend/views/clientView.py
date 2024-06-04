@@ -4,11 +4,16 @@ from backend.services.ClientService import ClientService
 from rest_framework import status, permissions, viewsets 
 from rest_framework.response import Response
 
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 
 class ClientViewSet(viewsets.ModelViewSet):
-    queryset = ClientService.listClient()
-    permission_classes = [permissions.AllowAny]
-    serializer_class = ClientSerializer
+    # queryset = ClientService.listClient()
+    # permission_classes = [permissions.AllowAny]
+    # serializer_class = ClientSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def list(self, request):
         clients = ClientService.listClient()
