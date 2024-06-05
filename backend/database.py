@@ -1,5 +1,7 @@
 import csv
+from itertools import product
 import sqlite3 as sql
+
 
 def crearBD():
     con = sql.connect("prueba.db")
@@ -14,7 +16,7 @@ def meterCSV():
         next(reader)  # Omitir la primera fila si contiene encabezados de columna
         for row in reader:
             # Generar la consulta SQL para insertar esta fila en la tabla
-            cur.execute("INSERT INTO backend_food VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", row)
+            cur.execute("INSERT INTO backend_food VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", row)
 
     # Confirmar la inserción y cerrar la conexión
     con.commit()
@@ -61,17 +63,10 @@ def meterAlergias():
     cur.executemany("INSERT INTO backend_allergies (allergy_type) VALUES (?)", allergies)
     con.commit()
     con.close()
-# # Crear instancias de alergias y guardarlas en la base de datos
-# Allergies.objects.bulk_create([
-#     Allergies(allergy_type=Allergies.CeliacDisease),
-#     Allergies(allergy_type=Allergies.LactoseIntolerant),
-#     Allergies(allergy_type=Allergies.Seafood),
-#     Allergies(allergy_type=Allergies.EggAllergy),
-#     Allergies(allergy_type=Allergies.NONE),
-# ])
+
 
 '''crearBD()'''
-# meterCSV()
-# columnaLactosa()
-meterAlergias()
+meterCSV()
+columnaLactosa()
+# meterAlergias()
 '''borrarTabla()'''

@@ -1,18 +1,19 @@
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-
 from backend.serializers.FoodSerializer import FoodSerializer
 from backend.services.FoodService import FoodService 
 
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
 
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 
 class FoodViewSet(viewsets.ModelViewSet):
-    queryset = FoodService.listFood()
-    permission_classes = [permissions.AllowAny]
-    serializer_class = FoodSerializer
+    # queryset = FoodService.listFood()
+    # permission_classes = [permissions.AllowAny]
+    # serializer_class = FoodSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def list(self, request):
         food = FoodService.listFood()

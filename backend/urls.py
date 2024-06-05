@@ -1,5 +1,7 @@
 from django.urls import include, path
 
+from .views.FoodIntakeView import *
+
 from .views.IndexView import *
 from .views.ClientView import *
 from .views.UserView import *
@@ -11,6 +13,8 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 router.register(r'clients', ClientViewSet, basename='clients')  
 router.register(r'food', FoodViewSet, basename='food') 
+router.register(r'foodIntake', FoodIntakeViewSet, basename='foodIntake') 
+router.register(r'menu', MenuViewSet, basename='menu') 
 
 ''' urlpatterns=[
     path('index/', index, name='index'),

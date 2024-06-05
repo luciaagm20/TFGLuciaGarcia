@@ -9,3 +9,4 @@ from .Goal import Goal
 from .Requests import Requests
 from .WeeklyMenu import WeeklyMenu
 from .Gender import Gender
+from .FoodJoin import FoodJoin

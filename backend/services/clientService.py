@@ -1,6 +1,7 @@
 
 from backend.repositories.ClientRepository import ClientRepository
 from backend.serializers.ClientSerializer import ClientSerializer
+from backend.services.MenuService import MenuService
 
 class ClientService:
     
@@ -18,10 +19,10 @@ class ClientService:
      def save(name, gender, email, password, weight, age, height, number_meals, goal, allergies, is_admin):
           client = ClientRepository.save(name, gender, email, password, weight, age, height, number_meals, goal, allergies, is_admin)
           # Lógica adicional para crear el menú basado en las alergias
-        # if client.allergies == 2:
-        #     MenuService.create_weekly_menu_without_lactose(client)
-        # else:
-        #     MenuService.create_weekly_menu(client)
+          if client.allergies == 2:
+            MenuService.create_weekly_menu_without_lactose(client)
+          else:
+            MenuService.create_weekly_menu(client)
 
           return client
 

@@ -8,13 +8,10 @@ class Food(models.Model):
     subgroup_name = models.TextField(null=True)  
     food_code = models.IntegerField(null=True)
     food_name = models.TextField(null=True)
-    # water = models.SmallIntegerField(null=True) 
+    water = models.SmallIntegerField(null=True) 
     protein = models.SmallIntegerField(null=True)  
     carbohydrates = models.SmallIntegerField(null=True)  
     fats = models.SmallIntegerField(null=True)  
     sugars = models.SmallIntegerField(null=True)  
     glucose = models.SmallIntegerField(null=True)  
     lactose = models.SmallIntegerField(null=True)
-
-    def __str__(self):
-        return self.food_code
