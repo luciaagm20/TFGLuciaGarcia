@@ -1,5 +1,5 @@
 from itertools import chain, product
-from random import choice
+from random import choice, random
 from datetime import timedelta, datetime
 from ..models import Food, FoodIntake, WeeklyMenu, FoodJoin
 from django.db.models import F, Value
@@ -12,6 +12,7 @@ class MenuRepository:
     
     @staticmethod
     def find_closest_by_calories(queryset, target_calories):
+        print("Lo que llega al metodo ")
         print(queryset)
         closest_number = queryset.annotate(difference=Abs(F('calories') - Value(target_calories))).order_by('difference').first()
         return closest_number
@@ -68,20 +69,20 @@ class MenuRepository:
 
         for verdura, plato in verduras_platos:
             kcal_totales = round(MenuRepository.calculate_kilocal(verdura) + MenuRepository.calculate_kilocal(plato))
-        food_joins.append(FoodJoin(
-            food_code_one=verdura.id,
-            food_code_two=plato.id,
-            group_code_one=verdura.subgroup_code,
-            group_code_two=plato.group_code,
-            calories=kcal_totales
-        ))
+            food_joins.append(FoodJoin(
+                food_code_one=verdura.id,
+                food_code_two=plato.id,
+                group_code_one=verdura.subgroup_code,
+                group_code_two=plato.group_code,
+                calories=kcal_totales
+            ))
 
         for verdura, proteina in verduras_proteinas:
             kcal_totales = round(MenuRepository.calculate_kilocal(verdura) + MenuRepository.calculate_kilocal(proteina))
             food_joins.append(FoodJoin(
                 food_code_one=verdura.id,
                 food_code_two=proteina.id,
-                group_code_one=verdura.group_code,
+                group_code_one=verdura.subgroup_code,
                 group_code_two=proteina.group_code,
                 calories=kcal_totales
             ))
@@ -116,6 +117,7 @@ class MenuRepository:
         # MenuRepository.insertFoodInnerJoin()
         
         foodJoin = FoodJoin.objects.all()
+
         verdura_y_plato = foodJoin.filter(group_code_one=201).filter(group_code_two=1).order_by('calories')
         verdura_y_proteina = foodJoin.filter(group_code_one=201).filter(group_code_two=4).order_by('calories')
 
@@ -124,6 +126,7 @@ class MenuRepository:
         kcal_lunch = caloriasBasales * 0.4
         kcal_dinner = caloriasBasales * 0.4
 
+        tablas_temporales = [verdura_y_plato, verdura_y_proteina]
 
         # Iterar sobre cada día de la semana
         for dia in range(7):
@@ -139,8 +142,10 @@ class MenuRepository:
                             calories = MenuRepository.calculate_kilocal(food_breakfast)
                             FoodIntake.objects.create(weeklyMenu=menu_semanal, food=food_breakfast, calories=calories, day_of_week=nombre_dia, meal=comida)
 
-                    elif comida == 'MEAL':
-                            food_meal = choice(verdura_y_plato or verdura_y_proteina) 
+                    elif comida == 'MEAL':                            
+                            food_meal = choice(tablas_temporales)
+                            # food_meal = choice([verdura_y_plato, verdura_y_proteina]) 
+                            print("eleccion aleatoria ")
                             print(food_meal)
                             closest = MenuRepository.find_closest_by_calories(food_meal, kcal_lunch)
                             alimento = verduras.get(id=closest.food_code_one)
@@ -155,7 +160,9 @@ class MenuRepository:
                             FoodIntake.objects.create(weeklyMenu=menu_semanal, food=alimento2, calories=caloriasAlimento2, day_of_week=nombre_dia, meal=comida)
 
                     elif comida == 'DINNER':
-                            food_dinner = choice(verdura_y_plato or verdura_y_proteina) 
+                            food_dinner = choice(tablas_temporales)
+                            # food_dinner = choice(verdura_y_plato or verdura_y_proteina) 
+                            print("aqui no llega")
                             closest = MenuRepository.find_closest_by_calories(food_dinner, kcal_dinner)
                             alimento = verduras.get(id=closest.food_code_one)
                             if(closest.group_code_two == 1):
@@ -177,7 +184,8 @@ class MenuRepository:
                             FoodIntake.objects.create(weeklyMenu=menu_semanal, food=alimento_desayuno, calories=caloriasAlimento, day_of_week=nombre_dia, meal=comida)
 
                     elif comida == 'MEAL':
-                            food_meal = choice(verdura_y_plato or verdura_y_proteina) 
+                            food_meal = choice(tablas_temporales)
+                            # food_meal = choice(verdura_y_plato or verdura_y_proteina) 
                             closest = MenuRepository.find_closest_by_calories(food_meal, kcal_lunch)
                             alimento = verduras.get(id=closest.food_code_one)
                             if(closest.group_code_two == 1):
@@ -191,7 +199,8 @@ class MenuRepository:
                             FoodIntake.objects.create(weeklyMenu=menu_semanal, food=alimento2, calories=caloriasAlimento2, day_of_week=nombre_dia, meal=comida)
 
                     elif comida == 'DINNER':
-                            food_dinner = choice(verdura_y_plato or verdura_y_proteina) 
+                            food_meal = choice(tablas_temporales)
+                            # food_dinner = choice(verdura_y_plato or verdura_y_proteina) 
                             closest = MenuRepository.find_closest_by_calories(food_dinner, kcal_dinner)
                             alimento = verduras.get(id=closest.food_code_one)
                             if(closest.group_code_two == 1):
