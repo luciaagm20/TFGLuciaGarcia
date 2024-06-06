@@ -1,3 +1,23 @@
+/* .menuCard {
+    height: 50px;
+} */
+
 .menuCard {
     height: 50px;
-}
+    background-color: #006400; /* Verde oscuro */
+    color: white; /* Color de texto blanco para mejor contraste */
+    width: 200px; /* Ancho fijo */
+    height: 200px; /* Alto fijo */
+    display: flex; /* Flexbox para centrar el contenido */
+    align-items: center; /* Alineación vertical */
+    justify-content: center; /* Alineación horizontal */
+    margin: 10px; /* Espaciado entre tarjetas */
+    border-radius: 10px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar sobre la tarjeta */
+    transition: transform 0.2s; /* Añade una transición suave */
+    text-align: center; /* Centrar el texto */
+  }
+  
+  .menuCard:hover {
+    transform: scale(1.05); /* Escala la tarjeta al pasar el mouse por encima */
+  }

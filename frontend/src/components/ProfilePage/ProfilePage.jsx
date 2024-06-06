@@ -4,6 +4,8 @@ import Input from "../Input/Input";
 import Navbar from "../Navbar/Navbar";
 import { useClientInfo } from "./ProfilePage.hooks";
 import "./profilePage.css";
+import ChangePasswordPage from "../ChangePasswordPage/ChangePasswordPage";
+import Modal from "../Modal/Modal";
 
 const genderOptions = [
   { label: "Female", value: "Female" },
@@ -35,6 +37,7 @@ const activityOptions = [
 ];
 
 const ProfilePage = ({ isLoggedIn, setLoggedIn }) => {
+  const [passwordModalOpen, setPasswordModalOpen] = useState(false);
   const [updatedName, setUpdatedName] = useState("");
   const [updatedEmail, setUpdatedEmail] = useState("");
   const [updatedWeight, setUpdatedWeight] = useState(0);
@@ -182,6 +185,7 @@ const ProfilePage = ({ isLoggedIn, setLoggedIn }) => {
       <button
         onClick={() => {
           // TODO: Open modal
+          setPasswordModalOpen(!passwordModalOpen);
         }}
       >
         Change password
@@ -194,6 +198,12 @@ const ProfilePage = ({ isLoggedIn, setLoggedIn }) => {
       >
         Save changes
       </button>
+      <Modal
+        isOpen={passwordModalOpen}
+        onClose={() => setPasswordModalOpen(false)}
+      >
+        <ChangePasswordPage />
+      </Modal>
     </>
   );
 };

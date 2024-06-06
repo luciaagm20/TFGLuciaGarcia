@@ -1,34 +1,29 @@
 import Navbar from "../Navbar/Navbar";
 import "./menuPage.css";
 
-const MenuPage = ({ isLoggedIn, setLoggedIn }) => {
+const MenuPage = ({ isLoggedIn, setLoggedIn, weeklyMenu }) => {
   return (
     <>
       <Navbar isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
       <div className="menuPageContainer">
-        <h1>Menú Semanal</h1>
-        <h2>Fecha de inicio: 13/05/2024</h2>
-        <h2>Fecha de fin: 19/05/2024</h2>
-
+        <h1>Weekly Menu</h1>
         <table>
-          <tr>
-            <th>Lunes</th>
-            <th>Martes</th>
-            <th>Miercoles</th>
-            <th>Jueves</th>
-            <th>Viernes</th>
-            <th>Sabado</th>
-            <th>Domingo</th>
-          </tr>
-          <tr>
-            <td>Alimento</td>
-            <td>Alimento</td>
-            <td>Alimento</td>
-            <td>Alimento</td>
-            <td>Alimento</td>
-            <td>Alimento</td>
-            <td>Alimento</td>
-          </tr>
+          <thead>
+            <tr>
+              <th>Client</th>
+              <th>Start date</th>
+              <th>End date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {weeklyMenu.map((menuItem) => (
+              <tr key={menuItem.id}>
+                <td>{menuItem.client.name}</td>
+                <td>{menuItem.start_date}</td>
+                <td>{menuItem.end_date}</td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
     </>

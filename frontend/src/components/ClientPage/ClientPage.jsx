@@ -6,7 +6,6 @@ import MenuCard from "../MenuCard/MenuCard";
 
 const ClientPage = ({ isLoggedIn, setLoggedIn }) => {
     const menuList = useMenuInfo();
-    console.log(menuList)
     return (
     <>
       <Navbar isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />

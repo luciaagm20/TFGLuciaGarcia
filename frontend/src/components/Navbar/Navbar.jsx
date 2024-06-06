@@ -1,7 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import "./navbar.css";
 
-const Navbar = ({ isLoggedIn, setLoggedIn, setSignUpModalOpen, signUpModalOpen }) => {
+const Navbar = ({
+  isLoggedIn,
+  setLoggedIn,
+  setSignUpModalOpen,
+  signUpModalOpen,
+}) => {
   const navigate = useNavigate();
   const handleLoginClick = () => {
     // TODO: handle authentication when finished in backend
@@ -22,11 +27,9 @@ const Navbar = ({ isLoggedIn, setLoggedIn, setSignUpModalOpen, signUpModalOpen }
         <button onClick={handleLoginClick}>
           {isLoggedIn ? "Log out" : "Log in"}
         </button>
-        {isLoggedIn ?
-          <button onClick={() => navigate("/profile")}>
-          Profile
-          </button>
-        : (
+        {isLoggedIn ? (
+          <button onClick={() => navigate("/profile")}>Profile</button>
+        ) : (
           <button onClick={() => setSignUpModalOpen(!signUpModalOpen)}>
             Sign up
           </button>
