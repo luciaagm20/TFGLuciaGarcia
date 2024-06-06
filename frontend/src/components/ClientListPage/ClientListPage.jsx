@@ -1,10 +1,12 @@
-import React from 'react';
+import Navbar from "../Navbar/Navbar";
 import "./clientListPage.css";
 
-const ClientPage = ({ userData }) => {
+const ClientListPage = ({ isLoggedIn, setLoggedIn, clients }) => {
   return (
-    <div className="clientPageContainer">
-      <h2>List of registered users</h2>
+    <>
+     <Navbar isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
+     <div className="clientListPageContainer">
+     <h2>List of registered users</h2>
       <table>
         <thead>
           <tr>
@@ -20,7 +22,7 @@ const ClientPage = ({ userData }) => {
           </tr>
         </thead>
         <tbody>
-          {userData.map((data) => (
+          {clients.map((data) => (
             <tr key={data.id}>
               <td>{data.name}</td>
               <td>{data.gender}</td>
@@ -31,17 +33,19 @@ const ClientPage = ({ userData }) => {
               <td>{data.height}</td>
               <td>{data.goal}</td>
               <td>{data.allergies}</td>
-              <td>
+              {/* <td>
                 <a href={`/profile/${data.id}`} className="btn btn-primary">Profile</a>
                 <a href={`/delete/${data.id}`} className="btn btn-danger">Delete</a>
-              </td>
+              </td> */}
             </tr>
           ))}
         </tbody>
       </table>
-        
     </div>
+    </>
   );
 };
 
-export default ClientPage;
+export default ClientListPage;
+
+

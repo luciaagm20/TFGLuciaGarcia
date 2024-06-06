@@ -16,5 +16,3 @@ class Client(User):
     goal = models.CharField(max_length=20, choices=Goal.CHOICES, default="Maintenance")
     allergies = models.CharField(max_length=20, choices=Allergies.CHOICES, default=Allergies.NONE)
 
-
-

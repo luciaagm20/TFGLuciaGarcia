@@ -1,6 +1,6 @@
 from rest_framework.response import Response
 
-from rest_framework import viewsets 
+from rest_framework import viewsets, permissions
 
 
 from backend.serializers.MenuSerializer import MenuSerializer
@@ -9,9 +9,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 class MenuViewSet(viewsets.ModelViewSet):
-    # return render(request, 'menu.html', {'menu': menu, 'alimento': alimento})
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+    # permission_classes = [permissions.AllowAny]
 
     def list(self, request):
         menu = MenuService.listMenu()

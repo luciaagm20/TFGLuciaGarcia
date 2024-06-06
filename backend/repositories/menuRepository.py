@@ -4,12 +4,15 @@ from datetime import timedelta, datetime
 from ..models import Food, FoodIntake, WeeklyMenu, FoodJoin
 from django.db.models import F, Value
 from django.db.models.functions import Abs
+from django.db import transaction
+
 
 
 class MenuRepository:
     
     @staticmethod
     def find_closest_by_calories(queryset, target_calories):
+        print(queryset)
         closest_number = queryset.annotate(difference=Abs(F('calories') - Value(target_calories))).order_by('difference').first()
         return closest_number
     
@@ -61,13 +64,38 @@ class MenuRepository:
         verduras_platos = product(verduras, platos)
         verduras_proteinas = product(verduras, proteinas)
 
+        food_joins = []
+
         for verdura, plato in verduras_platos:
             kcal_totales = round(MenuRepository.calculate_kilocal(verdura) + MenuRepository.calculate_kilocal(plato))
-            FoodJoin.objects.create(food_code_one=verdura.id, food_code_two=plato.id, group_code_one=verdura.subgroup_code, group_code_two=plato.group_code, calories=kcal_totales)
+        food_joins.append(FoodJoin(
+            food_code_one=verdura.id,
+            food_code_two=plato.id,
+            group_code_one=verdura.subgroup_code,
+            group_code_two=plato.group_code,
+            calories=kcal_totales
+        ))
 
         for verdura, proteina in verduras_proteinas:
             kcal_totales = round(MenuRepository.calculate_kilocal(verdura) + MenuRepository.calculate_kilocal(proteina))
-            FoodJoin.objects.create(food_code_one=verdura.id, food_code_two=proteina.id, group_code_one=verdura.group_code, group_code_two=proteina.group_code, calories=kcal_totales)
+            food_joins.append(FoodJoin(
+                food_code_one=verdura.id,
+                food_code_two=proteina.id,
+                group_code_one=verdura.group_code,
+                group_code_two=proteina.group_code,
+                calories=kcal_totales
+            ))
+
+        with transaction.atomic():
+            FoodJoin.objects.bulk_create(food_joins)
+
+        # for verdura, plato in verduras_platos:
+        #     kcal_totales = round(MenuRepository.calculate_kilocal(verdura) + MenuRepository.calculate_kilocal(plato))
+        #     FoodJoin.objects.create(food_code_one=verdura.id, food_code_two=plato.id, group_code_one=verdura.subgroup_code, group_code_two=plato.group_code, calories=kcal_totales)
+
+        # for verdura, proteina in verduras_proteinas:
+        #     kcal_totales = round(MenuRepository.calculate_kilocal(verdura) + MenuRepository.calculate_kilocal(proteina))
+        #     FoodJoin.objects.create(food_code_one=verdura.id, food_code_two=proteina.id, group_code_one=verdura.group_code, group_code_two=proteina.group_code, calories=kcal_totales)
 
     @staticmethod
     def create_food_intake(menu_semanal, caloriasBasales):
@@ -113,6 +141,7 @@ class MenuRepository:
 
                     elif comida == 'MEAL':
                             food_meal = choice(verdura_y_plato or verdura_y_proteina) 
+                            print(food_meal)
                             closest = MenuRepository.find_closest_by_calories(food_meal, kcal_lunch)
                             alimento = verduras.get(id=closest.food_code_one)
                             if(closest.group_code_two == 1):

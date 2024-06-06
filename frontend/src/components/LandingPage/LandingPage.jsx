@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import Modal from "../Modal/Modal";
 import RegistrationPage from "../RegistrationPage/RegistrationPage";
@@ -9,6 +10,7 @@ import "./landingPage.css";
 const LandingPage = ({ isLoggedIn, setLoggedIn }) => {
   const [signUpModalOpen, setSignUpModalOpen] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="landingPageContainer">
@@ -28,6 +30,7 @@ const LandingPage = ({ isLoggedIn, setLoggedIn }) => {
       >
         Login
       </button>
+      <button onClick={() => navigate("/list_clients")}>List users</button>
       <p className="subtitle">
         We create healthy weekly menus exclusively for you based on your
         preferences and needs.

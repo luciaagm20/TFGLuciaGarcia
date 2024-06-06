@@ -184,7 +184,6 @@ const ProfilePage = ({ isLoggedIn, setLoggedIn }) => {
       </div>
       <button
         onClick={() => {
-          // TODO: Open modal
           setPasswordModalOpen(!passwordModalOpen);
         }}
       >
