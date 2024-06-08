@@ -114,7 +114,7 @@ class MenuRepository:
         cereales = alimentos.filter(group_code = 3)
         proteinas = alimentos.filter(group_code = 4)
 
-        # MenuRepository.insertFoodInnerJoin()
+        MenuRepository.insertFoodInnerJoin()
         
         foodJoin = FoodJoin.objects.all()
 
