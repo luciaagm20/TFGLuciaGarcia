@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'backend',
     'backend.apps.BackendConfig',
     'rest_framework',
     'rest_framework_simplejwt',
@@ -164,6 +163,7 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = 'backend.Client'
 
 # Configuración de Celery
 CELERY_BROKER_URL = 'redis://localhost:6379/0'

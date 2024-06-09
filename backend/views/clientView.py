@@ -11,9 +11,16 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 class ClientViewSet(viewsets.ModelViewSet):
     # queryset = ClientService.listClient()
     # permission_classes = [permissions.AllowAny]
-    # serializer_class = ClientSerializer
+    serializer_class = ClientSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
+    def get_permissions(self):
+        if self.action == 'create':
+            self.permission_classes = [permissions.AllowAny]
+        else:
+            self.permission_classes = [IsAuthenticated]
+        return super(ClientViewSet, self).get_permissions()
 
     def list(self, request):
         clients = ClientService.listClient()
@@ -21,6 +28,10 @@ class ClientViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
+        user = self.request.user
+        if not user.is_superuser and str(user.id) != pk:
+            return Response({"detail": "No permission."}, status=status.HTTP_403_FORBIDDEN)
+        
         client = ClientService.read(pk)
         serializer = ClientSerializer(client)
         return Response(serializer.data)
@@ -31,7 +42,7 @@ class ClientViewSet(viewsets.ModelViewSet):
         
         if serializer.is_valid():
             client = ClientService.save(
-                name=serializer.data.get('name'),
+                username=serializer.data.get('username'),
                 gender=serializer.data.get('gender'),
                 email=serializer.data.get('email'),
                 password=serializer.data.get('password'),
@@ -41,7 +52,7 @@ class ClientViewSet(viewsets.ModelViewSet):
                 number_meals=serializer.data.get('number_meals'),
                 goal=serializer.data.get('goal'),
                 allergies=serializer.data.get('allergies'), 
-                is_admin=serializer.data.get('is_admin')
+                is_superuser=serializer.data.get('is_superuser')
             )
 
             serializer = ClientSerializer(client)
@@ -51,26 +62,33 @@ class ClientViewSet(viewsets.ModelViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
+        user = self.request.user
+        if not user.is_superuser and str(user.id) != pk:
+            return Response({"detail": "No permission."}, status=status.HTTP_403_FORBIDDEN)
+        
         data = request.data
         serializer = ClientSerializer(data)
         if serializer.is_valid(raise_exception=True):
             client = ClientService.update(
                 client_id=pk,
-                name=data.get('name'),
+                username=data.get('username'),
                 email=data.get('email'),
                 password=data.get('password'),
                 weight=data.get('weight'),
                 age=data.get('age'),
                 height=data.get('height'),
                 goal=data.get('goal'),
-                insertion_date=data.get('insertion_date'),
-                is_admin=data.get('is_admin'),
-                allergies=data.get('allergies')
+                allergies=data.get('allergies'),
+                is_superuser=data.get('is_superuser'),
             )
         serializer = ClientSerializer(client)
         return Response(serializer.data)
 
     def destroy(self, request, pk=None):
+        user = self.request.user
+        if not user.is_superuser and str(user.id) != pk:
+            return Response({"detail": "No tienes permiso para realizar esta acción."}, status=status.HTTP_403_FORBIDDEN)
+
         ClientService.delete(pk)
         return Response(status=status.HTTP_204_NO_CONTENT)
 

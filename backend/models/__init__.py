@@ -1,5 +1,4 @@
 from .Allergies import Allergies
-from .User import User
 from .Client import Client
 from .DayOfWeek import DayOfWeek
 from .Food import Food
