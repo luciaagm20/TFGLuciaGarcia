@@ -246,10 +246,12 @@ class MenuRepository:
     def listMenu():
         return WeeklyMenu.objects.all()
 
-    def read(client_id):
-        return WeeklyMenu.objects.filter(id=client_id)
+    def read(menu_id):
+        return WeeklyMenu.objects.filter(id=menu_id)
     
     def delete(id):
         db_data = WeeklyMenu.objects.filter(id=id)
         db_data.delete()
     
+    def list_by_client(client_id):
+         return WeeklyMenu.objects.filter(client_id=client_id)

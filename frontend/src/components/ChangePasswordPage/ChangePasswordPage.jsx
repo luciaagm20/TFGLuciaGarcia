@@ -25,7 +25,8 @@ const ChangePasswordPage = ({ isLoggedIn, setLoggedIn }) => {
           type="password"
           placeholder="Type new password"
           required={true}
-          onChange={setUpdatedPassword}
+          // onChange={setUpdatedPassword}
+          onChange={(e) => setUpdatedPassword(e.target.value)}
         />
       </div>
       {/* Esto no me funciona */}

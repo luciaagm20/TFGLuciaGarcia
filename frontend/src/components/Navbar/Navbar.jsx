@@ -22,6 +22,8 @@ const Navbar = ({
     <div className={"navbarContainer"}>
       <div className={"adminButtons"}>
         {/* TODO: Add admin buttons: users, foods, suggestions */}
+        <button onClick={() => navigate("/list_clients")}>List Clients</button>
+        <button onClick={() => navigate("/list_food")}>List Food</button>
       </div>
       <div className={"regularButtons"}>
         <button onClick={handleLoginClick}>

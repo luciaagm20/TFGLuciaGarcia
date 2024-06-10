@@ -21,10 +21,8 @@ const LandingPage = ({ isLoggedIn, setLoggedIn }) => {
         setSignUpModalOpen={setSignUpModalOpen}
       />
       <img src={logo} alt="logo" />
-      {/* TODO: Add login component when BE ready */}
       <button
         onClick={() => {
-          // TODO: Open modal
           setLoginModalOpen(!loginModalOpen);
         }}
       >

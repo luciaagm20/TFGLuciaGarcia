@@ -107,7 +107,8 @@ const ProfilePage = ({ isLoggedIn, setLoggedIn }) => {
           type="text"
           placeholder="Type your Username"
           required={true}
-          onChange={setUpdatedName}
+          // onChange={setUpdatedName}
+          onChange={(e) => setUpdatedName(e.target.value)}
         />
         <Input
           label="Email"
@@ -115,7 +116,8 @@ const ProfilePage = ({ isLoggedIn, setLoggedIn }) => {
           type="email"
           placeholder="Type your Email"
           required={true}
-          onChange={setUpdatedEmail}
+          // onChange={setUpdatedEmail}
+          onChange={(e) => setUpdatedEmail(e.target.value)}
         />
         <Input
           label="Weight"
@@ -123,7 +125,8 @@ const ProfilePage = ({ isLoggedIn, setLoggedIn }) => {
           type="number"
           placeholder="Type your weight"
           required={true}
-          onChange={setUpdatedWeight}
+          // onChange={setUpdatedWeight}
+          onChange={(e) => setUpdatedWeight(e.target.value)}
         />
         <Input
           label="Age"
@@ -131,7 +134,8 @@ const ProfilePage = ({ isLoggedIn, setLoggedIn }) => {
           type="number"
           placeholder="Type your age"
           required={true}
-          onChange={setUpdatedAge}
+          // onChange={setUpdatedAge}
+          onChange={(e) => setUpdatedAge(e.target.value)}
         />
         <Input
           label="Height"
@@ -139,7 +143,8 @@ const ProfilePage = ({ isLoggedIn, setLoggedIn }) => {
           type="number"
           placeholder="Type your height"
           required={true}
-          onChange={setUpdatedHeight}
+          // onChange={setUpdatedHeight}
+          onChange={(e) => setUpdatedHeight(e.target.value)}
         />
         <Dropdown
           options={genderOptions}

@@ -11,9 +11,12 @@ class MenuService:
      def listMenu():
           return MenuRepository.listMenu()
 
-     def read(client_id):
-          return MenuRepository.read(client_id)
+     def read(menu_id):
+          return MenuRepository.read(menu_id)
 
      def delete(id):
           MenuRepository.delete(id)
+     
+     def list_by_client(id):
+          return MenuRepository.list_by_client(id)
      
