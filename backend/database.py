@@ -86,7 +86,7 @@ def columnaHuevo():
 def borrarTabla():
     con = sql.connect("prueba.db")
     cur = con.cursor()
-    cur.execute("""DROP TABLE IF EXISTS backend_food""")
+    cur.execute("DELETE FROM backend_food")
     con.commit()
     con.close()
 
@@ -110,6 +110,6 @@ meterCSV()
 columnaLactosa()
 columnaMarisco()
 columnaHuevo()
-meterAlergias()
-'''borrarTabla()'''
+# meterAlergias()
+# borrarTabla()
 # INSERT INTO backend_double_food SELECT ... FROM backend_food INNER JOIN backend_food

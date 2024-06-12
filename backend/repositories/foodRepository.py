@@ -4,6 +4,28 @@ class FoodRepository:
      
     def listFood():
         return Food.objects.all()
+    
+    def list_by_group_name(group_name):
+        db_data = Food.objects.filter(group_code=1)
+        if group_name=="fruits, vegetables, legumes and nuts":
+            db_data = Food.objects.filter(group_code=2)
+        elif group_name=="cereal products":
+            db_data = Food.objects.filter(group_code=3)
+        elif group_name=="meat, egg and fish":
+            db_data = Food.objects.filter(group_code=4)
+        elif group_name=="milk and milk products":
+            db_data = Food.objects.filter(group_code=5)
+        elif group_name=="beverages":
+            db_data = Food.objects.filter(group_code=6)
+        elif group_name=="sugar and confectionery":
+            db_data = Food.objects.filter(group_code=7)
+        elif group_name=="ice cream and sorbet":
+            db_data = Food.objects.filter(group_code=8)
+        elif group_name=="fats and oils":
+            db_data = Food.objects.filter(group_code=9)
+        elif group_name=="miscellaneous":
+            db_data = Food.objects.filter(group_code=10)
+        return db_data
 
     def read(food_id):
         return Food.objects.filter(id=food_id)

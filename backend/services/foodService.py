@@ -6,6 +6,9 @@ class FoodService:
      def listFood():
           return FoodRepository.listFood()
 
+     def list_by_group_name(group_name):
+          return FoodRepository.list_by_group_name(group_name)
+
      def read(food_id):
           return FoodRepository.read(food_id)
 
