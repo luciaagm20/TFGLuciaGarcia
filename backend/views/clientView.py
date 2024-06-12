@@ -51,7 +51,7 @@ class ClientViewSet(viewsets.ModelViewSet):
                 height=serializer.data.get('height'),
                 number_meals=serializer.data.get('number_meals'),
                 goal=serializer.data.get('goal'),
-                allergies=serializer.data.get('allergies'), 
+                allergies=serializer.data.get('allergies', []),
                 is_superuser=serializer.data.get('is_superuser')
             )
 
@@ -78,7 +78,7 @@ class ClientViewSet(viewsets.ModelViewSet):
                 age=data.get('age'),
                 height=data.get('height'),
                 goal=data.get('goal'),
-                allergies=data.get('allergies'),
+                allergies=data.get('allergies', []),
                 is_superuser=data.get('is_superuser'),
             )
         serializer = ClientSerializer(client)

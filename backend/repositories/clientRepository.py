@@ -12,7 +12,8 @@ class ClientRepository:
         
     @staticmethod
     def save(username, gender, email, password, weight, age, height, number_meals, goal, allergies, is_superuser):
-        client = Client.objects.create(username=username, email=email, password=password, is_superuser=is_superuser, weight=weight, age=age, height=height, gender=gender, number_meals=number_meals, goal=goal, allergies=allergies)
+        client = Client.objects.create(username=username, email=email, password=password, is_superuser=is_superuser, weight=weight, age=age, height=height, gender=gender, number_meals=number_meals, goal=goal)
+        client.allergies.set(allergies)
         return client
     
     def delete(client_id):
@@ -39,7 +40,7 @@ class ClientRepository:
         if goal != client.goal:
             client.goal = goal
         if allergies != client.allergies:
-            client.allergies = allergies
+            client.allergies.set(allergies)
         if is_superuser != client.is_superuser:
             client.is_superuser = is_superuser
         

@@ -68,6 +68,6 @@ def meterAlergias():
 '''crearBD()'''
 meterCSV()
 columnaLactosa()
-# meterAlergias()
+meterAlergias()
 '''borrarTabla()'''
 # INSERT INTO backend_double_food SELECT ... FROM backend_food INNER JOIN backend_food

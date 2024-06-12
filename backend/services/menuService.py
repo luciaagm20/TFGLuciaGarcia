@@ -1,6 +1,9 @@
 from backend.repositories.MenuRepository import MenuRepository
 
 class MenuService:
+
+     def insertFoodInnerJoin():
+          return MenuRepository.insertFoodInnerJoin()
     
      def create_weekly_menu(cliente):
           return MenuRepository.create_weekly_menu(cliente)

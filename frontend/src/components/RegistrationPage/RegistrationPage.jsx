@@ -128,7 +128,7 @@ const RegistrationPage = ({ handleRegistration }) => {
           options={allergyOptions}
           onChange={setSelectedAllergy}
           placeholder="Select allergy"
-          multipleSelect={false}
+          multipleSelect={true}
           value={selectedAllergy}
           label="Allergies"
         />

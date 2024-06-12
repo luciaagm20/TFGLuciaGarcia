@@ -23,7 +23,6 @@ class MenuRepository:
         else:
             caloriasBasales = (10 * int(client.weight)) + (6.25 * int(client.height)) + (5 * int(client.age)) + 5
 
-        
         if(client.goal == 2):
             caloriasBasales += 200
         elif(client.goal == 3):
@@ -61,9 +60,17 @@ class MenuRepository:
         verduras = alimentos.filter(subgroup_code = 201)
         platos = alimentos.filter(group_code = 1)
         proteinas = alimentos.filter(group_code = 4)
+        tuberculos = alimentos.filter(subgroup_code = 202)
+        legumbres = alimentos.filter(subgroup_code = 203)
+        cereales = alimentos.filter(group_code = 3)
 
         verduras_platos = product(verduras, platos)
         verduras_proteinas = product(verduras, proteinas)
+        verduras_legumbres = product(verduras, legumbres)
+        tuberculos_proteinas = product(tuberculos, proteinas)
+        tuberculos_legumbres = product(tuberculos, legumbres)
+        cereales_proteinas = product(cereales, proteinas)
+        cereales_platos = product(cereales, platos)
 
         food_joins = []
 
@@ -86,17 +93,60 @@ class MenuRepository:
                 group_code_two=proteina.group_code,
                 calories=kcal_totales
             ))
+        
+        for verdura, legumbre in verduras_legumbres:
+            kcal_totales = round(MenuRepository.calculate_kilocal(verdura) + MenuRepository.calculate_kilocal(legumbre))
+            food_joins.append(FoodJoin(
+                food_code_one=verdura.id,
+                food_code_two=legumbre.id,
+                group_code_one=verdura.subgroup_code,
+                group_code_two=legumbre.subgroup_code,
+                calories=kcal_totales
+            ))
+        
+        for tuberculo, proteina in tuberculos_proteinas:
+            kcal_totales = round(MenuRepository.calculate_kilocal(tuberculo) + MenuRepository.calculate_kilocal(proteina))
+            food_joins.append(FoodJoin(
+                food_code_one=tuberculo.id,
+                food_code_two=proteina.id,
+                group_code_one=tuberculo.subgroup_code,
+                group_code_two=proteina.group_code,
+                calories=kcal_totales
+            ))
+        
+        for cereal, proteina in cereales_proteinas:
+            kcal_totales = round(MenuRepository.calculate_kilocal(proteina) + MenuRepository.calculate_kilocal(proteina))
+            food_joins.append(FoodJoin(
+                food_code_one=cereal.id,
+                food_code_two=proteina.id,
+                group_code_one=cereal.group_code,
+                group_code_two=proteina.group_code,
+                calories=kcal_totales
+            ))
+        
+        for cereal, plato in cereales_platos:
+            kcal_totales = round(MenuRepository.calculate_kilocal(cereal) + MenuRepository.calculate_kilocal(plato))
+            food_joins.append(FoodJoin(
+                food_code_one=cereal.id,
+                food_code_two=plato.id,
+                group_code_one=cereal.group_code,
+                group_code_two=plato.group_code,
+                calories=kcal_totales
+            ))
+
+        for tuberculo, legumbre in tuberculos_legumbres:
+            kcal_totales = round(MenuRepository.calculate_kilocal(tuberculo) + MenuRepository.calculate_kilocal(legumbre))
+            food_joins.append(FoodJoin(
+                food_code_one=tuberculo.id,
+                food_code_two=legumbre.id,
+                group_code_one=tuberculo.subgroup_code,
+                group_code_two=legumbre.subgroup_code,
+                calories=kcal_totales
+            ))
 
         with transaction.atomic():
             FoodJoin.objects.bulk_create(food_joins)
 
-        # for verdura, plato in verduras_platos:
-        #     kcal_totales = round(MenuRepository.calculate_kilocal(verdura) + MenuRepository.calculate_kilocal(plato))
-        #     FoodJoin.objects.create(food_code_one=verdura.id, food_code_two=plato.id, group_code_one=verdura.subgroup_code, group_code_two=plato.group_code, calories=kcal_totales)
-
-        # for verdura, proteina in verduras_proteinas:
-        #     kcal_totales = round(MenuRepository.calculate_kilocal(verdura) + MenuRepository.calculate_kilocal(proteina))
-        #     FoodJoin.objects.create(food_code_one=verdura.id, food_code_two=proteina.id, group_code_one=verdura.group_code, group_code_two=proteina.group_code, calories=kcal_totales)
 
     @staticmethod
     def create_food_intake(menu_semanal, caloriasBasales):
@@ -113,20 +163,29 @@ class MenuRepository:
         legumbres = alimentos.filter(subgroup_code = 203)
         cereales = alimentos.filter(group_code = 3)
         proteinas = alimentos.filter(group_code = 4)
-
-        MenuRepository.insertFoodInnerJoin()
         
         foodJoin = FoodJoin.objects.all()
 
         verdura_y_plato = foodJoin.filter(group_code_one=201).filter(group_code_two=1).order_by('calories')
         verdura_y_proteina = foodJoin.filter(group_code_one=201).filter(group_code_two=4).order_by('calories')
+        verdura_y_legumbres = foodJoin.filter(group_code_one=201).filter(group_code_two=203).order_by('calories')
+        tuberculos_y_proteina = foodJoin.filter(group_code_one=202).filter(group_code_two=4).order_by('calories')
+        cereales_y_proteina = foodJoin.filter(group_code_one=3).filter(group_code_two=4).order_by('calories')
+        cereales_y_plato = foodJoin.filter(group_code_one=3).filter(group_code_two=1).order_by('calories')
+        tuberculos_y_legumbres = foodJoin.filter(group_code_one=202).filter(group_code_two=203).order_by('calories')
 
         # Porcentaje de kilocalorias por comida
         kcal_breakfast = caloriasBasales * 0.2
         kcal_lunch = caloriasBasales * 0.4
         kcal_dinner = caloriasBasales * 0.4
 
-        tablas_temporales = [verdura_y_plato, verdura_y_proteina]
+        print(kcal_breakfast)
+        print(kcal_lunch)
+        print(kcal_dinner)
+
+        tablas_temporales_dia_par_comida = [verdura_y_plato, verdura_y_proteina, verdura_y_legumbres]
+        tablas_temporales_cena = [tuberculos_y_proteina, verdura_y_proteina]
+        tablas_temporales_dia_impar_comida = [cereales_y_proteina, cereales_y_plato, tuberculos_y_proteina, tuberculos_y_legumbres]
 
         # Iterar sobre cada día de la semana
         for dia in range(7):
@@ -143,36 +202,42 @@ class MenuRepository:
                             FoodIntake.objects.create(weeklyMenu=menu_semanal, food=food_breakfast, calories=calories, day_of_week=nombre_dia, meal=comida)
 
                     elif comida == 'MEAL':                            
-                            food_meal = choice(tablas_temporales)
-                            # food_meal = choice([verdura_y_plato, verdura_y_proteina]) 
-                            print("eleccion aleatoria ")
-                            print(food_meal)
+                            food_meal = choice(tablas_temporales_dia_par_comida)
                             closest = MenuRepository.find_closest_by_calories(food_meal, kcal_lunch)
-                            alimento = verduras.get(id=closest.food_code_one)
+                            if(closest.group_code_one == 201):
+                                alimento1 = verduras.get(id=closest.food_code_one)
+                            elif(closest.group_code_one == 202):
+                                alimento1 = tuberculos.get(id=closest.food_code_one)
+                            elif(closest.group_code_one == 3):
+                                alimento1 = cereales.get(id=closest.food_code_one)
+
                             if(closest.group_code_two == 1):
                                 alimento2 = platos.get(id=closest.food_code_two)
                             elif(closest.group_code_two == 4):
                                 alimento2 = proteinas.get(id=closest.food_code_two)
+                            elif(closest.group_code_two == 203):
+                                alimento2 = legumbres.get(id=closest.food_code_two)
 
-                            caloriasAlimento = MenuRepository.calculate_kilocal(alimento)
+
+                            caloriasAlimento1 = MenuRepository.calculate_kilocal(alimento1)
                             caloriasAlimento2 = MenuRepository.calculate_kilocal(alimento2)
-                            FoodIntake.objects.create(weeklyMenu=menu_semanal, food=alimento, calories=caloriasAlimento, day_of_week=nombre_dia, meal=comida)
+                            FoodIntake.objects.create(weeklyMenu=menu_semanal, food=alimento1, calories=caloriasAlimento1, day_of_week=nombre_dia, meal=comida)
                             FoodIntake.objects.create(weeklyMenu=menu_semanal, food=alimento2, calories=caloriasAlimento2, day_of_week=nombre_dia, meal=comida)
 
                     elif comida == 'DINNER':
-                            food_dinner = choice(tablas_temporales)
-                            # food_dinner = choice(verdura_y_plato or verdura_y_proteina) 
-                            print("aqui no llega")
+                            food_dinner = choice(tablas_temporales_cena)
                             closest = MenuRepository.find_closest_by_calories(food_dinner, kcal_dinner)
-                            alimento = verduras.get(id=closest.food_code_one)
-                            if(closest.group_code_two == 1):
-                                alimento2 = platos.get(id=closest.food_code_two)
-                            elif(closest.group_code_two == 4):
-                                alimento2 = proteinas.get(id=closest.food_code_two)
 
-                            caloriasAlimento = MenuRepository.calculate_kilocal(alimento)
+                            if(closest.group_code_one == 201):
+                                alimento1 = verduras.get(id=closest.food_code_one)
+                            elif(closest.group_code_one == 202):
+                                alimento1 = tuberculos.get(id=closest.food_code_one)
+ 
+                            alimento2 = proteinas.get(id=closest.food_code_two)
+
+                            caloriasAlimento1 = MenuRepository.calculate_kilocal(alimento1)
                             caloriasAlimento2 = MenuRepository.calculate_kilocal(alimento2)
-                            FoodIntake.objects.create(weeklyMenu=menu_semanal, food=alimento, calories=caloriasAlimento, day_of_week=nombre_dia, meal=comida)
+                            FoodIntake.objects.create(weeklyMenu=menu_semanal, food=alimento1, calories=caloriasAlimento1, day_of_week=nombre_dia, meal=comida)
                             FoodIntake.objects.create(weeklyMenu=menu_semanal, food=alimento2, calories=caloriasAlimento2, day_of_week=nombre_dia, meal=comida)
             else:
                 for comida in comidas:
@@ -184,33 +249,39 @@ class MenuRepository:
                             FoodIntake.objects.create(weeklyMenu=menu_semanal, food=alimento_desayuno, calories=caloriasAlimento, day_of_week=nombre_dia, meal=comida)
 
                     elif comida == 'MEAL':
-                            food_meal = choice(tablas_temporales)
-                            # food_meal = choice(verdura_y_plato or verdura_y_proteina) 
+                            food_meal = choice(tablas_temporales_dia_impar_comida)
                             closest = MenuRepository.find_closest_by_calories(food_meal, kcal_lunch)
-                            alimento = verduras.get(id=closest.food_code_one)
+
+                            if(closest.group_code_one == 202):
+                                alimento1 = tuberculos.get(id=closest.food_code_one)
+                            elif(closest.group_code_one == 3):
+                                alimento1 = cereales.get(id=closest.food_code_one)
+
                             if(closest.group_code_two == 1):
                                 alimento2 = platos.get(id=closest.food_code_two)
                             elif(closest.group_code_two == 4):
                                 alimento2 = proteinas.get(id=closest.food_code_two)
+                            elif(closest.group_code_two == 203):
+                                alimento2 = legumbres.get(id=closest.food_code_two)
 
-                            caloriasAlimento = MenuRepository.calculate_kilocal(alimento)
+                            caloriasAlimento1 = MenuRepository.calculate_kilocal(alimento1)
                             caloriasAlimento2 = MenuRepository.calculate_kilocal(alimento2)
-                            FoodIntake.objects.create(weeklyMenu=menu_semanal, food=alimento, calories=caloriasAlimento, day_of_week=nombre_dia, meal=comida)
+                            FoodIntake.objects.create(weeklyMenu=menu_semanal, food=alimento1, calories=caloriasAlimento1, day_of_week=nombre_dia, meal=comida)
                             FoodIntake.objects.create(weeklyMenu=menu_semanal, food=alimento2, calories=caloriasAlimento2, day_of_week=nombre_dia, meal=comida)
 
                     elif comida == 'DINNER':
-                            food_meal = choice(tablas_temporales)
-                            # food_dinner = choice(verdura_y_plato or verdura_y_proteina) 
+                            food_meal = choice(tablas_temporales_cena)
                             closest = MenuRepository.find_closest_by_calories(food_dinner, kcal_dinner)
-                            alimento = verduras.get(id=closest.food_code_one)
-                            if(closest.group_code_two == 1):
-                                alimento2 = platos.get(id=closest.food_code_two)
-                            elif(closest.group_code_two == 4):
-                                alimento2 = proteinas.get(id=closest.food_code_two)
+                            if(closest.group_code_one == 201):
+                                alimento1 = verduras.get(id=closest.food_code_one)
+                            elif(closest.group_code_one == 202):
+                                alimento1 = tuberculos.get(id=closest.food_code_one)
+ 
+                            alimento2 = proteinas.get(id=closest.food_code_two)
 
-                            caloriasAlimento = MenuRepository.calculate_kilocal(alimento)
+                            caloriasAlimento1 = MenuRepository.calculate_kilocal(alimento1)
                             caloriasAlimento2 = MenuRepository.calculate_kilocal(alimento2)
-                            FoodIntake.objects.create(weeklyMenu=menu_semanal, food=alimento, calories=caloriasAlimento, day_of_week=nombre_dia, meal=comida)
+                            FoodIntake.objects.create(weeklyMenu=menu_semanal, food=alimento1, calories=caloriasAlimento1, day_of_week=nombre_dia, meal=comida)
                             FoodIntake.objects.create(weeklyMenu=menu_semanal, food=alimento2, calories=caloriasAlimento2, day_of_week=nombre_dia, meal=comida)
 
     @staticmethod

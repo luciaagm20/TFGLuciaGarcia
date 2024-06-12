@@ -14,5 +14,8 @@ class Allergies(models.Model):
         (Seafood, 'Seafood'),
         (EggAllergy, 'Egg allergy')
     )
-    allergy_type = models.CharField(max_length=50)
+    allergy_type = models.CharField(max_length=50, choices=CHOICES, default=NONE)
+
+    def __str__(self):
+        return self.allergy_type
 
