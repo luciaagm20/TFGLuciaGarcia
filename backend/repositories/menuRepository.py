@@ -12,8 +12,6 @@ class MenuRepository:
     
     @staticmethod
     def find_closest_by_calories(queryset, target_calories):
-        print("Lo que llega al metodo ")
-        print(queryset)
         closest_number = queryset.annotate(difference=Abs(F('calories') - Value(target_calories))).order_by('difference').first()
         return closest_number
     
@@ -73,46 +71,87 @@ class MenuRepository:
         cereales_platos = product(cereales, platos)
 
         food_joins = []
+        has_lactose = False
 
         for verdura, plato in verduras_platos:
             kcal_totales = round(MenuRepository.calculate_kilocal(verdura) + MenuRepository.calculate_kilocal(plato))
+            if(verdura.has_lactose==True or plato.has_lactose==True):
+                has_lactose = True
             food_joins.append(FoodJoin(
                 food_code_one=verdura.id,
                 food_code_two=plato.id,
                 group_code_one=verdura.subgroup_code,
                 group_code_two=plato.group_code,
+                has_lactose=has_lactose,
+                has_seafood=False,
+                has_egg=False,
                 calories=kcal_totales
             ))
+            has_lactose = False
 
         for verdura, proteina in verduras_proteinas:
             kcal_totales = round(MenuRepository.calculate_kilocal(verdura) + MenuRepository.calculate_kilocal(proteina))
+            if(verdura.has_lactose or proteina.has_lactose):
+                has_lactose = True
             food_joins.append(FoodJoin(
                 food_code_one=verdura.id,
                 food_code_two=proteina.id,
                 group_code_one=verdura.subgroup_code,
                 group_code_two=proteina.group_code,
+                has_lactose=has_lactose,
+                has_seafood=proteina.has_seafood,
+                has_egg=proteina.has_egg,
                 calories=kcal_totales
             ))
+            has_lactose = False
         
         for verdura, legumbre in verduras_legumbres:
             kcal_totales = round(MenuRepository.calculate_kilocal(verdura) + MenuRepository.calculate_kilocal(legumbre))
+            if(verdura.has_lactose or legumbre.has_lactose):
+                has_lactose = True
             food_joins.append(FoodJoin(
                 food_code_one=verdura.id,
                 food_code_two=legumbre.id,
                 group_code_one=verdura.subgroup_code,
                 group_code_two=legumbre.subgroup_code,
+                has_lactose=has_lactose,
+                has_seafood=False,
+                has_egg=False,
                 calories=kcal_totales
             ))
+            has_lactose = False
         
         for tuberculo, proteina in tuberculos_proteinas:
             kcal_totales = round(MenuRepository.calculate_kilocal(tuberculo) + MenuRepository.calculate_kilocal(proteina))
+            if(tuberculo.has_lactose or proteina.has_lactose):
+                has_lactose = True
             food_joins.append(FoodJoin(
                 food_code_one=tuberculo.id,
                 food_code_two=proteina.id,
                 group_code_one=tuberculo.subgroup_code,
                 group_code_two=proteina.group_code,
+                has_lactose=has_lactose,
+                has_seafood=proteina.has_seafood,
+                has_egg=proteina.has_egg,
                 calories=kcal_totales
             ))
+            has_lactose = False
+        
+        for tuberculo, legumbre in tuberculos_legumbres:
+            kcal_totales = round(MenuRepository.calculate_kilocal(tuberculo) + MenuRepository.calculate_kilocal(legumbre))
+            if(tuberculo.has_lactose or proteina.has_lactose):
+                has_lactose = True
+            food_joins.append(FoodJoin(
+                food_code_one=tuberculo.id,
+                food_code_two=legumbre.id,
+                group_code_one=tuberculo.subgroup_code,
+                group_code_two=legumbre.subgroup_code,
+                has_lactose=has_lactose,
+                has_seafood=False,
+                has_egg=False,
+                calories=kcal_totales
+            ))
+            has_lactose = False
         
         for cereal, proteina in cereales_proteinas:
             kcal_totales = round(MenuRepository.calculate_kilocal(proteina) + MenuRepository.calculate_kilocal(proteina))
@@ -121,8 +160,12 @@ class MenuRepository:
                 food_code_two=proteina.id,
                 group_code_one=cereal.group_code,
                 group_code_two=proteina.group_code,
+                has_lactose=has_lactose,
+                has_seafood=proteina.has_seafood,
+                has_egg=proteina.has_egg,
                 calories=kcal_totales
             ))
+            has_lactose = False
         
         for cereal, plato in cereales_platos:
             kcal_totales = round(MenuRepository.calculate_kilocal(cereal) + MenuRepository.calculate_kilocal(plato))
@@ -131,25 +174,21 @@ class MenuRepository:
                 food_code_two=plato.id,
                 group_code_one=cereal.group_code,
                 group_code_two=plato.group_code,
+                has_lactose=has_lactose,
+                has_seafood=False,
+                has_egg=False,
                 calories=kcal_totales
             ))
+            has_lactose = False
 
-        for tuberculo, legumbre in tuberculos_legumbres:
-            kcal_totales = round(MenuRepository.calculate_kilocal(tuberculo) + MenuRepository.calculate_kilocal(legumbre))
-            food_joins.append(FoodJoin(
-                food_code_one=tuberculo.id,
-                food_code_two=legumbre.id,
-                group_code_one=tuberculo.subgroup_code,
-                group_code_two=legumbre.subgroup_code,
-                calories=kcal_totales
-            ))
 
         with transaction.atomic():
             FoodJoin.objects.bulk_create(food_joins)
 
 
     @staticmethod
-    def create_food_intake(menu_semanal, caloriasBasales):
+    def create_food_intake(menu_semanal, caloriasBasales, verdura_y_plato, verdura_y_proteina, verdura_y_legumbres,
+                           tuberculos_y_proteina, tuberculos_y_legumbres, cereales_y_proteina, cereales_y_plato):
         dias_semana = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY']
         comidas = ['BREAKFAST', 'MEAL', 'DINNER']
 
@@ -166,21 +205,24 @@ class MenuRepository:
         
         foodJoin = FoodJoin.objects.all()
 
-        verdura_y_plato = foodJoin.filter(group_code_one=201).filter(group_code_two=1).order_by('calories')
-        verdura_y_proteina = foodJoin.filter(group_code_one=201).filter(group_code_two=4).order_by('calories')
-        verdura_y_legumbres = foodJoin.filter(group_code_one=201).filter(group_code_two=203).order_by('calories')
-        tuberculos_y_proteina = foodJoin.filter(group_code_one=202).filter(group_code_two=4).order_by('calories')
-        cereales_y_proteina = foodJoin.filter(group_code_one=3).filter(group_code_two=4).order_by('calories')
-        cereales_y_plato = foodJoin.filter(group_code_one=3).filter(group_code_two=1).order_by('calories')
-        tuberculos_y_legumbres = foodJoin.filter(group_code_one=202).filter(group_code_two=203).order_by('calories')
+        # verdura_y_plato = foodJoin.filter(group_code_one=201).filter(group_code_two=1).order_by('calories')
+        # verdura_y_proteina = foodJoin.filter(group_code_one=201).filter(group_code_two=4).order_by('calories')
+        # verdura_y_legumbres = foodJoin.filter(group_code_one=201).filter(group_code_two=203).order_by('calories')
+        # tuberculos_y_proteina = foodJoin.filter(group_code_one=202).filter(group_code_two=4).order_by('calories')
+        # cereales_y_proteina = foodJoin.filter(group_code_one=3).filter(group_code_two=4).order_by('calories')
+        # cereales_y_plato = foodJoin.filter(group_code_one=3).filter(group_code_two=1).order_by('calories')
+        # tuberculos_y_legumbres = foodJoin.filter(group_code_one=202).filter(group_code_two=203).order_by('calories')
 
         # Porcentaje de kilocalorias por comida
         kcal_breakfast = caloriasBasales * 0.2
         kcal_lunch = caloriasBasales * 0.4
         kcal_dinner = caloriasBasales * 0.4
 
+        print("kcal breakfast: " )
         print(kcal_breakfast)
+        print("kcal lunch: " )
         print(kcal_lunch)
+        print("kcal dinner: " )
         print(kcal_dinner)
 
         tablas_temporales_dia_par_comida = [verdura_y_plato, verdura_y_proteina, verdura_y_legumbres]
@@ -199,11 +241,15 @@ class MenuRepository:
                     if comida == 'BREAKFAST':
                             food_breakfast = choice(alimentos.filter(subgroup_code=204) or alimentos.filter(subgroup_code=502) or alimentos.filter(group_code=7))
                             calories = MenuRepository.calculate_kilocal(food_breakfast)
+                            print("calorias desayuno: ")
+                            print(calories)
                             FoodIntake.objects.create(weeklyMenu=menu_semanal, food=food_breakfast, calories=calories, day_of_week=nombre_dia, meal=comida)
 
                     elif comida == 'MEAL':                            
                             food_meal = choice(tablas_temporales_dia_par_comida)
                             closest = MenuRepository.find_closest_by_calories(food_meal, kcal_lunch)
+                            print("calorias comida: ")
+                            print(closest.calories)
                             if(closest.group_code_one == 201):
                                 alimento1 = verduras.get(id=closest.food_code_one)
                             elif(closest.group_code_one == 202):
@@ -227,6 +273,8 @@ class MenuRepository:
                     elif comida == 'DINNER':
                             food_dinner = choice(tablas_temporales_cena)
                             closest = MenuRepository.find_closest_by_calories(food_dinner, kcal_dinner)
+                            print("calorias cena: ")
+                            print(closest.calories)
 
                             if(closest.group_code_one == 201):
                                 alimento1 = verduras.get(id=closest.food_code_one)
@@ -285,6 +333,70 @@ class MenuRepository:
                             FoodIntake.objects.create(weeklyMenu=menu_semanal, food=alimento2, calories=caloriasAlimento2, day_of_week=nombre_dia, meal=comida)
 
     @staticmethod
+    def create_menu_without_lactose(menu_semanal, caloriasBasales):
+            print("menu sin lactosa")
+            foodJoin = FoodJoin.objects.all()
+
+            verdura_y_plato = foodJoin.filter(group_code_one=201).filter(group_code_two=1).filter(has_lactose=False).order_by('calories')
+            verdura_y_proteina = foodJoin.filter(group_code_one=201).filter(group_code_two=4).filter(has_lactose=False).order_by('calories')
+            verdura_y_legumbres = foodJoin.filter(group_code_one=201).filter(group_code_two=203).filter(has_lactose=False).order_by('calories')
+            tuberculos_y_proteina = foodJoin.filter(group_code_one=202).filter(group_code_two=4).filter(has_lactose=False).order_by('calories')
+            tuberculos_y_legumbres = foodJoin.filter(group_code_one=202).filter(group_code_two=203).filter(has_lactose=False).order_by('calories')
+            cereales_y_proteina = foodJoin.filter(group_code_one=3).filter(group_code_two=4).filter(has_lactose=False).order_by('calories')
+            cereales_y_plato = foodJoin.filter(group_code_one=3).filter(group_code_two=1).filter(has_lactose=False).order_by('calories')
+
+            MenuRepository.create_food_intake(menu_semanal, caloriasBasales, verdura_y_plato, verdura_y_proteina, verdura_y_legumbres,
+                                            tuberculos_y_proteina, tuberculos_y_legumbres, cereales_y_proteina, cereales_y_plato)
+    
+    @staticmethod
+    def create_menu_without_seafood(menu_semanal, caloriasBasales):
+            print("menu sin marisco")
+            foodJoin = FoodJoin.objects.all()
+
+            verdura_y_plato = foodJoin.filter(group_code_one=201).filter(group_code_two=1).filter(has_seafood=False).order_by('calories')
+            verdura_y_proteina = foodJoin.filter(group_code_one=201).filter(group_code_two=4).filter(has_seafood=False).order_by('calories')
+            verdura_y_legumbres = foodJoin.filter(group_code_one=201).filter(group_code_two=203).filter(has_seafood=False).order_by('calories')
+            tuberculos_y_proteina = foodJoin.filter(group_code_one=202).filter(group_code_two=4).filter(has_seafood=False).order_by('calories')
+            tuberculos_y_legumbres = foodJoin.filter(group_code_one=202).filter(group_code_two=203).filter(has_seafood=False).order_by('calories')
+            cereales_y_proteina = foodJoin.filter(group_code_one=3).filter(group_code_two=4).filter(has_seafood=False).order_by('calories')
+            cereales_y_plato = foodJoin.filter(group_code_one=3).filter(group_code_two=1).filter(has_seafood=False).order_by('calories')
+
+            MenuRepository.create_food_intake(menu_semanal, caloriasBasales, verdura_y_plato, verdura_y_proteina, verdura_y_legumbres,
+                                            tuberculos_y_proteina, tuberculos_y_legumbres, cereales_y_proteina, cereales_y_plato)
+    
+    @staticmethod
+    def create_menu_without_egg(menu_semanal, caloriasBasales):
+            print("menu sin huevo")
+            foodJoin = FoodJoin.objects.all()
+
+            verdura_y_plato = foodJoin.filter(group_code_one=201).filter(group_code_two=1).filter(has_egg=False).order_by('calories')
+            verdura_y_proteina = foodJoin.filter(group_code_one=201).filter(group_code_two=4).filter(has_egg=False).order_by('calories')
+            verdura_y_legumbres = foodJoin.filter(group_code_one=201).filter(group_code_two=203).filter(has_egg=False).order_by('calories')
+            tuberculos_y_proteina = foodJoin.filter(group_code_one=202).filter(group_code_two=4).filter(has_egg=False).order_by('calories')
+            tuberculos_y_legumbres = foodJoin.filter(group_code_one=202).filter(group_code_two=203).filter(has_egg=False).order_by('calories')
+            cereales_y_proteina = foodJoin.filter(group_code_one=3).filter(group_code_two=4).filter(has_egg=False).order_by('calories')
+            cereales_y_plato = foodJoin.filter(group_code_one=3).filter(group_code_two=1).filter(has_egg=False).order_by('calories')
+
+            MenuRepository.create_food_intake(menu_semanal, caloriasBasales, verdura_y_plato, verdura_y_proteina, verdura_y_legumbres,
+                                            tuberculos_y_proteina, tuberculos_y_legumbres, cereales_y_proteina, cereales_y_plato)
+    
+    @staticmethod
+    def create_menu(menu_semanal, caloriasBasales):
+            print("menu normal")
+            foodJoin = FoodJoin.objects.all()
+
+            verdura_y_plato = foodJoin.filter(group_code_one=201).filter(group_code_two=1).order_by('calories')
+            verdura_y_proteina = foodJoin.filter(group_code_one=201).filter(group_code_two=4).order_by('calories')
+            verdura_y_legumbres = foodJoin.filter(group_code_one=201).filter(group_code_two=203).order_by('calories')
+            tuberculos_y_proteina = foodJoin.filter(group_code_one=202).filter(group_code_two=4).order_by('calories')
+            tuberculos_y_legumbres = foodJoin.filter(group_code_one=202).filter(group_code_two=203).order_by('calories')
+            cereales_y_proteina = foodJoin.filter(group_code_one=3).filter(group_code_two=4).order_by('calories')
+            cereales_y_plato = foodJoin.filter(group_code_one=3).filter(group_code_two=1).order_by('calories')
+
+            MenuRepository.create_food_intake(menu_semanal, caloriasBasales, verdura_y_plato, verdura_y_proteina, verdura_y_legumbres,
+                                            tuberculos_y_proteina, tuberculos_y_legumbres, cereales_y_proteina, cereales_y_plato)
+            
+    @staticmethod
     def create_weekly_menu(cliente):
         fecha_actual = datetime.now().date()
         # Calcular el primer día de la semana (lunes)
@@ -297,22 +409,35 @@ class MenuRepository:
 
         caloriasBasales = MenuRepository.basal_metabolic_rate(cliente)
 
-        MenuRepository.create_food_intake(menu_semanal, caloriasBasales)
-        
-    @staticmethod
-    def create_weekly_menu_without_lactose(cliente):
-        fecha_actual = datetime.now().date()
-        # Calcular el primer día de la semana (lunes)
-        fecha_inicio = fecha_actual - timedelta(days=fecha_actual.weekday())
-        # Calcular el último día de la semana (domingo)
-        fecha_fin = fecha_inicio + timedelta(days=6)
+        allergies = cliente.allergies.all() 
+        has_allergy_1 = False
+        has_allergy_2 = False
+        has_allergy_3 = False
+        has_allergy_4 = False
+        has_none = False
 
-        # Crear el objeto WeeklyMenu para la semana
-        menu_semanal = WeeklyMenu.objects.create(client=cliente, start_date=fecha_inicio, end_date=fecha_fin)
+        if allergies.exists():
+            for allergy in allergies:
+                if allergy.id == 1:
+                    has_allergy_1 = True
+                if allergy.id == 2:
+                    has_allergy_2 = True
+                if allergy.id == 3:
+                    has_allergy_3 = True
+                if allergy.id == 4:
+                    has_allergy_4 = True
+        else:
+            has_none = True
 
-        caloriasBasales = MenuRepository.basal_metabolic_rate(cliente)
-
-        MenuRepository.create_food_intake(menu_semanal, caloriasBasales)
+        if has_allergy_2 and not (has_allergy_1 or has_allergy_3 or has_allergy_4):
+            MenuRepository.create_menu_without_lactose(menu_semanal, caloriasBasales)
+        elif has_allergy_3 and not (has_allergy_1 or has_allergy_2 or has_allergy_4):
+            MenuRepository.create_menu_without_seafood(menu_semanal, caloriasBasales)
+        elif has_allergy_4 and not (has_allergy_1 or has_allergy_2 or has_allergy_3):
+            MenuRepository.create_menu_without_seafood(menu_semanal, caloriasBasales)
+        elif has_none:
+            MenuRepository.create_menu(menu_semanal, caloriasBasales)
+     
             
     def listMenu():
         return WeeklyMenu.objects.all()
@@ -325,4 +450,4 @@ class MenuRepository:
         db_data.delete()
     
     def list_by_client(client_id):
-         return WeeklyMenu.objects.filter(client_id=client_id)
+        return WeeklyMenu.objects.filter(client_id=client_id)

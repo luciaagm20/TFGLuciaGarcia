@@ -23,7 +23,8 @@ class ClientService:
 
           client = ClientRepository.save(username, gender, email, password, weight, age, height, number_meals, goal, allergies, is_superuser)
           # Lógica adicional para crear el menú basado en las alergias
-          ClientService.create_menu(client)
+          # ClientService.create_menu(client)
+          MenuService.create_weekly_menu(client)
 
           return client
 

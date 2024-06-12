@@ -8,13 +8,14 @@ class Allergies(models.Model):
     NONE = 'None'
     
     CHOICES = (
-        (NONE, 'None'),
         (CeliacDisease, 'Celiac disease'),
         (LactoseIntolerant, 'Lactose intolerant'),
         (Seafood, 'Seafood'),
         (EggAllergy, 'Egg allergy')
     )
-    allergy_type = models.CharField(max_length=50, choices=CHOICES, default=NONE)
+    NONE = 'None'
+    allergy_type = models.CharField(max_length=50, choices=((NONE, 'None'),) + CHOICES, default=NONE)
+
 
     def __str__(self):
         return self.allergy_type

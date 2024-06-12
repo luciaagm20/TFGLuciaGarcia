@@ -15,3 +15,6 @@ class Food(models.Model):
     sugars = models.SmallIntegerField(null=True)  
     glucose = models.SmallIntegerField(null=True)  
     lactose = models.SmallIntegerField(null=True)
+    has_lactose = models.BooleanField(default=False)
+    has_seafood = models.BooleanField(default=False)
+    has_egg = models.BooleanField(default=False)
