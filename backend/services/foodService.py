@@ -11,6 +11,9 @@ class FoodService:
 
      def read(food_id):
           return FoodRepository.read(food_id)
+     
+     def read_array_of_ids(id):
+          return FoodRepository.read_array_of_ids(id)
 
      def save(group_code, subgroup_code, group_name, subgroup_name, food_code, food_name, water, protein, carbohydrates, fats, sugars, glucose, lactose):
 

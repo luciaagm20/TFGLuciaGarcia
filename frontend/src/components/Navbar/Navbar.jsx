@@ -1,32 +1,44 @@
 import { useNavigate } from "react-router-dom";
 import "./navbar.css";
+import { useState } from "react";
+import Modal from "../Modal/Modal";
+import LoginPage from "../LoginPage/LoginPage";
 
 const Navbar = ({
   isLoggedIn,
   setLoggedIn,
   setSignUpModalOpen,
   signUpModalOpen,
+  isAdminUser,
+  setAdminUser,
 }) => {
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
+
   const navigate = useNavigate();
-  const handleLoginClick = () => {
-    // TODO: handle authentication when finished in backend
-    if (isLoggedIn) {
-      navigate("/home");
-    } else {
-      navigate("/client_page");
-    }
-    setLoggedIn(!isLoggedIn);
-  };
 
   return (
     <div className={"navbarContainer"}>
-      <div className={"adminButtons"}>
-        {/* TODO: Add admin buttons: users, foods, suggestions */}
-        <button onClick={() => navigate("/list_clients")}>List Clients</button>
-        <button onClick={() => navigate("/list_food")}>List Food</button>
-      </div>
+      {isAdminUser && (
+        <div className={"adminButtons"}>
+          <button onClick={() => navigate("/list_clients")}>
+            List Clients
+          </button>
+          <button onClick={() => navigate("/list_food")}>List Food</button>
+        </div>
+      )}
       <div className={"regularButtons"}>
-        <button onClick={handleLoginClick}>
+        <button
+          onClick={() => {
+            if (!isLoggedIn) {
+              setLoginModalOpen(!loginModalOpen);
+            } else {
+              setLoggedIn(!isLoggedIn);
+              setAdminUser(!isAdminUser);
+              localStorage.clear()
+              navigate("/");
+            }
+          }}
+        >
           {isLoggedIn ? "Log out" : "Log in"}
         </button>
         {isLoggedIn ? (
@@ -37,6 +49,9 @@ const Navbar = ({
           </button>
         )}
       </div>
+      <Modal isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)}>
+        <LoginPage setLoggedIn={setLoggedIn} setAdminUser={setAdminUser} />
+      </Modal>
     </div>
   );
 };

@@ -29,6 +29,9 @@ class FoodRepository:
 
     def read(food_id):
         return Food.objects.filter(id=food_id)
+    
+    def read_array_of_ids(id):
+        return Food.objects.get(id=id)
 
     @staticmethod
     def save(group_code, subgroup_code, group_name, subgroup_name, food_code, food_name, water, protein, carbohydrates, fats, sugars, glucose, lactose):

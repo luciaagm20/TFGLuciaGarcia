@@ -36,7 +36,12 @@ const activityOptions = [
   { label: "Intense exercise", value: "Intense exercise" },
 ];
 
-const ProfilePage = ({ isLoggedIn, setLoggedIn }) => {
+const ProfilePage = ({
+  isLoggedIn,
+  setLoggedIn,
+  isAdminUser,
+  setAdminUser,
+}) => {
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
   const [updatedName, setUpdatedName] = useState("");
   const [updatedEmail, setUpdatedEmail] = useState("");
@@ -99,7 +104,12 @@ const ProfilePage = ({ isLoggedIn, setLoggedIn }) => {
   }, [clientInfo]);
   return (
     <>
-      <Navbar isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
+      <Navbar
+        isLoggedIn={isLoggedIn}
+        setLoggedIn={setLoggedIn}
+        isAdminUser={isAdminUser}
+        setAdminUser={setAdminUser}
+      />
       <div className="formWrapper">
         <Input
           label="Name"

@@ -190,7 +190,7 @@ class MenuRepository:
     def create_food_intake(menu_semanal, caloriasBasales, verdura_y_plato, verdura_y_proteina, verdura_y_legumbres,
                            tuberculos_y_proteina, tuberculos_y_legumbres, cereales_y_proteina, cereales_y_plato):
         dias_semana = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY']
-        comidas = ['BREAKFAST', 'MEAL', 'DINNER']
+        comidas = ['BREAKFAST', 'LUNCH', 'DINNER']
 
         # Obtener todos los alimentos disponibles
         alimentos = Food.objects.all()
@@ -245,7 +245,7 @@ class MenuRepository:
                             print(calories)
                             FoodIntake.objects.create(weeklyMenu=menu_semanal, food=food_breakfast, calories=calories, day_of_week=nombre_dia, meal=comida)
 
-                    elif comida == 'MEAL':                            
+                    elif comida == 'LUNCH':                            
                             food_meal = choice(tablas_temporales_dia_par_comida)
                             closest = MenuRepository.find_closest_by_calories(food_meal, kcal_lunch)
                             print("calorias comida: ")
@@ -296,7 +296,7 @@ class MenuRepository:
                             caloriasAlimento = MenuRepository.calculate_kilocal(alimento_desayuno)
                             FoodIntake.objects.create(weeklyMenu=menu_semanal, food=alimento_desayuno, calories=caloriasAlimento, day_of_week=nombre_dia, meal=comida)
 
-                    elif comida == 'MEAL':
+                    elif comida == 'LUNCH':
                             food_meal = choice(tablas_temporales_dia_impar_comida)
                             closest = MenuRepository.find_closest_by_calories(food_meal, kcal_lunch)
 
@@ -434,7 +434,7 @@ class MenuRepository:
         elif has_allergy_3 and not (has_allergy_1 or has_allergy_2 or has_allergy_4):
             MenuRepository.create_menu_without_seafood(menu_semanal, caloriasBasales)
         elif has_allergy_4 and not (has_allergy_1 or has_allergy_2 or has_allergy_3):
-            MenuRepository.create_menu_without_seafood(menu_semanal, caloriasBasales)
+            MenuRepository.create_menu_without_egg(menu_semanal, caloriasBasales)
         elif has_none:
             MenuRepository.create_menu(menu_semanal, caloriasBasales)
      

@@ -4,26 +4,18 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
-const MenuPage = ({ isLoggedIn, setLoggedIn }) => {
+const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
   const { id } = useParams();
   const [menuData, setMenuData] = useState(null);
+  const [mealData, setMealData] = useState({});
+  const [foodData, setFoodData] = useState({});
+
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchMenuData = async () => {
       try {
-        if (!isLoggedIn) {
-          navigate("/login");
-          return;
-        }
-
-        const token = localStorage.getItem("token");
-        if (!token) {
-          setLoggedIn(false);
-          navigate("/login");
-          return;
-        }
-
         const response = await axios.get(
           `http://localhost:8000/api/menu/${id}`,
           {
@@ -32,7 +24,28 @@ const MenuPage = ({ isLoggedIn, setLoggedIn }) => {
             },
           }
         );
-        setMenuData(response.data);
+        setMenuData(response.data?.[0]);
+      } catch (error) {
+        console.error("Error al obtener los datos del menú:", error);
+        setLoggedIn(false);
+        navigate("/login");
+      }
+    };
+    const fetchMealData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/foodIntake/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const mealsByDay = Object.groupBy(
+          response.data,
+          ({ day_of_week }) => day_of_week
+        );
+        setMealData(mealsByDay);
       } catch (error) {
         console.error("Error al obtener los datos del menú:", error);
         setLoggedIn(false);
@@ -40,34 +53,94 @@ const MenuPage = ({ isLoggedIn, setLoggedIn }) => {
       }
     };
 
-    fetchData();
-  }, [id, isLoggedIn, setLoggedIn, navigate]);
+    fetchMenuData();
+    fetchMealData();
+  }, [id]);
+
+  useEffect(() => {
+    if (Boolean(Object.keys(mealData).length)) {
+      const food_ids = Object.values(mealData).reduce((acc, week) => {
+        const weekFoodIds = week.map((day) => day.food);
+        return [...acc, ...weekFoodIds];
+      }, []);
+      console.log("food_ids", food_ids, mealData);
+      const fetchFoodData = async () => {
+        try {
+          const response = await axios.post(
+            `http://localhost:8000/api/food/retrieve_multiple/`,
+            { ids: food_ids },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          const foodData = response.data;
+          debugger;
+          const formattedMealData = Object.values(mealData).reduce(
+            (acc, week) => {
+              const updatedWeek = week.map((day) => {
+                const mealFood = foodData.find((food) => {
+                  return food.id === day.food;
+                });
+                return { ...day, food: mealFood.name };
+              });
+              return { ...acc, [updatedWeek[0].day_of_week]: updatedWeek };
+            },
+            {}
+          );
+          setMealData(formattedMealData);
+        } catch (error) {
+          console.error("Error al obtener los datos del menú:", error);
+          setLoggedIn(false);
+          navigate("/");
+        }
+      };
+
+      fetchFoodData();
+    }
+    // esto es lo que tiene que cambiar para que entre en el useEffect
+  }, [Object.keys(mealData).length]);
 
   if (!menuData) {
     return <div>Loading...</div>;
   }
 
-  console.log(menuData.end_date)
-
   return (
     <>
-      <Navbar isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
+      <Navbar
+        isLoggedIn={isLoggedIn}
+        setLoggedIn={setLoggedIn}
+        isAdminUser={isAdminUser}
+        setAdminUser={setAdminUser}
+      />
       <div className="menuPageContainer">
         <h1>Weekly Menu</h1>
+        <span>{`${menuData?.start_date} - ${menuData?.end_date}`}</span>
         <table>
           <thead>
             <tr>
-              <th>Client</th>
-              <th>Start date</th>
-              <th>End date</th>
+              <th>Monday</th>
+              <th>Tuesday</th>
+              <th>Wednesday</th>
+              <th>Thursday</th>
+              <th>Friday</th>
+              <th>Saturday</th>
+              <th>Sunday</th>
             </tr>
           </thead>
           <tbody>
-            {/* Aqui no me salen los datos aunque se me imprimen bien arriba */}
-            <tr key={menuData.id}>
-              <td>{menuData.client_id}</td>
-              <td>{menuData.start_date}</td>
-              <td>{menuData.end_date}</td>
+            <tr>
+              {Object.values(mealData).map((el) => (
+                <td>
+                  {el.map((mealDay) => (
+                    <div>
+                      {mealDay.meal} <br/>
+                      {`${mealDay.food} (${mealDay.calories} kcal)`}
+                    </div>
+                  ))}
+                </td>
+              ))}
             </tr>
           </tbody>
         </table>

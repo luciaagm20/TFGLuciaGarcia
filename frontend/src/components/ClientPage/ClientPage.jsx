@@ -1,40 +1,20 @@
 import Navbar from "../Navbar/Navbar";
 import "./clientPage.css";
-// import { useMenuInfo } from "./ClientPage.hooks";
 import MenuCard from "../MenuCard/MenuCard";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
-const ClientPage = ({ isLoggedIn, setLoggedIn, weeklyMenu, client }) => {
-  // const menuList = useMenuInfo();
-  const [clientData, setClientData] = useState(null);
+const ClientPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
+  const [clientName, setClientName] = useState("");
   const [menuData, setMenuData] = useState(null);
+  const { clientId } = useParams();
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (!isLoggedIn) {
-          navigate("/login");
-          return;
-        }
-
-        const token = localStorage.getItem("token");
-        if (!token) {
-          setLoggedIn(false);
-          navigate("/login");
-          return;
-        }
-
-        const clientId = localStorage.getItem("clientId");
-        if (!clientId) {
-          console.error("No client ID found");
-          setLoggedIn(false);
-          navigate("/login");
-          return;
-        }
-
         const response = await axios.get(
           `http://localhost:8000/api/clients/${clientId}`,
           {
@@ -43,7 +23,7 @@ const ClientPage = ({ isLoggedIn, setLoggedIn, weeklyMenu, client }) => {
             },
           }
         );
-        setClientData(response.data);
+        setClientName(response.data?.username);
       } catch (error) {
         console.error("Error al obtener los datos del cliente:", error);
         setLoggedIn(false);
@@ -52,22 +32,13 @@ const ClientPage = ({ isLoggedIn, setLoggedIn, weeklyMenu, client }) => {
     };
 
     fetchData();
-  }, [isLoggedIn, setLoggedIn, navigate]);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          setLoggedIn(false);
-          navigate("/login");
-          return;
-        }
-
-        const clientId = localStorage.getItem("clientId");
-
         const response = await axios.get(
-          `http://localhost:8000/api/menu/${clientId}`,
+          `http://localhost:8000/api/menu/filter-by-client?id_cliente=${clientId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -83,21 +54,20 @@ const ClientPage = ({ isLoggedIn, setLoggedIn, weeklyMenu, client }) => {
     };
 
     fetchData();
-  }, [isLoggedIn, setLoggedIn, navigate]);
-
-  if (!clientData) {
-    return <div>Loading...</div>;
-  }
-
-  // console.log(menuData);
+  }, []);
 
   return (
     <>
-      <Navbar isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
+      <Navbar
+        isLoggedIn={isLoggedIn}
+        setLoggedIn={setLoggedIn}
+        isAdminUser={isAdminUser}
+        setAdminUser={setAdminUser}
+      />
       <div className="clientPageContainer">
-        <h1>Wellcome, {clientData.username}</h1>
+        <h1>Welcome, {clientName}</h1>
         <h2>Weekly Menu</h2>
-        {menuData.length > 0 ? (
+        {Boolean(menuData?.length > 0) ? (
           menuData.map((menuItem) => (
             <MenuCard
               key={menuItem.id}

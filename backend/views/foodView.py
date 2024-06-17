@@ -81,3 +81,16 @@ class FoodViewSet(viewsets.ModelViewSet):
         category = FoodService.list_by_group_name(group_name)
         serializer = FoodSerializer(category, many=True)
         return Response(serializer.data)
+    
+    # /api/food/retrieve_multiple/[]
+    @action(detail=False, methods=['post'])
+    def retrieve_multiple(self, request):
+        ids = request.data.get('ids', [])
+        if not ids:
+            return Response({"error": "No IDs provided"}, status=400)
+        
+        foods = [FoodService.read_array_of_ids(pk) for pk in ids]
+        food_list = []
+        for food in foods:
+            food_list.append({'id': food.id, 'name': food.food_name})  
+        return Response(food_list)

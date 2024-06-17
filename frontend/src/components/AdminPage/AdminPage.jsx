@@ -32,7 +32,6 @@ const AdminPage = ({ isLoggedIn, setLoggedIn }) => {
           navigate("/login");
           return;
         }
-
         const response = await axios.get(
           `http://localhost:8000/api/clients/${clientId}`,
           {

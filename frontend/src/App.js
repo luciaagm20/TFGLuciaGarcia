@@ -10,7 +10,6 @@ import "./App.css";
 import axios from "axios";
 import LoginPage from "./components/LoginPage/LoginPage";
 
-
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.withCredentials = true;
@@ -33,6 +32,7 @@ client.interceptors.request.use(
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
+  const [isAdminUser, setAdminUser] = useState(false);
   const [weeklyMenu, setWeeklyMenu] = useState([]);
   // const [weeklyMenuId, setWeeklyMenuId] = useState([]);
   const [clients, setClients] = useState([]);
@@ -48,6 +48,8 @@ function App() {
         console.log(error);
       });
   }, []);
+
+  // /api/menu/filter-by-client?id_cliente=<client_id>
 
   // useEffect(() => {
   //   if (clientId) {
@@ -103,13 +105,23 @@ function App() {
           <Route
             index
             element={
-              <LandingPage isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
+              <LandingPage
+                isLoggedIn={isLoggedIn}
+                setLoggedIn={setLoggedIn}
+                setAdminUser={setAdminUser}
+                isAdminUser={isAdminUser}
+              />
             }
           />
           <Route
             path="/home"
             element={
-              <LandingPage isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
+              <LandingPage
+                isLoggedIn={isLoggedIn}
+                setLoggedIn={setLoggedIn}
+                setAdminUser={setAdminUser}
+                isAdminUser={isAdminUser}
+              />
             }
           />
           <Route
@@ -118,24 +130,30 @@ function App() {
               <MenuPage
                 isLoggedIn={isLoggedIn}
                 setLoggedIn={setLoggedIn}
-                // weeklyMenu={weeklyMenu}
+                isAdminUser={isAdminUser}
+                setAdminUser={setAdminUser}
               />
             }
           />
           <Route
             path="/profile"
             element={
-              <ProfilePage isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
+              <ProfilePage
+                isLoggedIn={isLoggedIn}
+                setLoggedIn={setLoggedIn}
+                isAdminUser={isAdminUser}
+                setAdminUser={setAdminUser}
+              />
             }
           />
           <Route
-            path="/client_page"
+            path="/client_page/:clientId"
             element={
               <ClientPage
                 isLoggedIn={isLoggedIn}
                 setLoggedIn={setLoggedIn}
-                // weeklyMenu={weeklyMenuId}
-                // client={client}
+                isAdminUser={isAdminUser}
+                setAdminUser={setAdminUser}
               />
             }
           />
@@ -146,6 +164,8 @@ function App() {
                 isLoggedIn={isLoggedIn}
                 setLoggedIn={setLoggedIn}
                 clients={clients}
+                isAdminUser={isAdminUser}
+                setAdminUser={setAdminUser}
               />
             }
           />
@@ -157,7 +177,13 @@ function App() {
           />
           <Route
             path="/login"
-            element={<LoginPage setLoggedIn={setLoggedIn} />}
+            element={
+              <LoginPage
+                setLoggedIn={setLoggedIn}
+                isAdminUser={isAdminUser}
+                setAdminUser={setAdminUser}
+              />
+            }
           />
         </Routes>
       </BrowserRouter>
