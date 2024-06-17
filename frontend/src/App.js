@@ -40,7 +40,7 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/menu/")
+      .get("http://localhost:8000/api/menu")
       .then((response) => {
         setWeeklyMenu(response.data); // Almacena los datos de los clientes en el estado
       })
@@ -49,7 +49,6 @@ function App() {
       });
   }, []);
 
-  // /api/menu/filter-by-client?id_cliente=<client_id>
 
   // useEffect(() => {
   //   if (clientId) {
@@ -66,7 +65,7 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/clients/")
+      .get("http://localhost:8000/api/clients")
       .then((response) => {
         setClients(response.data); // Almacena los datos de los clientes en el estado
       })
@@ -88,7 +87,7 @@ function App() {
 
   const handleRegistration = (userData) => {
     axios
-      .post("http://localhost:8000/api/clients/", userData)
+      .post("http://localhost:8000/api/clients", userData)
       .then((response) => {
         console.log("Registro exitoso:", response.data);
         setClients((prevClients) => [...prevClients, response.data]);
@@ -136,7 +135,7 @@ function App() {
             }
           />
           <Route
-            path="/profile"
+            path="/profile/:clientId"
             element={
               <ProfilePage
                 isLoggedIn={isLoggedIn}

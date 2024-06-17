@@ -13,7 +13,7 @@ class ClientSerializer(serializers.ModelSerializer):
     age = serializers.IntegerField(required=True)
     height = serializers.FloatField(required=True)
     is_superuser = serializers.BooleanField(required=False, default=0)
-
+    
 
     class Meta:
         model = Client
@@ -24,24 +24,29 @@ class ClientSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Password must be at least 8 characters.")
         return make_password(value)
 
-    def validate_email(self, value):
-        if Client.objects.filter(email=value).exists():
-            raise serializers.ValidationError("Email already exists")
-        return value
+    # def validate_email(self, value):
+    #     request = self.context.get('request', None)
+    #     if request and request.method in ['PUT', 'PATCH']:
+    #         client_id = self.instance.id
+    #         if Client.objects.filter(email=value).exclude(id=client_id).exists():
+    #             raise serializers.ValidationError("Email already exists")
+    #     else:
+    #         if Client.objects.filter(email=value).exists():
+    #             raise serializers.ValidationError("Email already exists")
+    #     return value
 
-    def validate_username(self, value):
-        if Client.objects.filter(username = value).exists():
-            raise serializers.ValidationError("Username already exists")
-        return value
+    # def validate_username(self, value):
+    #     request = self.context.get('request', None)
+    #     if request and request.method in ['PUT', 'PATCH']:
+    #         client_id = self.instance.id
+    #         if Client.objects.filter(username=value).exclude(id=client_id).exists():
+    #             raise serializers.ValidationError("Username already exists")
+    #     else:
+    #         if Client.objects.filter(username=value).exists():
+    #             raise serializers.ValidationError("Username already exists")
+    #     return value
     
     def validate_is_superuser(self, value):
         if value is not None:
             return value
         return False
-    
-    # def validate(self, data):
-    #     password = data.get('password')
-    #     if password and len(password) < 8:
-    #         raise serializers.ValidationError("Password must be at least 8 characters.")
-        
-    #     return data

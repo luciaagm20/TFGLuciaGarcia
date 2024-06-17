@@ -418,13 +418,13 @@ class MenuRepository:
 
         if allergies.exists():
             for allergy in allergies:
-                if allergy.id == 1:
+                if allergy.allergy_type == "Celiac disease":
                     has_allergy_1 = True
-                if allergy.id == 2:
+                if allergy.allergy_type == "Lactose intolerant":
                     has_allergy_2 = True
-                if allergy.id == 3:
+                if allergy.allergy_type == "Seafood":
                     has_allergy_3 = True
-                if allergy.id == 4:
+                if allergy.allergy_type == "Egg allergy":
                     has_allergy_4 = True
         else:
             has_none = True

@@ -10,6 +10,8 @@ from django.contrib.auth.models import *
 from rest_framework import routers
 
 router = routers.DefaultRouter()
+# router = routers.SimpleRouter()
+
 router.register(r'clients', ClientViewSet, basename='clients')  
 router.register(r'food', FoodViewSet, basename='food') 
 router.register(r'foodIntake', FoodIntakeViewSet, basename='foodIntake') 

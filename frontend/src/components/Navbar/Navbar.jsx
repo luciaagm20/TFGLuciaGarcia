@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, generatePath } from "react-router-dom";
 import "./navbar.css";
 import { useState } from "react";
 import Modal from "../Modal/Modal";
@@ -11,6 +11,7 @@ const Navbar = ({
   signUpModalOpen,
   isAdminUser,
   setAdminUser,
+  clientId,
 }) => {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
 
@@ -34,7 +35,7 @@ const Navbar = ({
             } else {
               setLoggedIn(!isLoggedIn);
               setAdminUser(!isAdminUser);
-              localStorage.clear()
+              localStorage.clear();
               navigate("/");
             }
           }}
@@ -42,7 +43,16 @@ const Navbar = ({
           {isLoggedIn ? "Log out" : "Log in"}
         </button>
         {isLoggedIn ? (
-          <button onClick={() => navigate("/profile")}>Profile</button>
+          <button
+            onClick={() => {
+              const path = generatePath("/profile/:clientId", {
+                clientId,
+              });
+              navigate(path);
+            }}
+          >
+            Profile
+          </button>
         ) : (
           <button onClick={() => setSignUpModalOpen(!signUpModalOpen)}>
             Sign up

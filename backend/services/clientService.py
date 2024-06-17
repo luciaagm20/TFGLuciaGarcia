@@ -31,9 +31,9 @@ class ClientService:
      def delete(client_id):
           ClientRepository.delete(client_id)
 
-     def update(client_id, username, email, password, weight, age, height, goal, allergies, is_superuser):
+     def update(client_id, username, gender, email, password, weight, age, height, number_meals, goal, allergies, is_superuser):
 
-          client = ClientRepository.update(client_id, username, email, password, weight, age, height, goal, is_superuser, allergies)
+          client = ClientRepository.update(client_id, username, gender, email, password, weight, age, height, number_meals, goal, allergies, is_superuser)
           return client
      
      def create_menu(client):

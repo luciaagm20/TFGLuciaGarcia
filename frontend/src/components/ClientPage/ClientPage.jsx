@@ -63,6 +63,7 @@ const ClientPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
         setLoggedIn={setLoggedIn}
         isAdminUser={isAdminUser}
         setAdminUser={setAdminUser}
+        clientId={clientId}
       />
       <div className="clientPageContainer">
         <h1>Welcome, {clientName}</h1>

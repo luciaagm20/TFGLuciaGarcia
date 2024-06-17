@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
+import { useNavigate, useParams,generatePath } from "react-router-dom";
 import Dropdown from "../Dropdown/Dropdown";
 import Input from "../Input/Input";
 import Navbar from "../Navbar/Navbar";
-import { useClientInfo } from "./ProfilePage.hooks";
 import "./profilePage.css";
 import ChangePasswordPage from "../ChangePasswordPage/ChangePasswordPage";
 import Modal from "../Modal/Modal";
+import axios from "axios";
+
 
 const genderOptions = [
   { label: "Female", value: "Female" },
@@ -42,6 +44,7 @@ const ProfilePage = ({
   isAdminUser,
   setAdminUser,
 }) => {
+  const { clientId } = useParams();
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
   const [updatedName, setUpdatedName] = useState("");
   const [updatedEmail, setUpdatedEmail] = useState("");
@@ -54,54 +57,95 @@ const ProfilePage = ({
   const [selectedMeals, setSelectedMeals] = useState([]);
   const [selectedGoal, setSelectedGoal] = useState(null);
   const [selectedActivity, setSelectedActivity] = useState(null);
-  const clientInfo = useClientInfo();
+
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
-    if (clientInfo.name) {
-      setUpdatedName(clientInfo.name);
-    }
-    if (clientInfo.email) {
-      setUpdatedEmail(clientInfo.email);
-    }
-    if (clientInfo.weight) {
-      setUpdatedWeight(clientInfo.weight);
-    }
-    if (clientInfo.age) {
-      setUpdatedAge(clientInfo.age);
-    }
-    if (clientInfo.height) {
-      setUpdatedHeight(clientInfo.height);
-    }
-    if (clientInfo.gender) {
-      setSelectedGender({
-        label: clientInfo.gender,
-        value: clientInfo.gender,
-      });
-    }
-    if (clientInfo.allergies) {
-      setSelectedAllergy({
-        label: clientInfo.allergies,
-        value: clientInfo.allergies,
-      });
-    }
-    if (clientInfo.number_meals) {
-      const preselectedMeals = mealOptions.filter((option) =>
-        clientInfo.number_meals.includes(option.value)
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/clients/${clientId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setUpdatedName(response.data?.username);
+        setUpdatedEmail(response.data?.email);
+        setUpdatedWeight(response.data?.weight);
+        setUpdatedAge(response.data?.age);
+        setUpdatedHeight(response.data?.height);
+        setSelectedAllergy({
+          label: response.data?.allergies,
+          value: response.data?.allergies,
+        });
+        setSelectedGender({
+          label: response.data?.gender,
+          value: response.data?.gender,
+        });
+        setSelectedMeals({
+          label: response.data?.number_meals,
+          value: response.data?.number_meals,
+        });
+        setSelectedGoal({
+          label: response.data?.goal,
+          value: response.data?.goal,
+        });
+        setSelectedActivity({
+          label: response.data?.activity,
+          value: response.data?.activity,
+        });
+      } catch (error) {
+        console.error("Error al obtener los datos del cliente:", error);
+        setLoggedIn(false);
+        navigate("/login");
+      }
+    };
+
+    fetchData();
+    // array vacio (de dependencias) porque solo quiero que se haga cuando se inicialice la página
+  },[])
+
+  const handleSubmitProfile = () => {
+    const formData = {
+      "username": updatedName,
+      "email": updatedEmail,
+      "password": "david1234",
+      "number_meals": selectedMeals.value,
+      "weight": updatedWeight,
+      "age": updatedAge,
+      "height": updatedHeight,
+      "gender": selectedGender.value,
+      "activity": selectedActivity.value,
+      "goal": selectedGoal.value,
+      "allergies": selectedAllergy.value,
+  }
+  updateProfile(formData)
+  }
+
+  const updateProfile = async (formData) => {
+    try {
+      console.log(formData)
+      const response = await axios.put(
+        `http://localhost:8000/api/clients/${clientId}/`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-      setSelectedMeals(preselectedMeals);
+     
+    } catch (error) {
+      console.error("Error al obtener los datos del menú:", error);
+      setLoggedIn(false);
+      navigate("/");
     }
-    if (clientInfo.goal) {
-      setSelectedGoal({
-        label: clientInfo.goal,
-        value: clientInfo.goal,
-      });
-    }
-    if (clientInfo.activity) {
-      setSelectedActivity({
-        label: clientInfo.activity,
-        value: clientInfo.activity,
-      });
-    }
-  }, [clientInfo]);
+  }
+  
+
   return (
     <>
       <Navbar
@@ -207,7 +251,9 @@ const ProfilePage = ({
       <button
         onClick={() => {
           // TODO: Send post with updated info
-          // useSaveProfile({name: updatedName, email:updatedEmail, gender: selectedGender.value})
+          handleSubmitProfile()
+          const path = generatePath("/client_page/:clientId", { clientId })
+          navigate(path);
         }}
       >
         Save changes

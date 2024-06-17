@@ -14,7 +14,7 @@ class Allergies(models.Model):
         (EggAllergy, 'Egg allergy')
     )
     NONE = 'None'
-    allergy_type = models.CharField(max_length=50, choices=((NONE, 'None'),) + CHOICES, default=NONE)
+    allergy_type = models.CharField(primary_key=True, max_length=50, choices=((NONE, 'None'),) + CHOICES, default=NONE)
 
 
     def __str__(self):

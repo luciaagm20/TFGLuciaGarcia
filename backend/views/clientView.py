@@ -66,23 +66,26 @@ class ClientViewSet(viewsets.ModelViewSet):
         if not user.is_superuser and str(user.id) != pk:
             return Response({"detail": "No permission."}, status=status.HTTP_403_FORBIDDEN)
         
-        data = request.data
-        serializer = ClientSerializer(data)
+        client = ClientService.read(pk)
+        serializer = ClientSerializer(client, data=request.data)
         if serializer.is_valid(raise_exception=True):
             client = ClientService.update(
                 client_id=pk,
-                username=data.get('username'),
-                email=data.get('email'),
-                password=data.get('password'),
-                weight=data.get('weight'),
-                age=data.get('age'),
-                height=data.get('height'),
-                goal=data.get('goal'),
-                allergies=data.get('allergies', []),
-                is_superuser=data.get('is_superuser'),
+                username=serializer.validated_data.get('username', client.username),
+                gender=serializer.validated_data.get('gender', client.gender),
+                email=serializer.validated_data.get('email', client.email),
+                password=serializer.validated_data.get('password', client.password),
+                weight=serializer.validated_data.get('weight', client.weight),
+                age=serializer.validated_data.get('age', client.age),
+                height=serializer.validated_data.get('height', client.height),
+                number_meals=serializer.validated_data.get('number_meals', client.number_meals),
+                goal=serializer.validated_data.get('goal', client.goal),
+                allergies=serializer.validated_data.get('allergies', client.allergies.all()),
+                is_superuser=serializer.validated_data.get('is_superuser', client.is_superuser)
             )
-        serializer = ClientSerializer(client)
-        return Response(serializer.data)
+            serializer = ClientSerializer(client)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
         user = self.request.user

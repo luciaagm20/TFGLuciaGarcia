@@ -20,11 +20,13 @@ class ClientRepository:
         db_data = Client.objects.filter(id=client_id)
         db_data.delete()
 
-    def update(client_id, username, email, password, weight, age, height, number_meals, goal, is_superuser, allergies):
-        client = Client.objects.get(user_ptr_id=client_id)
+    def update(client_id, username, gender, email, password, weight, age, height, number_meals, goal, allergies, is_superuser):
+        client = Client.objects.get(id=client_id)
 
         if username != client.username:
             client.username = username
+        if gender != client.gender:
+            client.gender = gender
         if email != client.email:
             client.email = email
         if password != client.password:
@@ -39,11 +41,11 @@ class ClientRepository:
             client.number_meals = number_meals
         if goal != client.goal:
             client.goal = goal
-        if allergies != client.allergies:
+        if allergies != client.allergies.all():
             client.allergies.set(allergies)
         if is_superuser != client.is_superuser:
             client.is_superuser = is_superuser
-        
+            
         client.save()
   
         return client
