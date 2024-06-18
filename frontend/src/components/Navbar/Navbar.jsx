@@ -9,11 +9,14 @@ const Navbar = ({
   setLoggedIn,
   setSignUpModalOpen,
   signUpModalOpen,
+  requestModalOpen,
+  setRequestModalOpen,
   isAdminUser,
   setAdminUser,
   clientId,
 }) => {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
+  // const [requestModalOpen, setRequestModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -43,6 +46,7 @@ const Navbar = ({
           {isLoggedIn ? "Log out" : "Log in"}
         </button>
         {isLoggedIn ? (
+          <>
           <button
             onClick={() => {
               const path = generatePath("/profile/:clientId", {
@@ -53,6 +57,10 @@ const Navbar = ({
           >
             Profile
           </button>
+          <button onClick={() => setRequestModalOpen(!requestModalOpen)}>
+            Add request
+          </button>
+        </>
         ) : (
           <button onClick={() => setSignUpModalOpen(!signUpModalOpen)}>
             Sign up

@@ -171,9 +171,7 @@ function App() {
           <Route
             path="/register"
             element={
-              <RegistrationPage 
-              isLoggedIn={isLoggedIn}
-              setLoggedIn={setLoggedIn} />
+              <RegistrationPage  />
             }
           />
           <Route
@@ -186,6 +184,14 @@ function App() {
               />
             }
           />
+
+          <Route
+            path="/request"
+            element={
+              <RegistrationPage />
+            }
+          />
+          
         </Routes>
       </BrowserRouter>
     </>

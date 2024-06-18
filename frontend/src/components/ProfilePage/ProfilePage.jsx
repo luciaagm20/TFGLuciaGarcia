@@ -53,7 +53,7 @@ const ProfilePage = ({
   const [updatedHeight, setUpdatedHeight] = useState(0);
 
   const [selectedGender, setSelectedGender] = useState(null);
-  const [selectedAllergy, setSelectedAllergy] = useState(null);
+  const [selectedAllergy, setSelectedAllergy] = useState([]);
   const [selectedMeals, setSelectedMeals] = useState([]);
   const [selectedGoal, setSelectedGoal] = useState(null);
   const [selectedActivity, setSelectedActivity] = useState(null);

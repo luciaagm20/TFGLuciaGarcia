@@ -4,6 +4,8 @@ import MenuCard from "../MenuCard/MenuCard";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import RequestPage from "../RequestPage/RequestPage";
+
 
 const ClientPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
   const [clientName, setClientName] = useState("");
@@ -11,6 +13,7 @@ const ClientPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
   const { clientId } = useParams();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const [signUpModalOpen, setSignUpModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +41,7 @@ const ClientPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/menu/filter-by-client?id_cliente=${clientId}`,
+          `http://localhost:8000/api/menu/filter-by-client/?id_cliente=${clientId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -49,7 +52,7 @@ const ClientPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
       } catch (error) {
         console.error("Error al obtener los datos de los menus:", error);
         setLoggedIn(false);
-        navigate("/login");
+        navigate("/");
       }
     };
 
@@ -61,6 +64,8 @@ const ClientPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
       <Navbar
         isLoggedIn={isLoggedIn}
         setLoggedIn={setLoggedIn}
+        signUpModalOpen={signUpModalOpen}
+        setSignUpModalOpen={setSignUpModalOpen}
         isAdminUser={isAdminUser}
         setAdminUser={setAdminUser}
         clientId={clientId}
@@ -80,6 +85,7 @@ const ClientPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
         ) : (
           <p>No hay menús disponibles aún.</p>
         )}
+        <RequestPage isOpen={signUpModalOpen} onClose={() => setSignUpModalOpen(false)} clientId/>
       </div>
     </>
   );

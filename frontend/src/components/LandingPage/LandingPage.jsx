@@ -23,9 +23,7 @@ const LandingPage = ({ isLoggedIn, setLoggedIn, setAdminUser, isAdminUser }) => 
         We create healthy weekly menus exclusively for you based on your
         preferences and needs.
       </p>
-      <Modal isOpen={signUpModalOpen} onClose={() => setSignUpModalOpen(false)}>
-        <RegistrationPage />
-      </Modal>
+      <RegistrationPage isOpen={signUpModalOpen} onClose={() => setSignUpModalOpen(false)} />
     </div>
   );
 };

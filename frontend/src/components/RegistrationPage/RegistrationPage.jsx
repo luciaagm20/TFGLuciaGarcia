@@ -4,6 +4,7 @@ import Dropdown from "../Dropdown/Dropdown";
 import Input from "../Input/Input";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Modal from "../Modal/Modal";
 
 
 const genderOptions = [
@@ -36,7 +37,8 @@ const activityOptions = [
   { label: "Intense exercise", value: "Intense exercise" },
 ];
 
-const RegistrationPage = ({ isLoggedIn, setLoggedIn }) => {
+const RegistrationPage = ({ isOpen, onClose }) => {
+  const [signUpModalOpen, setSignUpModalOpen] = useState(false);
   const [registerName, setRegisterName] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
@@ -54,18 +56,6 @@ const RegistrationPage = ({ isLoggedIn, setLoggedIn }) => {
 
   const handleSubmit = () => {
     const userData = {
-      // username: registerName,
-      // email: registerEmail,
-      // password: registerPassword,
-      // number_meals: selectedMeals.length > 0 ? selectedMeals.map((meal) => meal.value) : null,
-      // weight: registerWeight,
-      // age: registerAge,
-      // height: registerHeight,
-      // gender: selectedGender?.value || null,
-      // activity: selectedActivity?.value || null,
-      // goal: selectedGoal?.value || null,
-      // allergies: selectedAllergy.length > 0 ? selectedAllergy.map((allergy) => allergy.value) : null,
-
       "username": registerName,
       "email": registerEmail,
       "password": registerPassword,
@@ -99,7 +89,8 @@ const RegistrationPage = ({ isLoggedIn, setLoggedIn }) => {
   };
 
   return (
-    <>
+    <Modal isOpen={isOpen} onClose={onClose}>
+    
       <div className="registrationPageContainer">
         <Input
           label="Name"
@@ -192,11 +183,11 @@ const RegistrationPage = ({ isLoggedIn, setLoggedIn }) => {
       </div>
       <button onClick={() => {
         handleSubmit()
-        navigate("/");
+        onClose()
       }}>
         Register
       </button>
-    </>
+    </Modal>
   );
 };
 

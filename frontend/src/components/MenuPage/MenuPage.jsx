@@ -34,7 +34,7 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
     const fetchMealData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/foodIntake/${id}`,
+          `http://localhost:8000/api/foodIntake/${id}/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -76,7 +76,6 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
             }
           );
           const foodData = response.data;
-          debugger;
           const formattedMealData = Object.values(mealData).reduce(
             (acc, week) => {
               const updatedWeek = week.map((day) => {
