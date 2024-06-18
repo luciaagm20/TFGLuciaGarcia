@@ -98,18 +98,33 @@ def meterAlergias():
         ('Lactose intolerant',),
         ('Seafood',),
         ('Egg allergy',),
-        # ('None',)
+        ('None',)
     ]
     cur.executemany("INSERT INTO backend_allergies (allergy_type) VALUES (?)", allergies)
     con.commit()
     con.close()
 
+def meterComidas():
+    con = sql.connect("prueba.db")
+    cur = con.cursor()
+    name_meal = [
+        ('Breakfast',),
+        ('Lunch',),
+        ('Snack',),
+        ('Dinner',),
+
+    ]
+    cur.executemany("INSERT INTO backend_meal (name_meal) VALUES (?)", name_meal)
+    con.commit()
+    con.close()
+
 
 '''crearBD()'''
-# meterCSV()
-# columnaLactosa()
-# columnaMarisco()
-# columnaHuevo()
+meterCSV()
+columnaLactosa()
+columnaMarisco()
+columnaHuevo()
 meterAlergias()
+meterComidas()
 # borrarTabla()
 # INSERT INTO backend_double_food SELECT ... FROM backend_food INNER JOIN backend_food

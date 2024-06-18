@@ -2,6 +2,9 @@ import "./registrationPage.css";
 import { useState } from "react";
 import Dropdown from "../Dropdown/Dropdown";
 import Input from "../Input/Input";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 
 const genderOptions = [
   { label: "Female", value: "Female" },
@@ -12,10 +15,11 @@ const allergyOptions = [
   { label: "Celiac disease", value: "Celiac disease" },
   { label: "Lactose intolerant", value: "Lactose intolerant" },
   { label: "Egg allergies", value: "Egg allergies" },
+  { label: "Seafood", value: "Seafood" },
 ];
 const mealOptions = [
   { label: "Breakfast", value: "Breakfast" },
-  { label: "Meal", value: "Meal" },
+  { label: "Lunch", value: "Lunch" },
   { label: "Dinner", value: "Dinner" },
   { label: "Snack", value: "Snack" },
 ];
@@ -32,7 +36,7 @@ const activityOptions = [
   { label: "Intense exercise", value: "Intense exercise" },
 ];
 
-const RegistrationPage = ({ handleRegistration }) => {
+const RegistrationPage = ({ isLoggedIn, setLoggedIn }) => {
   const [registerName, setRegisterName] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
@@ -41,29 +45,58 @@ const RegistrationPage = ({ handleRegistration }) => {
   const [registerHeight, setRegisterHeight] = useState(0);
 
   const [selectedGender, setSelectedGender] = useState(null);
-  const [selectedAllergy, setSelectedAllergy] = useState(null);
+  const [selectedAllergy, setSelectedAllergy] = useState([]);
   const [selectedMeals, setSelectedMeals] = useState([]);
   const [selectedGoal, setSelectedGoal] = useState(null);
   const [selectedActivity, setSelectedActivity] = useState(null);
 
+  const navigate = useNavigate();
+
   const handleSubmit = () => {
     const userData = {
-      name: registerName,
-      email: registerEmail,
-      password: registerPassword,
-      weight: registerWeight,
-      age: registerAge,
-      height: registerHeight,
-      gender: selectedGender?.value,
-      allergies: selectedAllergy?.value,
-      meals: selectedMeals.map((meal) => meal.value),
-      goal: selectedGoal?.value,
-      activity: selectedActivity?.value,
+      // username: registerName,
+      // email: registerEmail,
+      // password: registerPassword,
+      // number_meals: selectedMeals.length > 0 ? selectedMeals.map((meal) => meal.value) : null,
+      // weight: registerWeight,
+      // age: registerAge,
+      // height: registerHeight,
+      // gender: selectedGender?.value || null,
+      // activity: selectedActivity?.value || null,
+      // goal: selectedGoal?.value || null,
+      // allergies: selectedAllergy.length > 0 ? selectedAllergy.map((allergy) => allergy.value) : null,
+
+      "username": registerName,
+      "email": registerEmail,
+      "password": registerPassword,
+      "number_meals": selectedMeals.map((meal) => meal.value),
+      "weight": registerWeight,
+      "age": registerAge,
+      "height": registerHeight,
+      "gender": selectedGender?.value,
+      "activity": selectedActivity?.value,
+      "goal": selectedGoal?.value,
+      "allergies": selectedAllergy.map((allergy) => allergy.value),
     };
 
-    handleRegistration(userData);
-  };
+    handleRegistration(userData)
+  }
 
+  const handleRegistration = async (userData) => {
+    try {
+      console.log(userData);
+      const response = await axios.post(
+        "http://localhost:8000/api/clients/",
+        userData
+      );
+      console.log("Usuario registrado con éxito:", response.data);
+    } 
+    catch (error) {
+      console.error("Error al registrar al usuario:", error);
+      // setLoggedIn(false);
+      navigate("/");
+    }
+  };
 
   return (
     <>
@@ -74,7 +107,7 @@ const RegistrationPage = ({ handleRegistration }) => {
           type="text"
           placeholder="Type your Username"
           required={true}
-          onChange={setRegisterName}
+          onChange={(e) => setRegisterName(e.target.value)}
         />
         <Input
           label="Email"
@@ -82,7 +115,7 @@ const RegistrationPage = ({ handleRegistration }) => {
           type="email"
           placeholder="Type your Email"
           required={true}
-          onChange={setRegisterEmail}
+          onChange={(e) => setRegisterEmail(e.target.value)}
         />
         <Input
           label="Password"
@@ -90,7 +123,7 @@ const RegistrationPage = ({ handleRegistration }) => {
           type="password"
           placeholder="Type password"
           required={true}
-          onChange={setRegisterPassword}
+          onChange={(e) => setRegisterPassword(e.target.value)}
         />
         <Input
           label="Weight"
@@ -98,7 +131,7 @@ const RegistrationPage = ({ handleRegistration }) => {
           type="number"
           placeholder="Type your weight"
           required={true}
-          onChange={setRegisterWeight}
+          onChange={(e) => setRegisterWeight(e.target.value)}
         />
         <Input
           label="Age"
@@ -106,7 +139,7 @@ const RegistrationPage = ({ handleRegistration }) => {
           type="number"
           placeholder="Type your age"
           required={true}
-          onChange={setRegisterAge}
+          onChange={(e) => setRegisterAge(e.target.value)}
         />
         <Input
           label="Height"
@@ -114,7 +147,7 @@ const RegistrationPage = ({ handleRegistration }) => {
           type="number"
           placeholder="Type your height"
           required={true}
-          onChange={setRegisterHeight}
+          onChange={(e) => setRegisterHeight(e.target.value)}
         />
         <Dropdown
           options={genderOptions}
@@ -126,7 +159,7 @@ const RegistrationPage = ({ handleRegistration }) => {
         />
         <Dropdown
           options={allergyOptions}
-          onChange={setSelectedAllergy}
+          onChange={(selection) => setSelectedAllergy(selection)}
           placeholder="Select allergy"
           multipleSelect={true}
           value={selectedAllergy}
@@ -157,10 +190,14 @@ const RegistrationPage = ({ handleRegistration }) => {
           label="Activity"
         />
       </div>
-      <button onClick={handleSubmit}>Register</button>
+      <button onClick={() => {
+        handleSubmit()
+        navigate("/");
+      }}>
+        Register
+      </button>
     </>
   );
-  
 };
 
 export default RegistrationPage;

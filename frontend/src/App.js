@@ -14,21 +14,21 @@ axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.withCredentials = true;
 
-const client = axios.create({
-  baseURL: "http://localhost:8000",
-});
+// const client = axios.create({
+//   baseURL: "http://localhost:8000",
+// });
 
-// Configurar interceptor de axios para incluir el token en cada solicitud
-client.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+// // Configurar interceptor de axios para incluir el token en cada solicitud
+// client.interceptors.request.use(
+//   (config) => {
+//     const token = localStorage.getItem("token");
+//     if (token) {
+//       config.headers.Authorization = `Bearer ${token}`;
+//     }
+//     return config;
+//   },
+//   (error) => Promise.reject(error)
+// );
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
@@ -38,16 +38,16 @@ function App() {
   const [clients, setClients] = useState([]);
   // const [client, setClient] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:8000/api/menu")
-      .then((response) => {
-        setWeeklyMenu(response.data); // Almacena los datos de los clientes en el estado
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:8000/api/menu")
+  //     .then((response) => {
+  //       setWeeklyMenu(response.data); // Almacena los datos de los clientes en el estado
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
 
 
   // useEffect(() => {
@@ -63,16 +63,16 @@ function App() {
   //   }
   // }, [clientId]);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:8000/api/clients")
-      .then((response) => {
-        setClients(response.data); // Almacena los datos de los clientes en el estado
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:8000/api/clients")
+  //     .then((response) => {
+  //       setClients(response.data); // Almacena los datos de los clientes en el estado
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
 
   // useEffect(() => {
   //   axios
@@ -85,17 +85,17 @@ function App() {
   //     });
   // }, []);
 
-  const handleRegistration = (userData) => {
-    axios
-      .post("http://localhost:8000/api/clients", userData)
-      .then((response) => {
-        console.log("Registro exitoso:", response.data);
-        setClients((prevClients) => [...prevClients, response.data]);
-      })
-      .catch((error) => {
-        console.error("Error al registrar:", error);
-      });
-  };
+  // const handleRegistration = (userData) => {
+  //   axios
+  //     .post("http://localhost:8000/api/clients", userData)
+  //     .then((response) => {
+  //       console.log("Registro exitoso:", response.data);
+  //       setClients((prevClients) => [...prevClients, response.data]);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error al registrar:", error);
+  //     });
+  // };
 
   return (
     <>
@@ -171,7 +171,9 @@ function App() {
           <Route
             path="/register"
             element={
-              <RegistrationPage handleRegistration={handleRegistration} />
+              <RegistrationPage 
+              isLoggedIn={isLoggedIn}
+              setLoggedIn={setLoggedIn} />
             }
           />
           <Route

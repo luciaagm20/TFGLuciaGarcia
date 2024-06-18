@@ -1,5 +1,6 @@
 from django.db import models
 
+from backend.models.Meal import Meal
 from backend.models.Allergies import Allergies
 from backend.models.Goal import Goal
 from backend.models.Gender import Gender
@@ -7,7 +8,7 @@ from backend.models.Activity import Activity
 from django.contrib.auth.models import AbstractUser, Group, Permission
 
 class Client(AbstractUser):
-    number_meals = models.TextField()
+    meals = models.ManyToManyField(Meal, blank=True)
     weight = models.IntegerField()
     age = models.IntegerField()
     height = models.IntegerField()

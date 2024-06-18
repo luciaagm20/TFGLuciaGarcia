@@ -17,34 +17,29 @@ class ClientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Client
-        fields = ['username', 'email', 'password', 'number_meals', 'weight', 'age', 'height', 'gender', 'activity', 'goal', 'allergies', 'is_superuser']
+        fields = ['username', 'email', 'password', 'meals', 'weight', 'age', 'height', 'gender', 'activity', 'goal', 'allergies', 'is_superuser']
 
     def validate_password(self, value):
         if len(value) < 8:
             raise serializers.ValidationError("Password must be at least 8 characters.")
         return make_password(value)
 
-    # def validate_email(self, value):
-    #     request = self.context.get('request', None)
-    #     if request and request.method in ['PUT', 'PATCH']:
-    #         client_id = self.instance.id
-    #         if Client.objects.filter(email=value).exclude(id=client_id).exists():
-    #             raise serializers.ValidationError("Email already exists")
-    #     else:
-    #         if Client.objects.filter(email=value).exists():
-    #             raise serializers.ValidationError("Email already exists")
-    #     return value
+    def validate_email(self, value):
+        request = self.context.get('request', None)
+        request = self.context.get('request', None)
+        if request:
+            if request.method == 'POST':
+                if Client.objects.filter(email=value).exists():
+                    raise serializers.ValidationError("Email already exists")
+        return value
 
-    # def validate_username(self, value):
-    #     request = self.context.get('request', None)
-    #     if request and request.method in ['PUT', 'PATCH']:
-    #         client_id = self.instance.id
-    #         if Client.objects.filter(username=value).exclude(id=client_id).exists():
-    #             raise serializers.ValidationError("Username already exists")
-    #     else:
-    #         if Client.objects.filter(username=value).exists():
-    #             raise serializers.ValidationError("Username already exists")
-    #     return value
+    def validate_username(self, value):
+        request = self.context.get('request', None)
+        if request:
+            if request.method == 'POST':
+                if Client.objects.filter(username=value).exists():
+                    raise serializers.ValidationError("Username already exists")
+        return value
     
     def validate_is_superuser(self, value):
         if value is not None:

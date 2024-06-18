@@ -17,11 +17,11 @@ class ClientService:
         #     raise ClientDoesntExistException()
 
 
-     def save(username, gender, email, password, weight, age, height, number_meals, goal, allergies, is_superuser):
+     def save(username, gender, email, password, weight, age, height, meals, goal, allergies, is_superuser):
           if Client.objects.count() == 0:
                MenuService.insertFoodInnerJoin()
 
-          client = ClientRepository.save(username, gender, email, password, weight, age, height, number_meals, goal, allergies, is_superuser)
+          client = ClientRepository.save(username, gender, email, password, weight, age, height, meals, goal, allergies, is_superuser)
           # Lógica adicional para crear el menú basado en las alergias
           # ClientService.create_menu(client)
           MenuService.create_weekly_menu(client)
@@ -31,9 +31,9 @@ class ClientService:
      def delete(client_id):
           ClientRepository.delete(client_id)
 
-     def update(client_id, username, gender, email, password, weight, age, height, number_meals, goal, allergies, is_superuser):
+     def update(client_id, username, gender, email, password, weight, age, height, meals, goal, allergies, is_superuser):
 
-          client = ClientRepository.update(client_id, username, gender, email, password, weight, age, height, number_meals, goal, allergies, is_superuser)
+          client = ClientRepository.update(client_id, username, gender, email, password, weight, age, height, meals, goal, allergies, is_superuser)
           return client
      
      def create_menu(client):

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams,generatePath } from "react-router-dom";
+import { useNavigate, useParams, generatePath } from "react-router-dom";
 import Dropdown from "../Dropdown/Dropdown";
 import Input from "../Input/Input";
 import Navbar from "../Navbar/Navbar";
@@ -21,7 +21,7 @@ const allergyOptions = [
 ];
 const mealOptions = [
   { label: "Breakfast", value: "Breakfast" },
-  { label: "Meal", value: "Meal" },
+  { label: "Lunch", value: "Lunch" },
   { label: "Dinner", value: "Dinner" },
   { label: "Snack", value: "Snack" },
 ];
@@ -210,9 +210,9 @@ const ProfilePage = ({
         />
         <Dropdown
           options={allergyOptions}
-          onChange={setSelectedAllergy}
+          onChange={(selection) => setSelectedAllergy(selection)}
           placeholder="Select allergy"
-          multipleSelect={false}
+          multipleSelect={true}
           value={selectedAllergy}
           label="Allergies"
         />
