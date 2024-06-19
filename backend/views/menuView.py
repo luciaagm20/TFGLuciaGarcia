@@ -9,6 +9,7 @@ from rest_framework.decorators import action
 from backend.serializers.MenuSerializer import MenuSerializer
 from backend.services.ClientService import ClientService
 from backend.services.FoodIntakeService import FoodIntakeService
+from backend.services.FoodService import FoodService
 from backend.services.MenuService import MenuService
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -25,7 +26,7 @@ class MenuViewSet(viewsets.ModelViewSet):
     
     def retrieve(self, request, pk=None):
         menu = MenuService.read(pk)
-        serializer = MenuSerializer(menu, many=True)
+        serializer = MenuSerializer(menu)
         return Response(serializer.data)
     
     # GET /api/menu/filter-by-client?id_cliente=<client_id>
@@ -57,6 +58,7 @@ class MenuViewSet(viewsets.ModelViewSet):
         except Exception as e:
             return Response({"detail": str(e)}, status=500)
     
+    # http://localhost:8000/api/menu/download-weekly-menu/?menu_id=id
     @action(detail=False, methods=['get'], url_path='download-weekly-menu')
     def download_weekly_menu(self, request):
         menu_id = request.query_params.get('menu_id')
@@ -65,27 +67,75 @@ class MenuViewSet(viewsets.ModelViewSet):
         
         # Obtener los datos del menú usando el menu_id
         menu_data = MenuService.read(menu_id)
+        food_intake = FoodIntakeService.read_values(menu_id)
         if not menu_data:
             return Response({"detail": f"Menu with id {menu_id} not found"}, status=404)
         
+        start_date = menu_data.start_date
+        end_date = menu_data.end_date
+        start_date_str = start_date.strftime('%Y-%m-%d')
+        end_date_str = end_date.strftime('%Y-%m-%d')
+
+        # Obtener todos los food_ids de food_intake
+        food_ids = [item.food_id for item in food_intake if item.food_id is not None]
+
+        # Obtener los nombres de alimentos usando FoodService
+        food_names = []
+        for food_id in food_ids:
+            food_names_response = FoodService.read_array_of_ids(food_id)
+            if food_names_response:
+                food_names.append({'id': food_id, 'name': food_names_response.food_name})
+
         # Crear la respuesta HTTP con el contenido del PDF
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="weekly_menu_{menu_id}.pdf"'
         
-        # Crear el objeto PDF usando ReportLab
+       # Crear el objeto PDF usando ReportLab
         p = canvas.Canvas(response, pagesize=letter)
         p.setFont("Helvetica", 12)
         
-        # Agregar contenido dinámico del menú al PDF
-        p.drawString(100, 750, "Weekly Menu")
-        # Aquí puedes agregar más contenido según tu estructura de menú y los datos de menu_data
-        # Obtener datos específicos del menú desde el frontend
-        # start_date = menu_data.get('start_date', '')
-        # end_date = menu_data.get('end_date', '')
-            
-        #     # Agregar detalles del período del menú
-        # p.drawString(100, 730, f"Period: {start_date} - {end_date}")
-            
+        # Configurar el fondo verde claro
+        p.setFillColorRGB(0.8, 0.9, 0.8)  # RGB para un verde claro
+        p.rect(0, 0, letter[0], letter[1], fill=1)
+
+        # Centrar el título "Weekly Menu"
+        title = "Weekly Menu"
+        title_width = p.stringWidth(title, "Helvetica", 16)  # Ancho del texto
+        p.setFont("Helvetica", 16)
+        p.setFillColorRGB(0, 0, 0)  # Color negro para el título
+        p.drawString((letter[0] - title_width) / 2, 750, title)
+
+        # Centrar las fechas
+        p.setFont("Helvetica", 12)
+        start_date_width = p.stringWidth(f"Start Date: {start_date_str}", "Helvetica", 12)
+        p.drawString((letter[0] - start_date_width) / 2, 730, f"Start Date: {start_date_str}")
+        end_date_width = p.stringWidth(f"End Date: {end_date_str}", "Helvetica", 12)
+        p.drawString((letter[0] - end_date_width) / 2, 710, f"End Date: {end_date_str}")
+
+        # Crear un diccionario para mapear los días de la semana a sus datos
+        days_of_week = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY']
+        food_data_by_day = {day: [] for day in days_of_week}
+        
+        for item in food_intake:
+            day = item.day_of_week.upper()  # Convertir el día a mayúsculas
+            if day in days_of_week:
+                food_name = next((food['name'] for food in food_names if food['id'] == item.food_id), 'Unknown')
+                food_data_by_day[day].append({
+                    'meal': item.meal,
+                    'food': food_name,
+                    'calories': item.calories
+                })
+    
+    # Agregar los datos de la ingesta de alimentos al PDF
+        y_position = 690
+        for day in days_of_week:
+            p.drawString(100, y_position, day)
+            y_position -= 20
+            for meal in food_data_by_day[day]:
+                p.drawString(120, y_position, f"{meal['meal']} - {meal['food']} ({meal['calories']} kcal)")
+                y_position -= 20
+            y_position -= 10  # Espacio adicional entre días
+                
         
         p.showPage()
         p.save()

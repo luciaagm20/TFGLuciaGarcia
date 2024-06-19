@@ -15,7 +15,7 @@ class FoodRepository:
             db_data = Food.objects.filter(group_code=4)
         elif group_name=="milk and milk products":
             db_data = Food.objects.filter(group_code=5)
-        elif group_name=="beverages":
+        elif group_name==("beverages"):
             db_data = Food.objects.filter(group_code=6)
         elif group_name=="sugar and confectionery":
             db_data = Food.objects.filter(group_code=7)

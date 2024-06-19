@@ -24,7 +24,9 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
             },
           }
         );
-        setMenuData(response.data?.[0]);
+        // setMenuData(response.data?.[0]);
+        console.log(response)
+        setMenuData(response);
       } catch (error) {
         console.error("Error al obtener los datos del menú:", error);
         setLoggedIn(false);

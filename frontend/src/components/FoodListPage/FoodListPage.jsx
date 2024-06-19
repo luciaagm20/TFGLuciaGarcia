@@ -69,8 +69,9 @@ const FoodListPage = ({
 
   const handleFilterByGroupName = async (groupName) => {
     try {
+      debugger
       const url = groupName
-        ? `http://localhost:8000/api/food/filter-by-group-name?group_name=${encodeURIComponent(groupName)}`
+        ? `http://localhost:8000/api/food/filter-by-group-name/?group_name=${encodeURIComponent(groupName)}`
         : "http://localhost:8000/api/food/";
       const response = await axios.get(url, {
         headers: {

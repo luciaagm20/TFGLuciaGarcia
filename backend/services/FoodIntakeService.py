@@ -7,6 +7,9 @@ class FoodIntakeService:
 
     def read(menu):
         return FoodIntakeRepository.read(menu)
+    
+    def read_values(menu):
+        return FoodIntakeRepository.read(menu)
 
     def delete(menu):
         FoodIntakeRepository.delete(menu)

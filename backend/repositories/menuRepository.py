@@ -443,7 +443,8 @@ class MenuRepository:
         return WeeklyMenu.objects.all()
 
     def read(menu_id):
-        return WeeklyMenu.objects.filter(id=menu_id)
+        return WeeklyMenu.objects.get(id=menu_id)
+     
     
     def delete(id):
         db_data = WeeklyMenu.objects.filter(id=id)

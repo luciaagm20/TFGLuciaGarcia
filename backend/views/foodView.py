@@ -76,9 +76,9 @@ class FoodViewSet(viewsets.ModelViewSet):
         FoodService.delete(pk)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    # GET /api/food/filter-by-group-name?group_name=<group_name>
+    # GET http://127.0.0.1:8000/api/food/filter-by-group-name/?group_name=beverages
     @action(detail=False, methods=['get'], url_path='filter-by-group-name')
-    def filter_by_category(self, request):
+    def filter_by_group_name(self, request):
         group_name = request.query_params.get('group_name')
         if group_name is None:
             return Response({"detail": "group name parameter is required"}, status=400)
@@ -87,7 +87,7 @@ class FoodViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     
-    # /api/food/retrieve_multiple/[]
+    # POST /api/food/retrieve_multiple/[]
     @action(detail=False, methods=['post'])
     def retrieve_multiple(self, request):
         ids = request.data.get('ids', [])
