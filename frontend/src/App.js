@@ -11,6 +11,8 @@ import RegistrationPage from "./components/RegistrationPage/RegistrationPage";
 import "./App.css";
 import axios from "axios";
 import LoginPage from "./components/LoginPage/LoginPage";
+import AddFoodPage from "./components/AddFoodPage/AddFoodPage";
+import RequestListPage from "./components/RequestListPage/RequestListPage";
 
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
@@ -120,6 +122,18 @@ function App() {
             }
           />
           <Route
+            path="/register_food"
+            element={
+              <AddFoodPage  />
+            }
+          />
+          <Route
+            path="//list_requests"
+            element={
+              <RequestListPage  />
+            }
+          />
+          <Route
             path="/login"
             element={
               <LoginPage
@@ -129,7 +143,6 @@ function App() {
               />
             }
           />
-
           <Route
             path="/request"
             element={

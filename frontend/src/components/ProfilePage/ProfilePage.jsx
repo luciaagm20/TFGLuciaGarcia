@@ -45,7 +45,6 @@ const ProfilePage = ({
   setAdminUser,
 }) => {
   const { clientId } = useParams();
-  const [passwordModalOpen, setPasswordModalOpen] = useState(false);
   const [updatedName, setUpdatedName] = useState("");
   const [updatedEmail, setUpdatedEmail] = useState("");
   const [updatedPassword, setUpdatedPassword] = useState("");
@@ -255,13 +254,6 @@ const ProfilePage = ({
       </div>
       <button
         onClick={() => {
-          setPasswordModalOpen(!passwordModalOpen);
-        }}
-      >
-        Change password
-      </button>
-      <button
-        onClick={() => {
           // TODO: Send post with updated info
           handleSubmitProfile()
           const path = generatePath("/client_page/:clientId", { clientId })
@@ -270,12 +262,6 @@ const ProfilePage = ({
       >
         Save changes
       </button>
-      <Modal
-        isOpen={passwordModalOpen}
-        onClose={() => setPasswordModalOpen(false)}
-      >
-        <ChangePasswordPage />
-      </Modal>
     </>
   );
 };

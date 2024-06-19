@@ -28,23 +28,28 @@ class FoodViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
         data = request.data
-        food = FoodService.save(
-            group_code = data.get("group_code"),
-            subgroup_code = data.get("subgroup_code"),
-            group_name = data.get("group_name"),
-            subgroup_name = data.get("subgroup_name"),
-            food_code = data.get("food_code"),
-            food_name = data.get("food_name"),
-            # water = data.get("water"),
-            protein = data.get("protein"),
-            carbohydrates = data.get("carbohydrates"),
-            fats = data.get("fats"),
-            sugars = data.get("sugars"),
-            glucose = data.get("glucose"),
-            lactose = data.get("lactose")
-        )
-        serializer = FoodSerializer(food)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        serializer = FoodSerializer(data=data)
+        if serializer.is_valid():
+            food = FoodService.save(
+                group_code = serializer.data.get("group_code"),
+                subgroup_code = serializer.data.get("subgroup_code"),
+                group_name = serializer.data.get("group_name"),
+                subgroup_name = serializer.data.get("subgroup_name"),
+                food_code = serializer.data.get("food_code"),
+                food_name = serializer.data.get("food_name"),
+                water = serializer.data.get("water"),
+                protein = serializer.data.get("protein"),
+                carbohydrates = serializer.data.get("carbohydrates"),
+                fats = serializer.data.get("fats"),
+                sugars = serializer.data.get("sugars"),
+                glucose = serializer.data.get("glucose"),
+                lactose = serializer.data.get("lactose")
+            )
+            serializer = FoodSerializer(food)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            # Si el serializador no es válido, se devuelve un error 400 con los errores del serializador
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
         data = request.data

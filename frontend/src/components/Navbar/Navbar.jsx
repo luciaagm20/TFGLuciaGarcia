@@ -28,6 +28,7 @@ const Navbar = ({
             List Clients
           </button>
           <button onClick={() => navigate("/list_food")}>List Food</button>
+          <button onClick={() => navigate("/list_requests")}>Requests</button>
         </div>
       )}
       <div className={"regularButtons"}>

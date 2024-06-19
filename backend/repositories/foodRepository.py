@@ -39,8 +39,8 @@ class FoodRepository:
         return Food.objects.get(id=id)
 
     @staticmethod
-    def save(group_code, subgroup_code, group_name, subgroup_name, food_code, food_name, water, protein, carbohydrates, fats, sugars, glucose, lactose):
-        food = Food.objects.create(group_code=group_code, subgroup_code=subgroup_code, group_name=group_name, subgroup_name=subgroup_name, food_code=food_code, food_name=food_name, water=water, protein=protein, carbohydrates=carbohydrates, fats=fats, sugars=sugars, glucose=glucose, lactose=lactose)
+    def save(group_code, subgroup_code, group_name, subgroup_name, food_code, food_name, water, protein, carbohydrates, fats, sugars, glucose, lactose, has_lactose, has_seafood, has_egg):
+        food = Food.objects.create(group_code=group_code, subgroup_code=subgroup_code, group_name=group_name, subgroup_name=subgroup_name, food_code=food_code, food_name=food_name, water=water, protein=protein, carbohydrates=carbohydrates, fats=fats, sugars=sugars, glucose=glucose, lactose=lactose, has_lactose=has_lactose, has_seafood=has_seafood, has_egg=has_egg)
         return food
     
     def delete(food_id):

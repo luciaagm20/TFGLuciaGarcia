@@ -17,5 +17,5 @@ class RequestRepository:
    
        
     def delete(id):
-        db_data = Requests.objects.filter(id)
+        db_data = Requests.objects.filter(id=id)
         db_data.delete()
