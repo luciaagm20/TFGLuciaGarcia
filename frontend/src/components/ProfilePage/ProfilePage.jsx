@@ -48,6 +48,7 @@ const ProfilePage = ({
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
   const [updatedName, setUpdatedName] = useState("");
   const [updatedEmail, setUpdatedEmail] = useState("");
+  const [updatedPassword, setUpdatedPassword] = useState("");
   const [updatedWeight, setUpdatedWeight] = useState(0);
   const [updatedAge, setUpdatedAge] = useState(0);
   const [updatedHeight, setUpdatedHeight] = useState(0);
@@ -72,8 +73,10 @@ const ProfilePage = ({
             },
           }
         );
+        console.log("response " + response.data?.username)
         setUpdatedName(response.data?.username);
         setUpdatedEmail(response.data?.email);
+        setUpdatedPassword(response.data?.email);
         setUpdatedWeight(response.data?.weight);
         setUpdatedAge(response.data?.age);
         setUpdatedHeight(response.data?.height);
@@ -112,7 +115,7 @@ const ProfilePage = ({
     const formData = {
       "username": updatedName,
       "email": updatedEmail,
-      "password": "david1234",
+      "password": updatedPassword,
       "number_meals": selectedMeals.value,
       "weight": updatedWeight,
       "age": updatedAge,
@@ -172,6 +175,15 @@ const ProfilePage = ({
           required={true}
           // onChange={setUpdatedEmail}
           onChange={(e) => setUpdatedEmail(e.target.value)}
+        />
+        <Input
+          label="Password"
+          value={updatedPassword}
+          type="password"
+          placeholder="Type new password"
+          required={true}
+          // onChange={setUpdatedPassword}
+          onChange={(e) => setUpdatedPassword(e.target.value)}
         />
         <Input
           label="Weight"

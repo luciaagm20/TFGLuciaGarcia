@@ -28,7 +28,12 @@ class FoodRepository:
         return db_data
 
     def read(food_id):
-        return Food.objects.filter(id=food_id)
+        # return Food.objects.filter(id=food_id)
+        try:
+            food = Food.objects.get(id=food_id)  # Usar get en lugar de filter para obtener un solo objeto
+            return food
+        except Food.DoesNotExist:
+            return None
     
     def read_array_of_ids(id):
         return Food.objects.get(id=id)

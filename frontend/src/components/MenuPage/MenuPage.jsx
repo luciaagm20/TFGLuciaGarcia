@@ -8,7 +8,7 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
   const { id } = useParams();
   const [menuData, setMenuData] = useState(null);
   const [mealData, setMealData] = useState({});
-  const [foodData, setFoodData] = useState({});
+  // const [foodData, setFoodData] = useState({});
 
   const navigate = useNavigate();
   const token = localStorage.getItem("token");

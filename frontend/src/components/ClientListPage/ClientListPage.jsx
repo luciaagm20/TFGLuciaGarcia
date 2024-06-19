@@ -1,13 +1,36 @@
 import Navbar from "../Navbar/Navbar";
 import "./clientListPage.css";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-const ClientListPage = ({
-  isLoggedIn,
-  setLoggedIn,
-  clients,
-  isAdminUser,
-  setAdminUser,
-}) => {
+const ClientListPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
+  const [clientsData, setClientsData] = useState(null);  
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    const fetchClientsData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/api/clients/",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setClientsData(response.data);
+      } catch (error) {
+        console.error("Error al obtener los datos de los clientes:", error);
+        setLoggedIn(false);
+        navigate("/login");
+      }
+    };
+    
+    fetchClientsData();
+  }, [token, setLoggedIn, navigate]);
+
   return (
     <>
       <Navbar
@@ -21,10 +44,10 @@ const ClientListPage = ({
         <table>
           <thead>
             <tr>
+              <th>e-mail</th>
               <th>User name</th>
               <th>Gender</th>
-              <th>e-mail</th>
-              <th>Number of meals</th>
+              <th>Meals</th>
               <th>Weight (kg)</th>
               <th>Age</th>
               <th>Height (cm)</th>
@@ -33,21 +56,21 @@ const ClientListPage = ({
             </tr>
           </thead>
           <tbody>
-            {clients.map((data) => (
+            {clientsData?.map((data) => (
               <tr key={data.id}>
-                <td>{data.name}</td>
-                <td>{data.gender}</td>
                 <td>{data.email}</td>
-                <td>{data.number_meals}</td>
+                <td>{data.username}</td>
+                <td>{data.gender}</td>
+                <td>{data.meals}</td>
                 <td>{data.weight}</td>
                 <td>{data.age}</td>
                 <td>{data.height}</td>
                 <td>{data.goal}</td>
                 <td>{data.allergies}</td>
-                {/* <td>
+                <td>
                 <a href={`/profile/${data.id}`} className="btn btn-primary">Profile</a>
                 <a href={`/delete/${data.id}`} className="btn btn-danger">Delete</a>
-              </td> */}
+              </td>
               </tr>
             ))}
           </tbody>

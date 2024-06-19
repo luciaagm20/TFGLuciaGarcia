@@ -20,7 +20,7 @@ const LoginPage = ({ setLoggedIn, setAdminUser }) => {
 
         if (clientId) setLoggedIn(true);
         axios
-          .get(`http://localhost:8000/api/clients/${client_id}`, {
+          .get(`http://localhost:8000/api/clients/${client_id}/`, {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then((res) => {

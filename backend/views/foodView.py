@@ -75,12 +75,12 @@ class FoodViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'], url_path='filter-by-group-name')
     def filter_by_category(self, request):
         group_name = request.query_params.get('group_name')
-        print(group_name)
         if group_name is None:
             return Response({"detail": "group name parameter is required"}, status=400)
         category = FoodService.list_by_group_name(group_name)
         serializer = FoodSerializer(category, many=True)
         return Response(serializer.data)
+
     
     # /api/food/retrieve_multiple/[]
     @action(detail=False, methods=['post'])
