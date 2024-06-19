@@ -14,6 +14,7 @@ const ClientPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [signUpModalOpen, setSignUpModalOpen] = useState(false);
+  const [requestModalOpen, setRequestModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,6 +67,8 @@ const ClientPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
         setLoggedIn={setLoggedIn}
         signUpModalOpen={signUpModalOpen}
         setSignUpModalOpen={setSignUpModalOpen}
+        requestModalOpen={requestModalOpen}
+        setRequestModalOpen={setRequestModalOpen}
         isAdminUser={isAdminUser}
         setAdminUser={setAdminUser}
         clientId={clientId}
@@ -85,7 +88,7 @@ const ClientPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
         ) : (
           <p>No hay menús disponibles aún.</p>
         )}
-        <RequestPage isOpen={signUpModalOpen} onClose={() => setSignUpModalOpen(false)} clientId/>
+        <RequestPage isOpen={requestModalOpen} onClose={() => setRequestModalOpen(false)} clientId={clientId}/>
       </div>
     </>
   );

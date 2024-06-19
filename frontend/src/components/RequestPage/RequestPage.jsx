@@ -5,14 +5,14 @@ import axios from "axios";
 
 import Input from "../Input/Input";
 
-const RequestPage = ({ clientId, isOpen, onClose }) => {
+const RequestPage = ({ isOpen, onClose, clientId }) => {
   const [request, setRequest] = useState("");
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
   const handleRequest = () => {
     const requestData = {
-      "client_id": clientId,
+      "client": parseInt(clientId, 10),
       "text": request,
     };
 
