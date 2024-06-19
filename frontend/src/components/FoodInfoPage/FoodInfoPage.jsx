@@ -7,19 +7,6 @@ import "./foodInfoPage.css";
 import axios from "axios";
 
 const groupOptions = [
-  //   { label: "starters and dishes", value: "starters and dishes" },
-  //   {
-  //     label: "fruits, vegetables, legumes and nuts",
-  //     value: "fruits, vegetables, legumes and nuts",
-  //   },
-  //   { label: "cereal products", value: "cereal products" },
-  //   { label: "meat, egg and fish", value: "meat, egg and fish" },
-  //   { label: "milk and milk products", value: "milk and milk products" },
-  //   { label: "beverages", value: "beverages" },
-  //   { label: "sugar and confectionery", value: "sugar and confectionery" },
-  //   { label: "ice cream and sorbet", value: "ice cream and sorbet" },
-  //   { label: "fats and oils", value: "fats and oils" },
-  //   { label: "miscellaneous", value: "miscellaneous" },
   { label: "starters and dishes", value: "starters and dishes", code: 1 },
   {
     label: "fruits, vegetables, legumes and nuts",

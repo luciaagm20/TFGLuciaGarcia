@@ -6,6 +6,22 @@ import axios from "axios";
 import AddFoodPage from "../AddFoodPage/AddFoodPage";
 import Modal from "../Modal/Modal";
 
+const groupOptions = [
+  { label: "starters and dishes", value: "starters and dishes" },
+  {
+    label: "fruits, vegetables, legumes and nuts",
+    value: "fruits, vegetables, legumes and nuts",
+  },
+  { label: "cereal products", value: "cereal products" },
+  { label: "meat, egg and fish", value: "meat, egg and fish" },
+  { label: "milk and milk products", value: "milk and milk products" },
+  { label: "beverages", value: "beverages" },
+  { label: "sugar and confectionery", value: "sugar and confectionery" },
+  { label: "ice cream and sorbet", value: "ice cream and sorbet" },
+  { label: "fats and oils", value: "fats and oils" },
+  { label: "miscellaneous", value: "miscellaneous" },
+];
+
 const FoodListPage = ({
   isLoggedIn,
   setLoggedIn,
@@ -14,6 +30,7 @@ const FoodListPage = ({
 }) => {
   const [foodData, setFoodData] = useState(null);
   const [postFoodModalOpen, setPostFoodModalOpen] = useState(false);
+  const [selectedGroup, setSelectedGroup] = useState("");
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
@@ -50,6 +67,22 @@ const FoodListPage = ({
     }
   };
 
+  const handleFilterByGroupName = async (groupName) => {
+    try {
+      const url = groupName
+        ? `http://localhost:8000/api/food/filter-by-group-name?group_name=${encodeURIComponent(groupName)}`
+        : "http://localhost:8000/api/food/";
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setFoodData(response.data);
+    } catch (error) {
+      console.error("Error al filtrar alimentos por grupo:", error);
+    }
+  };
+
   return (
     <>
       <Navbar
@@ -66,6 +99,20 @@ const FoodListPage = ({
         >
           Add new food
         </button> */}
+        <select
+          value={selectedGroup}
+          onChange={(e) => {
+            setSelectedGroup(e.target.value);
+            handleFilterByGroupName(e.target.value);
+          }}
+        >
+          <option value="">All Groups</option>
+          {groupOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
         <button onClick={() => navigate("/register_food")}>Add new food</button>
         <h2>List of food database</h2>
         <table>

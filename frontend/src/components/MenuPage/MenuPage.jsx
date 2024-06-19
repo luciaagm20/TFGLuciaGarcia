@@ -101,6 +101,32 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
     // esto es lo que tiene que cambiar para que entre en el useEffect
   }, [Object.keys(mealData).length]);
 
+  const downloadPDF = () => {
+    axios({
+      url: `http://localhost:8000/api/menu/download-weekly-menu/?menu_id=${id}`,
+      method: "GET",
+      responseType: "blob", // importante para recibir datos binarios
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        // Crear una URL local para el archivo blob
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        // Crear un elemento <a> para descargar el archivo
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", `weekly_menu_${id}.pdf`);
+        document.body.appendChild(link);
+        // Simular un clic en el enlace para iniciar la descarga
+        link.click();
+      })
+      .catch((error) => {
+        console.error("Error al descargar el menú en PDF:", error);
+        // Manejar errores si es necesario
+      });
+  };
+
   if (!menuData) {
     return <div>Loading...</div>;
   }
@@ -134,7 +160,7 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
                 <td>
                   {el.map((mealDay) => (
                     <div>
-                      {mealDay.meal} <br/>
+                      {mealDay.meal} <br />
                       {`${mealDay.food} (${mealDay.calories} kcal)`}
                     </div>
                   ))}
@@ -143,6 +169,7 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
             </tr>
           </tbody>
         </table>
+        <button onClick={downloadPDF}>Descargar Menú Semanal en PDF</button>
       </div>
     </>
   );

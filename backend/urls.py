@@ -4,7 +4,7 @@ from .views.FoodIntakeView import *
 from .views.LoginView import MyTokenObtainPairView
 from .views.IndexView import *
 from .views.ClientView import *
-from .views.FoodView import FoodViewSet
+from .views.FoodView import *
 from .views.MenuView import MenuViewSet
 from .views.RequestsView import *
 from django.contrib.auth.models import *

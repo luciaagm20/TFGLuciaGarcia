@@ -61,6 +61,7 @@ const Navbar = ({
           <button onClick={() => setRequestModalOpen(!requestModalOpen)}>
             Add request
           </button>
+          <button onClick={() => navigate("/list_food")}>List Food</button>
         </>
         ) : (
           <button onClick={() => setSignUpModalOpen(!signUpModalOpen)}>
