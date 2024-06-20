@@ -92,24 +92,31 @@ class MenuViewSet(viewsets.ModelViewSet):
         
        # Crear el objeto PDF usando ReportLab
         p = canvas.Canvas(response, pagesize=letter)
-        p.setFont("Helvetica", 12)
+        p.setFont("Courier", 12)
         
+        # Convertir el color hexadecimal #87FA72 a RGB en el rango de 0 a 1
+        r = 157 / 255.0
+        g = 241 / 255.0
+        b = 142 / 255.0
+
+        # Configurar el fondo con el nuevo color
+        p.setFillColorRGB(r, g, b)
         # Configurar el fondo verde claro
-        p.setFillColorRGB(0.8, 0.9, 0.8)  # RGB para un verde claro
+        # p.setFillColorRGB(0.8, 0.9, 0.8)  # RGB para un verde claro
         p.rect(0, 0, letter[0], letter[1], fill=1)
 
         # Centrar el título "Weekly Menu"
         title = "Weekly Menu"
-        title_width = p.stringWidth(title, "Helvetica", 16)  # Ancho del texto
-        p.setFont("Helvetica", 16)
+        title_width = p.stringWidth(title, "Courier-Bold", 16)  # Ancho del texto
+        p.setFont("Courier-Bold", 16)
         p.setFillColorRGB(0, 0, 0)  # Color negro para el título
         p.drawString((letter[0] - title_width) / 2, 750, title)
 
         # Centrar las fechas
-        p.setFont("Helvetica", 12)
-        start_date_width = p.stringWidth(f"Start Date: {start_date_str}", "Helvetica", 12)
+        p.setFont("Courier-Bold", 12)
+        start_date_width = p.stringWidth(f"Start Date: {start_date_str}", "Courier-Bold", 12)
         p.drawString((letter[0] - start_date_width) / 2, 730, f"Start Date: {start_date_str}")
-        end_date_width = p.stringWidth(f"End Date: {end_date_str}", "Helvetica", 12)
+        end_date_width = p.stringWidth(f"End Date: {end_date_str}", "Courier-Bold", 12)
         p.drawString((letter[0] - end_date_width) / 2, 710, f"End Date: {end_date_str}")
 
         # Crear un diccionario para mapear los días de la semana a sus datos
@@ -129,12 +136,12 @@ class MenuViewSet(viewsets.ModelViewSet):
     # Agregar los datos de la ingesta de alimentos al PDF
         y_position = 690
         for day in days_of_week:
-            p.drawString(100, y_position, day)
-            y_position -= 20
+            p.drawString(40, y_position, day)
+            y_position -= 10
             for meal in food_data_by_day[day]:
                 p.drawString(120, y_position, f"{meal['meal']} - {meal['food']} ({meal['calories']} kcal)")
-                y_position -= 20
-            y_position -= 10  # Espacio adicional entre días
+                y_position -= 16
+            y_position -= 7  # Espacio adicional entre días
                 
         
         p.showPage()
