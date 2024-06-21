@@ -20,7 +20,7 @@ const ClientPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/clients/${clientId}`,
+          `http://localhost:8000/api/clients/${clientId}/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

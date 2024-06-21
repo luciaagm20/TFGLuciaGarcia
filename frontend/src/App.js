@@ -22,6 +22,7 @@ axios.defaults.withCredentials = true;
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [isAdminUser, setAdminUser] = useState(false);
+  console.log("is admin user app: " + isAdminUser)
 
   return (
     <>

@@ -17,7 +17,7 @@ class ClientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Client
-        fields = ['username', 'email', 'password', 'meals', 'weight', 'age', 'height', 'gender', 'activity', 'goal', 'allergies', 'is_superuser']
+        fields = ['id', 'username', 'email', 'password', 'meals', 'weight', 'age', 'height', 'gender', 'activity', 'goal', 'allergies', 'is_superuser']
 
     def validate_password(self, value):
         if len(value) < 8:

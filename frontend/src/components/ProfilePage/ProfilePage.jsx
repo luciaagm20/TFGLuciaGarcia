@@ -60,12 +60,13 @@ const ProfilePage = ({
 
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  console.log(isAdminUser)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/clients/${clientId}`,
+          `http://localhost:8000/api/clients/${clientId}/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -164,6 +165,7 @@ const ProfilePage = ({
           placeholder="Type your Username"
           required={true}
           // onChange={setUpdatedName}
+          disabled={isAdminUser}
           onChange={(e) => setUpdatedName(e.target.value)}
         />
         <Input
@@ -173,17 +175,19 @@ const ProfilePage = ({
           placeholder="Type your Email"
           required={true}
           // onChange={setUpdatedEmail}
-          onChange={(e) => setUpdatedEmail(e.target.value)}
+          onChange={isAdminUser ? null : (e) => setUpdatedEmail(e.target.value)}
         />
-        <Input
-          label="Password"
-          value={updatedPassword}
-          type="password"
-          placeholder="Type new password"
-          required={true}
-          // onChange={setUpdatedPassword}
-          onChange={(e) => setUpdatedPassword(e.target.value)}
-        />
+        {!isAdminUser && (
+          <Input
+            label="Password"
+            value={updatedPassword}
+            type="password"
+            placeholder="Type new password"
+            required={true}
+            onChange={isAdminUser ? null : (e) => setUpdatedPassword(e.target.value)}
+            disabled={isAdminUser}
+          />
+        )}
         <Input
           label="Weight"
           value={updatedWeight}
@@ -191,7 +195,7 @@ const ProfilePage = ({
           placeholder="Type your weight"
           required={true}
           // onChange={setUpdatedWeight}
-          onChange={(e) => setUpdatedWeight(e.target.value)}
+          onChange={isAdminUser ? null : (e) => setUpdatedWeight(e.target.value)}
         />
         <Input
           label="Age"
@@ -200,7 +204,7 @@ const ProfilePage = ({
           placeholder="Type your age"
           required={true}
           // onChange={setUpdatedAge}
-          onChange={(e) => setUpdatedAge(e.target.value)}
+          onChange={isAdminUser ? null : (e) => setUpdatedAge(e.target.value)}
         />
         <Input
           label="Height"
@@ -209,11 +213,11 @@ const ProfilePage = ({
           placeholder="Type your height"
           required={true}
           // onChange={setUpdatedHeight}
-          onChange={(e) => setUpdatedHeight(e.target.value)}
+          onChange={isAdminUser ? null : (e) => setUpdatedHeight(e.target.value)}
         />
         <Dropdown
           options={genderOptions}
-          onChange={setSelectedGender}
+          onChange={isAdminUser ? null : setSelectedGender}
           placeholder="Select gender"
           multipleSelect={false}
           value={selectedGender}
@@ -221,7 +225,7 @@ const ProfilePage = ({
         />
         <Dropdown
           options={allergyOptions}
-          onChange={(selection) => setSelectedAllergy(selection)}
+          onChange={isAdminUser ? null : (selection) => setSelectedAllergy(selection)}
           placeholder="Select allergy"
           multipleSelect={true}
           value={selectedAllergy}
@@ -229,7 +233,7 @@ const ProfilePage = ({
         />
         <Dropdown
           options={mealOptions}
-          onChange={(selection) => setSelectedMeals(selection)}
+          onChange={isAdminUser ? null : (selection) => setSelectedMeals(selection)}
           placeholder="Select Meals"
           multipleSelect={true}
           value={selectedMeals}
@@ -237,7 +241,7 @@ const ProfilePage = ({
         />
         <Dropdown
           options={goalOptions}
-          onChange={setSelectedGoal}
+          onChange={isAdminUser ? null : setSelectedGoal}
           placeholder="Select goal"
           multipleSelect={false}
           value={selectedGoal}
@@ -245,23 +249,26 @@ const ProfilePage = ({
         />
         <Dropdown
           options={activityOptions}
-          onChange={setSelectedActivity}
+          onChange={isAdminUser ? null : setSelectedActivity}
           placeholder="Select activity level"
           multipleSelect={false}
           value={selectedActivity}
           label="Activity"
         />
       </div>
-      <button
-        onClick={() => {
-          // TODO: Send post with updated info
-          handleSubmitProfile()
-          const path = generatePath("/client_page/:clientId", { clientId })
-          navigate(path);
-        }}
-      >
-        Save changes
-      </button>
+      {!isAdminUser && (
+        <button
+          onClick={() => {
+            handleSubmitProfile()
+            const path = generatePath("/client_page/:clientId", { clientId })
+            navigate(path);
+          }}
+          disabled={isAdminUser}
+        >
+          Save changes
+        </button>
+      )}
+      <button onClick={() => navigate(-1)}>Finish</button>
     </>
   );
 };

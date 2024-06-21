@@ -1,25 +1,27 @@
 import Navbar from "../Navbar/Navbar";
 import "./clientListPage.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, generatePath } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const ClientListPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
-  const [clientsData, setClientsData] = useState(null);  
+const ClientListPage = ({
+  isLoggedIn,
+  setLoggedIn,
+  isAdminUser,
+  setAdminUser,
+}) => {
+  const [clientsData, setClientsData] = useState(null);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchClientsData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8000/api/clients/",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get("http://localhost:8000/api/clients/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setClientsData(response.data);
       } catch (error) {
         console.error("Error al obtener los datos de los clientes:", error);
@@ -27,10 +29,11 @@ const ClientListPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) 
         navigate("/login");
       }
     };
-    
+
     fetchClientsData();
   }, [token, setLoggedIn, navigate]);
 
+  console.log(clientsData)
   return (
     <>
       <Navbar
@@ -68,9 +71,13 @@ const ClientListPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) 
                 <td>{data.goal}</td>
                 <td>{data.allergies}</td>
                 <td>
-                <a href={`/profile/${data.id}`} className="btn btn-primary">Profile</a>
-                <a href={`/delete/${data.id}`} className="btn btn-danger">Delete</a>
-              </td>
+                  <a href={`/profile/${data.id}`} className="btn btn-primary">
+                    Profile
+                  </a>
+                  <a href={`/delete/${data.id}`} className="btn btn-danger">
+                    Delete
+                  </a>
+                </td>
               </tr>
             ))}
           </tbody>

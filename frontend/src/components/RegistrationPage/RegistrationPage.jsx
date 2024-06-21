@@ -15,7 +15,7 @@ const allergyOptions = [
   { label: "None", value: "None" },
   { label: "Celiac disease", value: "Celiac disease" },
   { label: "Lactose intolerant", value: "Lactose intolerant" },
-  { label: "Egg allergies", value: "Egg allergies" },
+  { label: "Egg allergy", value: "Egg allergy" },
   { label: "Seafood", value: "Seafood" },
 ];
 const mealOptions = [
@@ -59,7 +59,7 @@ const RegistrationPage = ({ isOpen, onClose }) => {
       "username": registerName,
       "email": registerEmail,
       "password": registerPassword,
-      "number_meals": selectedMeals.map((meal) => meal.value),
+      "meals": selectedMeals.map((meal) => meal.value),
       "weight": registerWeight,
       "age": registerAge,
       "height": registerHeight,
