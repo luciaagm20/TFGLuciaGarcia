@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import AddFoodPage from "../AddFoodPage/AddFoodPage";
 import Modal from "../Modal/Modal";
+import Button from "../Button/Button";
+import Dropdown from "../Dropdown/Dropdown";
 
 const groupOptions = [
   { label: "starters and dishes", value: "starters and dishes" },
@@ -69,9 +71,11 @@ const FoodListPage = ({
 
   const handleFilterByGroupName = async (groupName) => {
     try {
-      debugger
+      debugger;
       const url = groupName
-        ? `http://localhost:8000/api/food/filter-by-group-name/?group_name=${encodeURIComponent(groupName)}`
+        ? `http://localhost:8000/api/food/filter-by-group-name/?group_name=${encodeURIComponent(
+            groupName
+          )}`
         : "http://localhost:8000/api/food/";
       const response = await axios.get(url, {
         headers: {
@@ -93,14 +97,19 @@ const FoodListPage = ({
         setAdminUser={setAdminUser}
       />
       <div className="foodListPageContainer">
-        {/* <button
-          onClick={() => {
-            setPostFoodModalOpen(!postFoodModalOpen);
+        <Dropdown
+          options={groupOptions}
+          onChange={(selected) => {
+            setSelectedGroup(selected)
+            handleFilterByGroupName(selected.value)
           }}
-        >
-          Add new food
-        </button> */}
-        <select
+          placeholder="All"
+          multipleSelect={false}
+          value={selectedGroup}
+          label="Groups"
+        />
+
+        {/* <select
           value={selectedGroup}
           onChange={(e) => {
             setSelectedGroup(e.target.value);
@@ -113,8 +122,14 @@ const FoodListPage = ({
               {option.label}
             </option>
           ))}
-        </select>
-        <button onClick={() => navigate("/register_food")}>Add new food</button>
+        </select> */}
+        {isAdminUser && (
+          <Button
+            value="Add new food"
+            onClick={() => navigate("/register_food")}
+            disabled={!isAdminUser}
+          />
+        )}
         <h2>List of food database</h2>
         <table>
           <thead>
@@ -135,27 +150,21 @@ const FoodListPage = ({
                   {data.subgroup_name} - {data.subgroup_code}
                 </td>
                 <td>
-                  <a href={`/info_food/${data.id}`} className="btn btn-primary">
+                  <Button
+                    value="More Info"
+                    onClick={() => navigate(`/info_food/${data.id}`)}
+                    disabled={false}
+                  />
+                  {/* <a href={`/info_food/${data.id}`} className="btn btn-primary">
                     More Info
-                  </a>
-                  <button
-                    onClick={() => handleDelete(data.id)}
-                    className="btn btn-danger"
-                  >
-                    Delete
-                  </button>
-                  {/* <button
-                    onClick={() => {
-                      // TODO: Send post with updated info
-                      handleSubmitProfile();
-                      const path = generatePath("/client_page/:clientId", {
-                        data.id,
-                      });
-                      navigate(path);
-                    }}
-                  >
-                    Save changes
-                  </button> */}
+                  </a> */}
+                  {isAdminUser && (
+                    <Button
+                      value="Delete"
+                      onClick={() => handleDelete(data.id)}
+                      disabled={!isAdminUser}
+                    />
+                  )}
                 </td>
               </tr>
             ))}

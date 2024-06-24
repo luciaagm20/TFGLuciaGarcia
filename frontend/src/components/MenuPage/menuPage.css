@@ -1,4 +1,4 @@
-.menuPageContainer {
+/* .menuPageContainer {
     margin-top: 50px;
 }
 
@@ -29,4 +29,98 @@ th, td {
 th {
     background-color: #f2f2f2;
     font-weight: bold;
-}
+} */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .menuPageContainer {
+    /* max-width: 1200px; */
+    display: flex;
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    /* margin: 0 auto; */
+    padding: 20px;
+    background-color: transparent;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #090808;
+  }
+  
+  span {
+    display: block;
+    text-align: center;
+    color: #090808;
+    margin-top: 5px;
+    display: center;
+    font-weight: bold;
+  }
+  
+  .table {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .table .dayCard {
+    flex: 1;
+    margin: 10px;
+    padding: 15px;
+    background-color: #99ebad; /* Color de fondo verde claro */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    min-width: calc(14% - 20px); /* Para ajustar los siete días con márgenes */
+    box-sizing: border-box;
+  }
+  
+  .dayCard h3 {
+    text-align: center;
+    color: #155724; /* Color de texto verde oscuro */
+    margin-bottom: 10px;
+  }
+  
+  .dayCard .meal {
+    margin-bottom: 10px;
+    text-align: center;
+    padding: 10px;
+    background-color: transparent;
+    border: 1px solid #ddd;
+    /* border-radius: 4px; */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dayCard .meal:last-child {
+    margin-bottom: 0;
+  }
+  
+  .dayCard .meal p {
+    margin: 0;
+    color: #0a0d0b;
+  }
+  
+  /* button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  } */
+  

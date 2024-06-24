@@ -44,7 +44,7 @@ class MenuViewSet(viewsets.ModelViewSet):
     def create_weekly_menu(self, request):
         client_id = request.data.get('id_client')
         if client_id is None:
-            return Response({"detail": "id_cliente parameter is required"}, status=400)
+            return Response({"detail": "id_client parameter is required"}, status=400)
         
         try:
             # Aquí asumes que tienes un método en tu repositorio para obtener un cliente por su ID

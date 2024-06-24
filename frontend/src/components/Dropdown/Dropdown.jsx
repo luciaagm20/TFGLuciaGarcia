@@ -1,4 +1,5 @@
 import Select from "react-select";
+import "./dropdown.css";
 
 const Dropdown = ({
   options,
@@ -10,7 +11,7 @@ const Dropdown = ({
   ...props
 }) => {
   return (
-    <Select
+    <Select className="select"
       isMulti={multipleSelect}
       options={options}
       placeholder={placeholder}

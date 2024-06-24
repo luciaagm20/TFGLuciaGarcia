@@ -4,10 +4,8 @@ import Dropdown from "../Dropdown/Dropdown";
 import Input from "../Input/Input";
 import Navbar from "../Navbar/Navbar";
 import "./profilePage.css";
-import ChangePasswordPage from "../ChangePasswordPage/ChangePasswordPage";
-import Modal from "../Modal/Modal";
 import axios from "axios";
-
+import Button from "../Button/Button";
 
 const genderOptions = [
   { label: "Female", value: "Female" },
@@ -60,7 +58,7 @@ const ProfilePage = ({
 
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  console.log(isAdminUser)
+  console.log("is admin user profile app: " + isAdminUser);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -73,7 +71,7 @@ const ProfilePage = ({
             },
           }
         );
-        console.log("response " + response.data?.username)
+        console.log("response " + response.data?.username);
         setUpdatedName(response.data?.username);
         setUpdatedEmail(response.data?.email);
         setUpdatedPassword(response.data?.email);
@@ -109,28 +107,28 @@ const ProfilePage = ({
 
     fetchData();
     // array vacio (de dependencias) porque solo quiero que se haga cuando se inicialice la página
-  },[])
+  }, []);
 
   const handleSubmitProfile = () => {
     const formData = {
-      "username": updatedName,
-      "email": updatedEmail,
-      "password": updatedPassword,
-      "number_meals": selectedMeals.value,
-      "weight": updatedWeight,
-      "age": updatedAge,
-      "height": updatedHeight,
-      "gender": selectedGender.value,
-      "activity": selectedActivity.value,
-      "goal": selectedGoal.value,
-      "allergies": selectedAllergy.value,
-  }
-  updateProfile(formData)
-  }
+      username: updatedName,
+      email: updatedEmail,
+      password: updatedPassword,
+      number_meals: selectedMeals.value,
+      weight: updatedWeight,
+      age: updatedAge,
+      height: updatedHeight,
+      gender: selectedGender.value,
+      activity: selectedActivity.value,
+      goal: selectedGoal.value,
+      allergies: selectedAllergy.value,
+    };
+    updateProfile(formData);
+  };
 
   const updateProfile = async (formData) => {
     try {
-      console.log(formData)
+      console.log(formData);
       const response = await axios.put(
         `http://localhost:8000/api/clients/${clientId}/`,
         formData,
@@ -140,14 +138,12 @@ const ProfilePage = ({
           },
         }
       );
-     
     } catch (error) {
       console.error("Error al obtener los datos del menú:", error);
       setLoggedIn(false);
       navigate("/");
     }
-  }
-  
+  };
 
   return (
     <>
@@ -184,7 +180,9 @@ const ProfilePage = ({
             type="password"
             placeholder="Type new password"
             required={true}
-            onChange={isAdminUser ? null : (e) => setUpdatedPassword(e.target.value)}
+            onChange={
+              isAdminUser ? null : (e) => setUpdatedPassword(e.target.value)
+            }
             disabled={isAdminUser}
           />
         )}
@@ -195,7 +193,9 @@ const ProfilePage = ({
           placeholder="Type your weight"
           required={true}
           // onChange={setUpdatedWeight}
-          onChange={isAdminUser ? null : (e) => setUpdatedWeight(e.target.value)}
+          onChange={
+            isAdminUser ? null : (e) => setUpdatedWeight(e.target.value)
+          }
         />
         <Input
           label="Age"
@@ -213,7 +213,9 @@ const ProfilePage = ({
           placeholder="Type your height"
           required={true}
           // onChange={setUpdatedHeight}
-          onChange={isAdminUser ? null : (e) => setUpdatedHeight(e.target.value)}
+          onChange={
+            isAdminUser ? null : (e) => setUpdatedHeight(e.target.value)
+          }
         />
         <Dropdown
           options={genderOptions}
@@ -225,7 +227,9 @@ const ProfilePage = ({
         />
         <Dropdown
           options={allergyOptions}
-          onChange={isAdminUser ? null : (selection) => setSelectedAllergy(selection)}
+          onChange={
+            isAdminUser ? null : (selection) => setSelectedAllergy(selection)
+          }
           placeholder="Select allergy"
           multipleSelect={true}
           value={selectedAllergy}
@@ -233,7 +237,9 @@ const ProfilePage = ({
         />
         <Dropdown
           options={mealOptions}
-          onChange={isAdminUser ? null : (selection) => setSelectedMeals(selection)}
+          onChange={
+            isAdminUser ? null : (selection) => setSelectedMeals(selection)
+          }
           placeholder="Select Meals"
           multipleSelect={true}
           value={selectedMeals}
@@ -257,18 +263,34 @@ const ProfilePage = ({
         />
       </div>
       {!isAdminUser && (
-        <button
+        // <button
+        //   onClick={() => {
+        //     handleSubmitProfile();
+        //     const path = generatePath("/client_page/:clientId", { clientId });
+        //     navigate(path);
+        //   }}
+        //   disabled={isAdminUser}
+        // >
+        //   Save changes
+        // </button>
+        <Button
+          value="Save changes"
           onClick={() => {
-            handleSubmitProfile()
-            const path = generatePath("/client_page/:clientId", { clientId })
+            handleSubmitProfile();
+            const path = generatePath("/client_page/:clientId", { clientId });
             navigate(path);
           }}
           disabled={isAdminUser}
-        >
-          Save changes
-        </button>
+        />
       )}
-      <button onClick={() => navigate(-1)}>Finish</button>
+      <Button
+        value="Finish"
+        onClick={() => {
+          navigate(-1);
+          navigate(0);
+        }}
+        disabled={false}
+      />
     </>
   );
 };

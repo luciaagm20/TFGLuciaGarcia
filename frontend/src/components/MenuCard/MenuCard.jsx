@@ -4,8 +4,13 @@ import { useNavigate } from "react-router-dom";
 const MenuCard = ({id, initialDate, finalDate}) => {  
     const navigate = useNavigate();
     return (
-      <div className="menuCard" onClick={() => navigate(`/menu/${id}`)}>
-        <header>{`${initialDate} / ${finalDate}`}</header>
+      <div className="menuContainer">
+        <div className="menuCard" onClick={() => navigate(`/menu/${id}`)}>
+          <div className="dateContainer">
+            <header>{`${initialDate}`}</header>
+            <header>{`${finalDate}`}</header>
+          </div>
+        </div>
       </div>
 
     );

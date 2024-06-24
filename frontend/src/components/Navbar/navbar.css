@@ -1,10 +1,105 @@
-.navbarContainer {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: white;
-    position: fixed;
-    top: 0;
-    padding: 10px;
+/* Variables ========================== */
+/* :root {
+  --font-family: "Open Sans", Helvetica, Arial, sans-serif;
+  --primary: #907dda;
+  --primary-dark: #8473c9; 
+  --accent: #e5e4ea;
+  --font-light: #e7e6f1;
+  --font-dark: #333;
+  --grey: #BDC4D0;
+  --background-light: #F3F4F8;
+  --background-dark: #2F3032;
+  --border-light: #dcdde1; 
+  --border-dark: #28292b; 
+} */
+
+/* Mixins ============================= */
+/* .absolute {
+  position: absolute;
+  top: var(--top);
+  left: var(--left);
+  right: var(--right);
+  bottom: var(--bottom);
+} */
+
+/* .translate {
+  -webkit-transform: translate(var(--x), var(--y));
+  -webkit-transform: translate3d(var(--x), var(--y), 0);
+  -ms-transform: translate(var(--x), var(--y));
+  -ms-transform: translate3d(var(--x), var(--y), 0);
+  transform: translate(var(--x), var(--y));
+  transform: translate3d(var(--x), var(--y), 0);
+} */
+
+/* Base =============================== */
+div, h1, h2, h3, h4, h5, h6, p {
+  font-family: var(--font-family);
+}
+
+html {
+  height: 100%;
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
   }
+}
+
+body {
+  position: relative;
+  min-height: 100%;
+  background: var(--background-dark);
+  box-shadow: inset 0 0 200px rgba(0, 0, 0, 0.1), inset 0 0 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Navbar ============================= */
+.navbar {
+  height: 70px;
+  background: transparent;
+  border: none;
+  transition: background-color 0.3s;
+  will-change: transform;
+}
+
+.navbar.show-color {
+  background: white;
+  box-shadow: 0px 6px 16px -2px rgba(62, 60, 60, 0.3);
+}
+
+.navbar .adminButtons,
+.navbar .regularButtons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar .adminButtons button,
+.navbar .regularButtons button {
+  padding: 10px 20px;
+  margin: 0 5px;
+  margin-top: 20px;
+  border: none;
+  background-color: transparent;
+  color: darkgreen;
+  border: 1px black;
+  font-size: 20px; /* Aumentar el tamaño de la letra */
+  cursor: pointer;
+  background: 0.3s, color 1s;
+}
+
+.navbar .adminButtons button:hover,
+.navbar .regularButtons button:hover {
+  font-weight: bold; /* Cambia el color del texto en hover */
+}
+
+/* .navbar .adminButtons button {
+  color: var(--font-dark); 
+}
+
+.navbar .adminButtons button:hover {
+  color: var(--border-light); 
+} */
+
+/* Modal and other components styling here */

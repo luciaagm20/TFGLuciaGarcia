@@ -2,8 +2,10 @@ import { useState} from "react";
 import { useNavigate } from "react-router-dom"; 
 import Modal from "../Modal/Modal";
 import axios from "axios";
+import "./requestPage.css";
 
 import Input from "../Input/Input";
+import Button from "../Button/Button";
 
 const RequestPage = ({ isOpen, onClose, clientId }) => {
   const [request, setRequest] = useState("");
@@ -49,12 +51,14 @@ const RequestPage = ({ isOpen, onClose, clientId }) => {
           onChange={(e) => setRequest(e.target.value)}
         />
       </div>
-      <button onClick={() => {
+      <Button
+      value="Send Request" 
+      onClick={() => {
         handleRequest()
         onClose()
-      }}>
-        Register
-      </button>
+      }}
+      disabled={false}
+      />
     </Modal>
   );
 };

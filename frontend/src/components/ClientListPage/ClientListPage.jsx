@@ -13,6 +13,7 @@ const ClientListPage = ({
   const [clientsData, setClientsData] = useState(null);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  console.log("is admin user clientPage Admin app: " + isAdminUser)
 
   useEffect(() => {
     const fetchClientsData = async () => {
@@ -33,7 +34,6 @@ const ClientListPage = ({
     fetchClientsData();
   }, [token, setLoggedIn, navigate]);
 
-  console.log(clientsData)
   return (
     <>
       <Navbar

@@ -3,6 +3,7 @@ import "./menuPage.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import Button from "../Button/Button";
 
 const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
   const { id } = useParams();
@@ -17,7 +18,7 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
     const fetchMenuData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/menu/${id}`,
+          `http://localhost:8000/api/menu/${id}/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -26,7 +27,7 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
         );
         // setMenuData(response.data?.[0]);
         console.log(response)
-        setMenuData(response);
+        setMenuData(response.data);
       } catch (error) {
         console.error("Error al obtener los datos del menú:", error);
         setLoggedIn(false);
@@ -133,6 +134,48 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
     return <div>Loading...</div>;
   }
 
+  // return (
+  //   <>
+  //     <Navbar
+  //       isLoggedIn={isLoggedIn}
+  //       setLoggedIn={setLoggedIn}
+  //       isAdminUser={isAdminUser}
+  //       setAdminUser={setAdminUser}
+  //     />
+  //     <div className="menuPageContainer">
+  //       <h1>Weekly Menu</h1>
+  //       <span>{`${menuData?.start_date} - ${menuData?.end_date}`}</span>
+  //       <table>
+  //         <thead>
+  //           <tr>
+  //             <th>Monday</th>
+  //             <th>Tuesday</th>
+  //             <th>Wednesday</th>
+  //             <th>Thursday</th>
+  //             <th>Friday</th>
+  //             <th>Saturday</th>
+  //             <th>Sunday</th>
+  //           </tr>
+  //         </thead>
+  //         <tbody>
+  //           <tr>
+  //             {Object.values(mealData).map((el) => (
+  //               <td>
+  //                 {el.map((mealDay) => (
+  //                   <div>
+  //                     {mealDay.meal} <br />
+  //                     {`${mealDay.food} (${mealDay.calories} kcal)`}
+  //                   </div>
+  //                 ))}
+  //               </td>
+  //             ))}
+  //           </tr>
+  //         </tbody>
+  //       </table>
+  //       <button onClick={downloadPDF}>Descargar Menú Semanal en PDF</button>
+  //     </div>
+  //   </>
+  // );
   return (
     <>
       <Navbar
@@ -141,38 +184,25 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
         isAdminUser={isAdminUser}
         setAdminUser={setAdminUser}
       />
+      <h1>Weekly Menu</h1>
+      <span>{`${menuData?.start_date}`}</span>
+      <span>{`${menuData?.end_date}`}</span>
       <div className="menuPageContainer">
-        <h1>Weekly Menu</h1>
-        <span>{`${menuData?.start_date} - ${menuData?.end_date}`}</span>
-        <table>
-          <thead>
-            <tr>
-              <th>Monday</th>
-              <th>Tuesday</th>
-              <th>Wednesday</th>
-              <th>Thursday</th>
-              <th>Friday</th>
-              <th>Saturday</th>
-              <th>Sunday</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              {Object.values(mealData).map((el) => (
-                <td>
-                  {el.map((mealDay) => (
-                    <div>
-                      {mealDay.meal} <br />
-                      {`${mealDay.food} (${mealDay.calories} kcal)`}
-                    </div>
-                  ))}
-                </td>
+        <div className="table">
+          {Object.keys(mealData).map((day, index) => (
+            <div className="dayCard" key={index}>
+              <h3>{day}</h3>
+              {mealData[day].map((mealDay, idx) => (
+                <div className="meal" key={idx}>
+                  <p><strong>{mealDay.meal}</strong></p>
+                  <p>{`${mealDay.food} (${mealDay.calories} kcal)`}</p>
+                </div>
               ))}
-            </tr>
-          </tbody>
-        </table>
-        <button onClick={downloadPDF}>Descargar Menú Semanal en PDF</button>
+            </div>
+          ))}
+        </div>
       </div>
+      <Button value="Download PDF" onClick={downloadPDF} disabled={false}/>
     </>
   );
 };
