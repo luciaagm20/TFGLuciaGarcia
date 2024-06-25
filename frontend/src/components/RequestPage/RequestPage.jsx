@@ -42,14 +42,18 @@ const RequestPage = ({ isOpen, onClose, clientId }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="formRequest">
-        <Input
-          label="Request"
+        <label htmlFor="Request">Request</label>
+        <textarea 
+          className="textArea"
+          name="request" 
+          id="Request"
           value={request}
-          type="request"
           placeholder="Please, type your request"
           required={true}
           onChange={(e) => setRequest(e.target.value)}
-        />
+        >
+          
+        </textarea>
       </div>
       <Button
       value="Send Request" 

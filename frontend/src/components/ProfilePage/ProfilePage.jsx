@@ -261,18 +261,7 @@ const ProfilePage = ({
           value={selectedActivity}
           label="Activity"
         />
-      </div>
-      {!isAdminUser && (
-        // <button
-        //   onClick={() => {
-        //     handleSubmitProfile();
-        //     const path = generatePath("/client_page/:clientId", { clientId });
-        //     navigate(path);
-        //   }}
-        //   disabled={isAdminUser}
-        // >
-        //   Save changes
-        // </button>
+        {!isAdminUser && (
         <Button
           value="Save changes"
           onClick={() => {
@@ -291,6 +280,8 @@ const ProfilePage = ({
         }}
         disabled={false}
       />
+      </div>
+      
     </>
   );
 };

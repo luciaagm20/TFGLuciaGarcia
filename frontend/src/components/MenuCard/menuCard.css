@@ -37,33 +37,15 @@
   display: flex;
   flex-direction: column;
   align-items: center; /* Centra horizontalmente */
-  justify-content: center; /* Centra verticalmente */
+  justify-content: flex-end; /* Centra verticalmente */
   text-align: center; /* Alinea el texto al centro */
 }
 
-/* .menuCard header {
-  font-weight: bold; 
-  font-size: 25px; 
-  font-family: 'Italic', italic;
-  background-color: white;
-  bottom: 0;
-  position: absolute;
-  text-align: center;
-} */
 
 .menuContainer:hover .menuCard {
   opacity: 0.2;
 }
 
-.menuContainer{
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
-  height: auto;
-  margin-right: 50px;
-  margin-left: 50px;
-  gap: 30px;
-}
 
 
 .dateContainer {
@@ -76,5 +58,6 @@
   border-radius: 0 0 10px 10px; /* Bordes redondeados en la parte inferior */
   padding: 5px 0; /* Espaciado interno */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra opcional */
+  width: 100%;
 }
 

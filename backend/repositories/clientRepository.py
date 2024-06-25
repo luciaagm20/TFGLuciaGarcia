@@ -1,5 +1,4 @@
 from ..models import Client
-from ..exceptions import ClientDoesntExistException
 
 class ClientRepository:
      

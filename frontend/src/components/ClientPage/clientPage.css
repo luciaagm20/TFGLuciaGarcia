@@ -1,2 +1,13 @@
 .clientPageContainer {
-    margin-top: 50px;}
+    margin-top: 50px;
+    background: #e0ffe0;
+    height: 100%;
+}
+
+.menuListContainer {
+    display: flex;
+    gap: 50px;
+    flex-wrap: wrap;
+    padding: 20px 50px;
+    justify-content: center;
+}

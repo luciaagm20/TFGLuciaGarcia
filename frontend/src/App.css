@@ -6,3 +6,50 @@ body {
   padding: 0;
   position: relative;
 }
+
+form {
+  background-color: #ffffff; /* Fondo blanco para el formulario */
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  margin: 0 auto;
+  margin-top: 50px;
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1); /* Sombra suave */
+}
+
+h2 {
+  text-align: center;
+}
+
+label {
+  font-weight: bold;
+  padding-bottom: 10px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+input[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #4CAF50; /* Verde */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: #45a049; /* Verde más oscuro al pasar el cursor */
+}

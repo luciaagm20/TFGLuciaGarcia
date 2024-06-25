@@ -36,30 +36,5 @@ class ClientService:
           client = ClientRepository.update(client_id, username, gender, email, password, weight, age, height, meals, goal, allergies, is_superuser)
           return client
      
-     def create_menu(client):
-          allergies = client.allergies.all() 
-          has_allergy_1 = False
-          has_allergy_2 = False
-          has_allergy_3 = False
-          has_allergy_4 = False
-          has_allergy_5 = False
-
-          for allergy in allergies:
-               if allergy.id == 1:
-                    has_allergy_1 = True
-               if allergy.id == 2:
-                    has_allergy_2 = True
-               if allergy.id == 3:
-                    has_allergy_3 = True
-               if allergy.id == 4:
-                    has_allergy_4 = True
-               if allergy.id == 5:
-                    has_allergy_5 = True
-
-          if has_allergy_2:
-              MenuService.create_weekly_menu_without_lactose(client)
-               
-          elif has_allergy_5:
-               MenuService.create_weekly_menu(client)
      
      

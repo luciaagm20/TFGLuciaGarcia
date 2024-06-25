@@ -11,15 +11,18 @@ const Dropdown = ({
   ...props
 }) => {
   return (
-    <Select className="select"
+    <div className="select">
+      <label htmlFor={label}>{label}</label>
+      <Select 
       isMulti={multipleSelect}
       options={options}
       placeholder={placeholder}
       onChange={onChange}
       value={value}
-      label={label}
       {...props}
     />
+    </div>
+    
   );
 };
 

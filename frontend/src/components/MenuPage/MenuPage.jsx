@@ -26,7 +26,7 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
           }
         );
         // setMenuData(response.data?.[0]);
-        console.log(response)
+        console.log(response);
         setMenuData(response.data);
       } catch (error) {
         console.error("Error al obtener los datos del menú:", error);
@@ -178,31 +178,34 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
   // );
   return (
     <>
-      <Navbar
-        isLoggedIn={isLoggedIn}
-        setLoggedIn={setLoggedIn}
-        isAdminUser={isAdminUser}
-        setAdminUser={setAdminUser}
-      />
-      <h1>Weekly Menu</h1>
-      <span>{`${menuData?.start_date}`}</span>
-      <span>{`${menuData?.end_date}`}</span>
+    <Navbar
+          isLoggedIn={isLoggedIn}
+          setLoggedIn={setLoggedIn}
+          isAdminUser={isAdminUser}
+          setAdminUser={setAdminUser}
+        />
       <div className="menuPageContainer">
+        
+        <h1>Weekly Menu</h1>
+        <span>{`${menuData?.start_date}`}</span>
+        <span>{`${menuData?.end_date}`}</span>
         <div className="table">
           {Object.keys(mealData).map((day, index) => (
             <div className="dayCard" key={index}>
               <h3>{day}</h3>
               {mealData[day].map((mealDay, idx) => (
                 <div className="meal" key={idx}>
-                  <p><strong>{mealDay.meal}</strong></p>
+                  <p>
+                    <strong>{mealDay.meal}</strong>
+                  </p>
                   <p>{`${mealDay.food} (${mealDay.calories} kcal)`}</p>
                 </div>
               ))}
             </div>
           ))}
         </div>
+        <Button value="Download PDF" onClick={downloadPDF} disabled={false} />
       </div>
-      <Button value="Download PDF" onClick={downloadPDF} disabled={false}/>
     </>
   );
 };

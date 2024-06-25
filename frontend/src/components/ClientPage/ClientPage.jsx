@@ -78,18 +78,20 @@ const ClientPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
       <div className="clientPageContainer">
         <h1>Welcome, {clientName}</h1>
         <h2>Weekly Menu</h2>
-        {Boolean(menuData?.length > 0) ? (
-          menuData.map((menuItem) => (
-            <MenuCard
-              key={menuItem.id}
-              id={menuItem.id}
-              initialDate={menuItem.start_date}
-              finalDate={menuItem.end_date}
-            />
-          ))
-        ) : (
-          <p>No hay menús disponibles aún.</p>
-        )}
+        <div className="menuListContainer">
+          {Boolean(menuData?.length > 0) ? (
+            menuData.map((menuItem) => (
+              <MenuCard
+                key={menuItem.id}
+                id={menuItem.id}
+                initialDate={menuItem.start_date}
+                finalDate={menuItem.end_date}
+              />
+            ))
+          ) : (
+            <p>No hay menús disponibles aún.</p>
+          )}
+        </div>
         <RequestPage isOpen={requestModalOpen} onClose={() => setRequestModalOpen(false)} clientId={clientId}/>
       </div>
     </>

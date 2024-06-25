@@ -4,23 +4,16 @@
 .formRequest {
   background: transparent;
   width: 360px;
-  margin: 0 auto 100px;
-  padding: 45px; 
+  padding: 34px; 
   text-align: center;
-  margin-top: 0;
-  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
 }
-/* .Input {
-  font-family: "Roboto", sans-serif;
-  outline: 0;
-  background: #baf072;
-  width: 100%;
-  border: 0;
-  margin: 0 0 15px;
-  padding: 15px;
-  box-sizing: border-box;
-  font-size: 14px;
-  margin-left: 10px;
-} */
+
+.textArea {
+  min-height: 150px;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 10px;
+}
 
 

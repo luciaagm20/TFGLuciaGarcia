@@ -8,8 +8,6 @@ class MenuService:
      def create_weekly_menu(cliente):
           return MenuRepository.create_weekly_menu(cliente)
      
-     def create_weekly_menu_without_lactose(cliente):
-          return MenuRepository.create_weekly_menu_without_lactose(cliente)
 
      def listMenu():
           return MenuRepository.listMenu()

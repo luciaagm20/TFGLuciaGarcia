@@ -71,7 +71,6 @@ const FoodListPage = ({
 
   const handleFilterByGroupName = async (groupName) => {
     try {
-      debugger;
       const url = groupName
         ? `http://localhost:8000/api/food/filter-by-group-name/?group_name=${encodeURIComponent(
             groupName
@@ -100,8 +99,8 @@ const FoodListPage = ({
         <Dropdown
           options={groupOptions}
           onChange={(selected) => {
-            setSelectedGroup(selected)
-            handleFilterByGroupName(selected.value)
+            setSelectedGroup(selected);
+            handleFilterByGroupName(selected.value);
           }}
           placeholder="All"
           multipleSelect={false}
@@ -131,45 +130,48 @@ const FoodListPage = ({
           />
         )}
         <h2>List of food database</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Food name</th>
-              <th>Group name - code</th>
-              <th>Subgroup name - code</th>
-            </tr>
-          </thead>
-          <tbody>
-            {foodData?.map((data) => (
-              <tr key={data.id}>
-                <td>{data.food_name}</td>
-                <td>
-                  {data.group_name} - {data.group_code}
-                </td>
-                <td>
-                  {data.subgroup_name} - {data.subgroup_code}
-                </td>
-                <td>
-                  <Button
-                    value="More Info"
-                    onClick={() => navigate(`/info_food/${data.id}`)}
-                    disabled={false}
-                  />
-                  {/* <a href={`/info_food/${data.id}`} className="btn btn-primary">
+        <div className="foodTableContainer">
+          <table className="foodTable">
+            <thead>
+              <tr>
+                <th>Food name</th>
+                <th>Group name - code</th>
+                <th>Subgroup name - code</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {foodData?.map((data) => (
+                <tr key={data.id}>
+                  <td>{data.food_name}</td>
+                  <td>
+                    {data.group_name} - {data.group_code}
+                  </td>
+                  <td>
+                    {data.subgroup_name} - {data.subgroup_code}
+                  </td>
+                  <td>
+                    <Button
+                      value="More Info"
+                      onClick={() => navigate(`/info_food/${data.id}`)}
+                      disabled={false}
+                    />
+                    {/* <a href={`/info_food/${data.id}`} className="btn btn-primary">
                     More Info
                   </a> */}
-                  {isAdminUser && (
-                    <Button
-                      value="Delete"
-                      onClick={() => handleDelete(data.id)}
-                      disabled={!isAdminUser}
-                    />
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                    {isAdminUser && (
+                      <Button
+                        value="Delete"
+                        onClick={() => handleDelete(data.id)}
+                        disabled={!isAdminUser}
+                      />
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
       <Modal
         isOpen={postFoodModalOpen}
