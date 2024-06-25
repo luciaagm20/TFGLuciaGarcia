@@ -5,6 +5,7 @@ import Input from "../Input/Input";
 import Navbar from "../Navbar/Navbar";
 import "./foodInfoPage.css";
 import axios from "axios";
+import Button from "../Button/Button";
 
 const groupOptions = [
   { label: "starters and dishes", value: "starters and dishes", code: 1 },
@@ -28,65 +29,86 @@ const groupOptions = [
 ];
 const subGroupOptions = {
   "starters and dishes": [
-    { label: "mixed salads", value: "mixed salads", code: 101  },
-    { label: "soups", value: "soups", code: 102  },
-    { label: "dishes", value: "dishes", code: 103  },
-    { label: "pizzas, crepe and pies", value: "pizzas, crepe and pies", code: 104  },
-    { label: "sandwiches", value: "sandwiches", code: 105  },
+    { label: "mixed salads", value: "mixed salads", code: 101 },
+    { label: "soups", value: "soups", code: 102 },
+    { label: "dishes", value: "dishes", code: 103 },
+    {
+      label: "pizzas, crepe and pies",
+      value: "pizzas, crepe and pies",
+      code: 104,
+    },
+    { label: "sandwiches", value: "sandwiches", code: 105 },
     {
       label: "savoury pastries and other starters",
-      value: "savoury pastries and other starters", code: 106 
+      value: "savoury pastries and other starters",
+      code: 106,
     },
   ],
   "fruits, vegetables, legumes and nuts": [
-    { label: "vegetables", value: "vegetables", code: 201  },
-    { label: "potatoes and other tubers", value: "potatoes and other tubers", code: 202  },
-    { label: "legumes", value: "legumes", code: 203  },
-    { label: "fruits", value: "fruits", code: 204  },
-    { label: "nuts and seeds", value: "nuts and seeds", code: 205  },
+    { label: "vegetables", value: "vegetables", code: 201 },
+    {
+      label: "potatoes and other tubers",
+      value: "potatoes and other tubers",
+      code: 202,
+    },
+    { label: "legumes", value: "legumes", code: 203 },
+    { label: "fruits", value: "fruits", code: 204 },
+    { label: "nuts and seeds", value: "nuts and seeds", code: 205 },
   ],
   "cereal products": [
-    { label: "pasta, rice and grains", value: "pasta, rice and grains", code: 301  },
-    { label: "breads and similar", value: "breads and similar", code: 302  },
-    { label: "savoury biscuits", value: "savoury biscuits", code: 303  },
+    {
+      label: "pasta, rice and grains",
+      value: "pasta, rice and grains",
+      code: 301,
+    },
+    { label: "breads and similar", value: "breads and similar", code: 302 },
+    { label: "savoury biscuits", value: "savoury biscuits", code: 303 },
   ],
   "meat, egg and fish": [
-    { label: "cooked meat", value: "cooked meat", code: 401  },
-    { label: "raw meat", value: "raw meat", code: 402  },
+    { label: "cooked meat", value: "cooked meat", code: 401 },
+    { label: "raw meat", value: "raw meat", code: 402 },
     {
       label: "delicatessen meat and similar",
-      value: "delicatessen meat and similar", code: 403 
+      value: "delicatessen meat and similar",
+      code: 403,
     },
-    { label: "other meat products", value: "other meat products", code: 404  },
-    { label: "fish, cooked", value: "fish, cooked", code: 405  },
+    { label: "other meat products", value: "other meat products", code: 404 },
+    { label: "fish, cooked", value: "fish, cooked", code: 405 },
     { label: "seafood, cooked", value: "seafood, cooked", code: 407 },
     { label: "seafood, raw", value: "seafood, raw", code: 408 },
-    { label: "fish products", value: "fish products", code: 409  },
+    { label: "fish products", value: "fish products", code: 409 },
     { label: "eggs", value: "eggs", code: 410 },
     { label: "meat substitute", value: "meat substitute", code: 411 },
   ],
   "milk and milk products": [
-    { label: "milk", value: "milk", code: 501  },
+    { label: "milk", value: "milk", code: 501 },
     {
       label: "dairy products and similar",
-      value: "dairy products and similar", code: 502
+      value: "dairy products and similar",
+      code: 502,
     },
     { label: "cheese and similar", value: "cheese and similar", code: 503 },
     { label: "cream and similar", value: "cream and similar", code: 504 },
   ],
   beverages: [
-    { label: "non-alcoholic beverages", value: "non-alcoholic beverages", code: 602 },
+    {
+      label: "non-alcoholic beverages",
+      value: "non-alcoholic beverages",
+      code: 602,
+    },
     { label: "alcoholic beverages", value: "alcoholic beverages", code: 603 },
   ],
   "sugar and confectionery": [
     { label: "sugars and honey", value: "sugars and honey", code: 701 },
     {
       label: "chocolate and chocolate products",
-      value: "chocolate and chocolate products", code: 702
+      value: "chocolate and chocolate products",
+      code: 702,
     },
     {
       label: "non-chocolate confectionery",
-      value: "non-chocolate confectionery", code: 703
+      value: "non-chocolate confectionery",
+      code: 703,
     },
     { label: "jam", value: "jam", code: 704 },
     { label: "Viennese pastries", value: "Viennese pastries", code: 705 },
@@ -97,29 +119,34 @@ const subGroupOptions = {
   ],
   "ice cream and sorbet": [
     { label: "ice cream", value: "ice cream", code: 801 },
-    { label: "sorbet", value: "sorbet", code: 802  },
-    { label: "frozen desserts", value: "frozen desserts", code: 803  },
+    { label: "sorbet", value: "sorbet", code: 802 },
+    { label: "frozen desserts", value: "frozen desserts", code: 803 },
   ],
   "fats and oils": [
-    { label: "butters", value: "butters", code: 901  },
-    { label: "vegetable oils", value: "vegetable oils", code: 902  },
-    { label: "margarines", value: "margarines", code: 903  },
+    { label: "butters", value: "butters", code: 901 },
+    { label: "vegetable oils", value: "vegetable oils", code: 902 },
+    { label: "margarines", value: "margarines", code: 903 },
     { label: "fish oils", value: "fish oils", code: 904 },
-    { label: "other fats", value: "other fats", code: 905  },
+    { label: "other fats", value: "other fats", code: 905 },
   ],
-  "miscellaneous": [
-    { label: "sauces", value: "sauces", code: 1001  },
+  miscellaneous: [
+    { label: "sauces", value: "sauces", code: 1001 },
     { label: "condiments", value: "condiments", code: 1002 },
-    { label: "cooking aids", value: "cooking aids", code: 1003  },
-    { label: "salts", value: "salts", code: 1004  },
-    { label: "spices", value: "spices", code: 1005  },
-    { label: "herbs", value: "herbs", code: 1006  },
-    { label: "seaweed", value: "seaweed", code: 1007  },
+    { label: "cooking aids", value: "cooking aids", code: 1003 },
+    { label: "salts", value: "salts", code: 1004 },
+    { label: "spices", value: "spices", code: 1005 },
+    { label: "herbs", value: "herbs", code: 1006 },
+    { label: "seaweed", value: "seaweed", code: 1007 },
     {
       label: "foods for particular nutritional uses",
-      value: "foods for particular nutritional uses", code: 1008 
+      value: "foods for particular nutritional uses",
+      code: 1008,
     },
-    { label: "miscellaneous ingredients", value: "miscellaneous ingredients", code: 1009  },
+    {
+      label: "miscellaneous ingredients",
+      value: "miscellaneous ingredients",
+      code: 1009,
+    },
   ],
 };
 
@@ -246,7 +273,7 @@ const FoodInfoPage = ({
         isAdminUser={isAdminUser}
         setAdminUser={setAdminUser}
       />
-      <div className="formWrapper">
+      <div className="foodInfoWrapper">
         <Input
           label="Food name"
           value={updatedFoodName}
@@ -343,13 +370,10 @@ const FoodInfoPage = ({
         <Dropdown
           options={groupOptions}
           onChange={(selected) => {
-            setSelectedGroup(selected)
-            setSelectedSubGroup(subGroupOptions[selectedGroup?.value])
-            setUpdatedGroupCode(selected?.code)
+            setSelectedGroup(selected);
+            setSelectedSubGroup(subGroupOptions[selectedGroup?.value]);
+            setUpdatedGroupCode(selected?.code);
           }}
-          //   onChange={() => {
-          //     handleGroupChange()
-          //   }}
           placeholder="Select group"
           multipleSelect={false}
           value={selectedGroup}
@@ -358,26 +382,34 @@ const FoodInfoPage = ({
 
         <Dropdown
           options={subGroupOptions[selectedGroup?.value]}
-          // onChange={setSelectedSubGroup}
           onChange={(selected) => {
-            setSelectedSubGroup(selected)
-            setUpdatedSubgroupCode(selected?.code)
+            setSelectedSubGroup(selected);
+            setUpdatedSubgroupCode(selected?.code);
           }}
           placeholder="Select subgroup"
           multipleSelect={false}
           value={selectedSubGroup}
           label="Subgroup"
         />
+        <div className="buttons">
+          <Button
+            value="Save changes"
+            onClick={() => {
+              handleSubmitFood();
+              navigate("/list_food");
+            }}
+            disabled={!isAdminUser}
+          />
+          <Button
+            value="Cancel"
+            onClick={() => {
+              navigate(-1);
+              navigate(0);
+            }}
+            disabled={false}
+          />
+        </div>
       </div>
-      <button
-        onClick={() => {
-          // TODO: Send post with updated info
-          handleSubmitFood();
-          navigate("/list_food");
-        }}
-      >
-        Save changes
-      </button>
     </>
   );
 };

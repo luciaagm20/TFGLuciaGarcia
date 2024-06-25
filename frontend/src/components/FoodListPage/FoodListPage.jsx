@@ -151,21 +151,20 @@ const FoodListPage = ({
                     {data.subgroup_name} - {data.subgroup_code}
                   </td>
                   <td>
-                    <Button
-                      value="More Info"
-                      onClick={() => navigate(`/info_food/${data.id}`)}
-                      disabled={false}
-                    />
-                    {/* <a href={`/info_food/${data.id}`} className="btn btn-primary">
-                    More Info
-                  </a> */}
-                    {isAdminUser && (
+                    <div>
                       <Button
-                        value="Delete"
-                        onClick={() => handleDelete(data.id)}
-                        disabled={!isAdminUser}
+                        value="More Info"
+                        onClick={() => navigate(`/info_food/${data.id}`)}
+                        disabled={false}
                       />
-                    )}
+                      {isAdminUser && (
+                        <Button
+                          value="Delete"
+                          onClick={() => handleDelete(data.id)}
+                          disabled={!isAdminUser}
+                        />
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}

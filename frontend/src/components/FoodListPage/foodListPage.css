@@ -1,17 +1,25 @@
-/* clientListPage.css */
 
 .foodListPageContainer {
     padding: 20px;
   }
   
 .foodTableContainer {
-  max-height: calc(100vh - 250px);
+  max-height: calc(100vh - 300px);
   overflow: auto;
 }
  
  .foodTable th{
   background: #45a049;
+  color: white;
+  height: 30px;
  } 
+
+ .foodTable tbody tr:nth-child(odd) {
+  background: #fff5e0;
+}
+.foodTable tbody tr:nth-child(even) {
+  background: #d4f2be;
+}
 
  .foodTable > tbody > tr > td:first-child {
   width: 45%;
@@ -19,12 +27,16 @@
  .foodTable > tbody > tr > td:not(first-child) {
   width: 20%;
  }
- .foodTable > tbody > tr > td:last-child {
-  width: 15%;
+ .foodTable > tbody > tr > td:last-child > div:first-child {
+  width: 100%;
+  display: flex;
+  gap: 8px;
  }
+ .foodTable > tbody > tr > td:last-child > div:first-child  > div{
+  flex-basis: 50%;
+ }
+
  .foodTable .button {
-    
-       margin: 0 ;
-      width: 100%;
-  
- }
+  margin-top: 0;
+  width: 100%;
+}

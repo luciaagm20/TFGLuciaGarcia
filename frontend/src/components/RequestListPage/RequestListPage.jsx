@@ -3,6 +3,7 @@ import "./requestListPage.css";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Button from "../Button/Button";
 
 const RequestListPage = ({
   isLoggedIn,
@@ -57,36 +58,39 @@ const RequestListPage = ({
       />
       <div className="requestListPageContainer">
         <h2>List of requests</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>User id</th>
-              <th>Text</th>
-            </tr>
-          </thead>
-          <tbody>
-            {requestData?.map((data) => (
-              <tr key={data.id}>
-                <td>{data.client_id}</td>
-                <td>{data.text}</td>
-                <td>
-                  <a
-                    href={`/profile/${data.client_id}`}
-                    className="btn btn-primary"
-                  >
-                    Profile
-                  </a>
-                  <button
-                    onClick={() => handleDelete(data.id)}
-                    className="btn btn-danger"
-                  >
-                    Delete
-                  </button>
-                </td>
+        <div className="requestListContainer">
+          <table className="requestList">
+            <thead>
+              <tr>
+                <th>User id</th>
+                <th>Text</th>
+                <th></th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {requestData?.map((data) => (
+                <tr key={data.id}>
+                  <td>{data.client_id}</td>
+                  <td>{data.text}</td>
+                  <td>
+                    <div>
+                      <Button
+                        value="Profile"
+                        onClick={() => navigate(`/profile/${data.client_id}`)}
+                        disabled={false}
+                      />
+                      <Button
+                        value="Delete"
+                        onClick={() => handleDelete(data.id)}
+                        disabled={false}
+                      />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </>
   );

@@ -273,7 +273,7 @@ const ProfilePage = ({
         />
       )}
       <Button
-        value="Finish"
+        value="Cancel"
         onClick={() => {
           navigate(-1);
           navigate(0);

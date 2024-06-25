@@ -1,15 +1,15 @@
 .landingPageContainer {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     min-height: 100vh;
     background-color: #e0ffe0; /* Fondo verde clarito */
     font-family: Arial, sans-serif; 
+    z-index: 1;
 }
 
 .subtitle {
+    text-align: center;
+}
+
+.landingPageLogo {
+    width: 100%;
     text-align: center;
 }

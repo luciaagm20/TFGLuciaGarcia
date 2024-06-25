@@ -5,7 +5,12 @@ import RegistrationPage from "../RegistrationPage/RegistrationPage";
 import logo from "../../images/logo.png";
 import "./landingPage.css";
 
-const LandingPage = ({ isLoggedIn, setLoggedIn, setAdminUser, isAdminUser }) => {
+const LandingPage = ({
+  isLoggedIn,
+  setLoggedIn,
+  setAdminUser,
+  isAdminUser,
+}) => {
   const [signUpModalOpen, setSignUpModalOpen] = useState(false);
 
   return (
@@ -18,12 +23,17 @@ const LandingPage = ({ isLoggedIn, setLoggedIn, setAdminUser, isAdminUser }) => 
         isAdminUser={isAdminUser}
         setAdminUser={setAdminUser}
       />
-      <img src={logo} alt="logo" />
+      <div className="landingPageLogo">
+        <img src={logo} alt="logo" />
+      </div>
       <p className="subtitle">
         We create healthy weekly menus exclusively for you based on your
         preferences and needs.
       </p>
-      <RegistrationPage isOpen={signUpModalOpen} onClose={() => setSignUpModalOpen(false)} />
+      <RegistrationPage
+        isOpen={signUpModalOpen}
+        onClose={() => setSignUpModalOpen(false)}
+      />
     </div>
   );
 };

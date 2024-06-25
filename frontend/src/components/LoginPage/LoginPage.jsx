@@ -68,7 +68,6 @@ const LoginPage = ({ setLoggedIn, setAdminUser }) => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
-        <box-icon name='user'></box-icon>
       </div>
       <label htmlFor="password">Password</label>
       <div className="input-box">
@@ -81,12 +80,7 @@ const LoginPage = ({ setLoggedIn, setAdminUser }) => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <box-icon type='solid' name='lock'></box-icon>
       </div>
-      {/* <button type="submit" className="btn">Login</button> */}
-      {/* <button className="loginButton" onClick={handleLogin}>
-        Login
-      </button>  */}
       <Button value="Login" onClick={handleLogin} disabled={false} />
     </div>
   );

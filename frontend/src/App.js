@@ -129,13 +129,23 @@ function App() {
           <Route
             path="/register_food"
             element={
-              <AddFoodPage  />
+              <AddFoodPage  
+              isLoggedIn={isLoggedIn}
+              setLoggedIn={setLoggedIn}
+              isAdminUser={isAdminUser}
+              setAdminUser={setAdminUser}
+              />
             }
           />
           <Route
-            path="//list_requests"
+            path="/list_requests"
             element={
-              <RequestListPage  />
+              <RequestListPage  
+              isLoggedIn={isLoggedIn}
+              setLoggedIn={setLoggedIn}
+              isAdminUser={isAdminUser}
+              setAdminUser={setAdminUser}
+              />
             }
           />
           <Route
@@ -146,12 +156,6 @@ function App() {
                 isAdminUser={isAdminUser}
                 setAdminUser={setAdminUser}
               />
-            }
-          />
-          <Route
-            path="/request"
-            element={
-              <RegistrationPage />
             }
           />
           
