@@ -7,6 +7,8 @@ import AddFoodPage from "../AddFoodPage/AddFoodPage";
 import Modal from "../Modal/Modal";
 import Button from "../Button/Button";
 import Dropdown from "../Dropdown/Dropdown";
+import RequestPage from "../RequestPage/RequestPage";
+
 
 const groupOptions = [
   { label: "starters and dishes", value: "starters and dishes" },
@@ -30,11 +32,17 @@ const FoodListPage = ({
   isAdminUser,
   setAdminUser,
 }) => {
+  const [requestModalOpen, setRequestModalOpen] = useState(false);
+  const [signUpModalOpen, setSignUpModalOpen] = useState(false);
   const [foodData, setFoodData] = useState(null);
   const [postFoodModalOpen, setPostFoodModalOpen] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState("");
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const clientId = localStorage.getItem("clientId");
+
+  console.log(token)
+  console.log("food list page id cliente: " + clientId)
 
   useEffect(() => {
     const fetchFoodData = async () => {
@@ -92,8 +100,13 @@ const FoodListPage = ({
       <Navbar
         isLoggedIn={isLoggedIn}
         setLoggedIn={setLoggedIn}
+        signUpModalOpen={signUpModalOpen}
+        setSignUpModalOpen={setSignUpModalOpen}
+        requestModalOpen={requestModalOpen}
+        setRequestModalOpen={setRequestModalOpen}
         isAdminUser={isAdminUser}
         setAdminUser={setAdminUser}
+        clientId={clientId}
       />
       <div className="foodListPageContainer">
         <Dropdown
@@ -178,6 +191,7 @@ const FoodListPage = ({
       >
         <AddFoodPage />
       </Modal>
+      <RequestPage isOpen={requestModalOpen} onClose={() => setRequestModalOpen(false)} clientId={clientId}/>
     </>
   );
 };

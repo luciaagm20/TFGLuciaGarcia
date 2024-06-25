@@ -6,6 +6,8 @@ import Navbar from "../Navbar/Navbar";
 import "./profilePage.css";
 import axios from "axios";
 import Button from "../Button/Button";
+import RequestPage from "../RequestPage/RequestPage";
+import Modal from "../Modal/Modal";
 
 const genderOptions = [
   { label: "Female", value: "Female" },
@@ -43,6 +45,8 @@ const ProfilePage = ({
   setAdminUser,
 }) => {
   const { clientId } = useParams();
+  const [requestModalOpen, setRequestModalOpen] = useState(false);
+  const [signUpModalOpen, setSignUpModalOpen] = useState(false);
   const [updatedName, setUpdatedName] = useState("");
   const [updatedEmail, setUpdatedEmail] = useState("");
   const [updatedPassword, setUpdatedPassword] = useState("");
@@ -150,8 +154,13 @@ const ProfilePage = ({
       <Navbar
         isLoggedIn={isLoggedIn}
         setLoggedIn={setLoggedIn}
+        signUpModalOpen={signUpModalOpen}
+        setSignUpModalOpen={setSignUpModalOpen}
+        requestModalOpen={requestModalOpen}
+        setRequestModalOpen={setRequestModalOpen}
         isAdminUser={isAdminUser}
         setAdminUser={setAdminUser}
+        clientId={clientId}
       />
       <div className="formWrapper">
         <Input
@@ -276,10 +285,10 @@ const ProfilePage = ({
         value="Cancel"
         onClick={() => {
           navigate(-1);
-          navigate(0);
         }}
         disabled={false}
       />
+      <RequestPage isOpen={requestModalOpen} onClose={() => setRequestModalOpen(false)} clientId={clientId}/>
       </div>
       
     </>

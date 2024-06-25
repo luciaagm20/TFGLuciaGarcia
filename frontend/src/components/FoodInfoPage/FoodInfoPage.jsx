@@ -404,7 +404,6 @@ const FoodInfoPage = ({
             value="Cancel"
             onClick={() => {
               navigate(-1);
-              navigate(0);
             }}
             disabled={false}
           />

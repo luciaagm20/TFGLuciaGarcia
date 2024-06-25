@@ -18,6 +18,8 @@ const Navbar = ({
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const navigate = useNavigate();
 
+  console.log(clientId)
+
   return (
     <nav className="navbar">
       {isAdminUser && (
@@ -35,10 +37,10 @@ const Navbar = ({
             if (!isLoggedIn) {
               setLoginModalOpen(!loginModalOpen);
             } else {
-              setLoggedIn(!isLoggedIn);
-              setAdminUser(!isAdminUser);
-              localStorage.clear();
-              navigate("/");
+                setLoggedIn(false);
+                setAdminUser(false);
+                localStorage.clear();
+                navigate("/");
             }
           }}
         >
@@ -55,6 +57,16 @@ const Navbar = ({
               }}
             >
               Profile
+            </button>
+            <button
+              onClick={() => {
+                const path = generatePath("/client_page/:clientId", {
+                  clientId: clientId,
+                });
+                navigate(path);
+              }}
+            >
+              Menu Page
             </button>
             <button onClick={() => setRequestModalOpen(!requestModalOpen)}>
               Add request

@@ -20,13 +20,10 @@ axios.defaults.withCredentials = true;
 
 
 function App() {
-  const patata = localStorage.getItem("is_admin")
-  const petete = Boolean(localStorage.getItem("token"))
-  const [isLoggedIn, setLoggedIn] = useState(petete);
-  const [isAdminUser, setAdminUser] = useState(patata);
-  
-  console.log("is admin user app: " + isAdminUser)
-
+  const admin = localStorage.getItem("is_admin")
+  const token = Boolean(localStorage.getItem("token"))
+  const [isLoggedIn, setLoggedIn] = useState(token);
+  const [isAdminUser, setAdminUser] = useState(admin);
 
   return (
     <>

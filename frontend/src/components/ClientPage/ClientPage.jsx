@@ -17,6 +17,7 @@ const ClientPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
   const [requestModalOpen, setRequestModalOpen] = useState(false);
 
   console.log("is admin user clientPage app: " + isAdminUser)
+  console.log("clientId en clientPage: " + clientId)
 
   useEffect(() => {
     const fetchData = async () => {

@@ -64,7 +64,6 @@ const ClientListPage = ({
             </thead>
             <tbody>
               {clientsData?.map((data) => {
-                console.log(data.allergies)
                 return (
                   <tr key={data.id}>
                     <td>{data.email}</td>

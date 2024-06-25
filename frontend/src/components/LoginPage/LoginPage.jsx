@@ -20,6 +20,11 @@ const LoginPage = ({ setLoggedIn, setAdminUser }) => {
         clientId = client_id;
         token = access;
         localStorage.setItem("token", access);
+        localStorage.setItem("clientId", client_id);
+
+        // console.log("login " + clientId)
+        // console.log(localStorage.getItem("token"))
+        // console.log(localStorage.getItem("clientId"))
 
         if (clientId) setLoggedIn(true);
 
@@ -32,6 +37,9 @@ const LoginPage = ({ setLoggedIn, setAdminUser }) => {
             if (is_superuser) {
               localStorage.setItem("is_admin", true);
               setAdminUser(true);
+            }
+            else {
+              setAdminUser(false)
             }
 
             if (is_superuser) {
