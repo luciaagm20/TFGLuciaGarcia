@@ -18,10 +18,9 @@ Este proyecto es una aplicación web desarrollada con Django y React. Fue inicia
 
 Asegúrate de tener instalados los siguientes programas:
 
-- Python 3.9+
+### `Python 3.9+`
     Para verificar la versión de Python que tienes instalada, ejecuta:
-  ```bash
-    python --version
+        ```python --version 
     Para descargar Python sigue estos pasos: 
     - En Windows:
         1. Descarga el instalador desde [python.org](https://www.python.org/)
