@@ -1,18 +1,19 @@
 # HealthyMenu
 
-Este proyecto es una aplicación web desarrollada con Django y React. Fue iniciada con [Create React App](https://github.com/facebook/create-react-app).
+Este proyecto es una aplicación web desarrollada con Django y React. 
 
 ## Descripción del Proyecto
 
 
 ## Tecnologías Utilizadas
 
+- Python
 - Django
 - React
 - SQLite3
-- Otros (bibliotecas, herramientas, etc.)
 - Node.js
 - npm
+- Otros (bibliotecas, herramientas, etc.)
 
 ## Requisitos Previos e instalación
 
