@@ -19,9 +19,9 @@ Este proyecto es una aplicación web desarrollada con Django y React. Fue inicia
 Asegúrate de tener instalados los siguientes programas:
 
 ### `Python 3.9+`
-    Para verificar la versión de Python que tienes instalada, ejecuta:
-        ```python --version 
-    Para descargar Python sigue estos pasos: 
+- Para verificar la versión de Python que tienes instalada, ejecuta:
+    python --version 
+- Para descargar Python sigue estos pasos: 
     - En Windows:
         1. Descarga el instalador desde [python.org](https://www.python.org/)
         2. Ejecuta el instalador y asegúrate de marcar la opción "Add Python to PATH".
@@ -33,26 +33,21 @@ Asegúrate de tener instalados los siguientes programas:
         3. Configura la versión globalmente:
             pyenv global 3.9.10
 
-
-- Django 4.2+
-    Para verificar la versión de Django que tienes instalada, ejecuta:
-  ```bash
+### `Django 4.2+`
+- Para verificar la versión de Django que tienes instalada, ejecuta:
     django-admin --version
-    Para descargar una versión específica de Django: pip install Django==4.2.8
+- Para descargar una versión específica de Django: pip install Django==4.2.8
 
-
-- npm 10.2+
-    Para verificar la versión de npm que tienes instalada, ejecuta:
-    ```bash
-        npm --version
-    Para descargar una versión específica de npm:
+### `npm 10.2+`
+- Para verificar la versión de npm que tienes instalada, ejecuta:
+    npm --version
+- Para descargar una versión específica de npm:
     Normalmente npm viene empaquetado con la versión de Node.js correspondiente cuando esta se descarga. Por lo tanto, solo es necesaria la descarga de Node.js.
 
-- nvm
-    Para verificar la versión de npm que tienes instalada, ejecuta:
-    ```bash
-        nvm version
-    Para descargar nvm:
+### `nvm`
+- Para verificar la versión de npm que tienes instalada, ejecuta:
+    nvm version
+- Para descargar nvm:
     - En Windows:
         1. Visita el repositorio de GitHub de [nvm-windows] (https://github.com/coreybutler/nvm-windows/releases) y descarga el instalador más reciente (archivo .zip o .exe).
         2. Sigue las instrucciones del instalador para completar la instalación. Asegúrate de seleccionar la opción para "Instalar Node.js" durante el proceso de instalación.
@@ -61,12 +56,10 @@ Asegúrate de tener instalados los siguientes programas:
             curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
         2. Es posible que necesites cerrar y abrir nuevamente la terminal para que puedan producirse los cambios.
 
-
-- Node.js 21.4+
-    Para verificar la versión de Node.js que tienes instalada, ejecuta:
-    ```bash
-        node --version
-    Para descargar una versión específica de Node.js:
+### `Node.js 21.4+`
+- Para verificar la versión de Node.js que tienes instalada, ejecuta:
+    node --version
+- Para descargar una versión específica de Node.js:
     - En Windows: 
         1. Descarga nvm como se ha especificado anteriormente.
         2. Instala la versión específica de Node.js ejecutando el siguiente comando: nvm install 21.4.0
@@ -90,8 +83,8 @@ Asegúrate de tener instalados los siguientes programas:
         3. Ejecuta el instalador descargado y sigue las instrucciones del asistente de instalación para completar la instalación de Node.js versión 21.4.0 en tu sistema.
 
 
+### `SQLite3`
 
-- SQLite3
 
 
 ### Backend (Django)
