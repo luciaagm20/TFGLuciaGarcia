@@ -20,40 +20,40 @@ Asegúrate de tener instalados los siguientes programas:
 
 ### `Python 3.9+`
 - Para verificar la versión de Python que tienes instalada, ejecuta:
-    python --version 
+    `python --version` 
 - Para descargar Python sigue estos pasos: 
     - En Windows:
         1. Descarga el instalador desde [python.org](https://www.python.org/)
         2. Ejecuta el instalador y asegúrate de marcar la opción "Add Python to PATH".
     - En macOS o Linux:
         1. Usa pyenv para gestionar versiones de Python:
-            curl https://pyenv.run | bash
+            `curl https://pyenv.run | bash`
         2. Instala Python 3.9.10 o 3.9+:
-            pyenv install 3.9.10
+            `pyenv install 3.9.10`
         3. Configura la versión globalmente:
-            pyenv global 3.9.10
+            `pyenv global 3.9.10`
 
 ### `Django 4.2+`
 - Para verificar la versión de Django que tienes instalada, ejecuta:
-    django-admin --version
-- Para descargar una versión específica de Django: pip install Django==4.2.8
+    `django-admin --version`
+- Para descargar una versión específica de Django: `pip install Django==4.2.8`
 
 ### `npm 10.2+`
 - Para verificar la versión de npm que tienes instalada, ejecuta:
-    npm --version
+    `npm --version`
 - Para descargar una versión específica de npm:
     Normalmente npm viene empaquetado con la versión de Node.js correspondiente cuando esta se descarga. Por lo tanto, solo es necesaria la descarga de Node.js.
 
 ### `nvm`
 - Para verificar la versión de npm que tienes instalada, ejecuta:
-    nvm version
+    `nvm version`
 - Para descargar nvm:
     - En Windows:
         1. Visita el repositorio de GitHub de [nvm-windows] (https://github.com/coreybutler/nvm-windows/releases) y descarga el instalador más reciente (archivo .zip o .exe).
         2. Sigue las instrucciones del instalador para completar la instalación. Asegúrate de seleccionar la opción para "Instalar Node.js" durante el proceso de instalación.
     - En macOS o Linux:
         1. Instalar nvm con el siguiente comando:
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+            `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash`
         2. Es posible que necesites cerrar y abrir nuevamente la terminal para que puedan producirse los cambios.
 
 ### `Node.js 21.4+`
@@ -62,8 +62,8 @@ Asegúrate de tener instalados los siguientes programas:
 - Para descargar una versión específica de Node.js:
     - En Windows: 
         1. Descarga nvm como se ha especificado anteriormente.
-        2. Instala la versión específica de Node.js ejecutando el siguiente comando: nvm install 21.4.0
-        3. Usa la versión instalada en el proyecto: nvm use 21.4.0
+        2. Instala la versión específica de Node.js ejecutando el siguiente comando: `nvm install 21.4.0`
+        3. Usa la versión instalada en el proyecto: `nvm use 21.4.0`
 
         Otra forma de obtenerlo: 
 
@@ -73,8 +73,8 @@ Asegúrate de tener instalados los siguientes programas:
 
     - En macOS o Linux:
         1. Descarga nvm como se ha especificado anteriormente.
-        2. Instala la versión específica de Node.js ejecutando el siguiente comando: nvm install 21.4.0
-        3. Usa la versión instalada en el proyecto: nvm use 21.4.0
+        2. Instala la versión específica de Node.js ejecutando el siguiente comando: `nvm install 21.4.0`
+        3. Usa la versión instalada en el proyecto: `nvm use 21.4.0`
 
         Otra forma de obtenerlo:
 
