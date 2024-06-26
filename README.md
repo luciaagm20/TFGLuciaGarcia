@@ -102,7 +102,7 @@ Para poder ejecutar correctamente el proyecto de React, se deben instalar alguna
 
 ### Base de datos
 Para visualizar la base de datos del proyecto, puede instalarse una extension de VSC con el ID `alexcvzz.vscode-sqlite`.
-Una vez instalada, en la barra de búsqueda se debe escribir: `>SQLite: Open Database` y seleccionar la base de datos 'prueba.db'. 
+Una vez instalada, en la barra de búsqueda se debe escribir: `>SQLite: Open Database` y seleccionar la base de datos 'sqlite3.db'. 
 
 ## Ejecución del código
 
