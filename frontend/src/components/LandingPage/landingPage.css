@@ -1,15 +1,68 @@
+
 .landingPageContainer {
     min-height: 100vh;
-    background-color: #e0ffe0; /* Fondo verde clarito */
+    /* background-color: #e0ffe0;  */
     font-family: Arial, sans-serif; 
     z-index: 1;
+    background: linear-gradient(200deg,#e0ffe0,rgb(164, 227, 92),rgb(63, 148, 63),rgb(108, 156, 71));
+	background-size: 400% 400%;
+	position: relative;
+	animation: cambiar 10s ease-in-out infinite;
 }
-
 .subtitle {
     text-align: center;
+    font-size: 20px;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
 }
 
 .landingPageLogo {
     width: 100%;
     text-align: center;
 }
+
+.landingPageContainer ul{
+    list-style-type: none;
+    text-align: center;
+    font-size: 25px;
+    font-family:Georgia, 'Times New Roman', Times, serif
+}
+
+.landingPageContainer > ul > li > a {
+    color: black;
+}
+
+.section {
+    padding: 4%;
+    text-align: center;
+}
+
+.text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.text .content {
+    text-align: left;
+}
+.text > img{
+    max-width: 30%;
+    max-height: 5%;
+    text-align: right;
+
+}
+
+.text .imageContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 10px; 
+    margin-left: 20px;
+    margin-bottom: 5%;
+}
+
+.text .imageContainer > img {
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); 
+
+}
+

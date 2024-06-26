@@ -3,7 +3,8 @@
 /* Navbar ============================= */
 .navbar {
   height: 70px;
-  background: #e0ffe0;
+  /* background: #e0ffe0; */
+  background: transparent;
   border: none;
   transition: background-color 0.3s;
   will-change: transform;
