@@ -1,15 +1,14 @@
 import csv
-from itertools import product
 import sqlite3 as sql
 
 
 def crearBD():
-    con = sql.connect("prueba.db")
+    con = sql.connect("sqlite3.db")
     con.commit();
     con.close();
 
 def meterCSV():
-    con = sql.connect("prueba.db")
+    con = sql.connect("sqlite3.db")
     cur = con.cursor()
     with open('ciqual_comas.csv', newline='') as csvfile:
         reader = csv.reader(csvfile, delimiter=';')
@@ -23,7 +22,7 @@ def meterCSV():
     con.close()
 
 def columnaLactosa():
-    con = sql.connect("prueba.db")
+    con = sql.connect("sqlite3.db")
     cur = con.cursor()
     # cur.execute(
     #     """ALTER TABLE backend_food
@@ -43,7 +42,7 @@ def columnaLactosa():
     con.close()
 
 def columnaMarisco():
-    con = sql.connect("prueba.db")
+    con = sql.connect("sqlite3.db")
     cur = con.cursor()
     # cur.execute(
     #     """ALTER TABLE backend_food
@@ -63,7 +62,7 @@ def columnaMarisco():
     con.close()
 
 def columnaHuevo():
-    con = sql.connect("prueba.db")
+    con = sql.connect("sqlite3.db")
     cur = con.cursor()
     # cur.execute(
     #     """ALTER TABLE backend_food
@@ -84,14 +83,14 @@ def columnaHuevo():
 
 
 def borrarTabla():
-    con = sql.connect("prueba.db")
+    con = sql.connect("sqlite3.db")
     cur = con.cursor()
     cur.execute("DELETE FROM backend_food")
     con.commit()
     con.close()
 
 def meterAlergias():
-    con = sql.connect("prueba.db")
+    con = sql.connect("sqlite3.db")
     cur = con.cursor()
     allergies = [
         ('Celiac disease',),
@@ -105,7 +104,7 @@ def meterAlergias():
     con.close()
 
 def meterComidas():
-    con = sql.connect("prueba.db")
+    con = sql.connect("sqlite3.db")
     cur = con.cursor()
     name_meal = [
         ('Breakfast',),
@@ -126,5 +125,3 @@ columnaMarisco()
 columnaHuevo()
 meterAlergias()
 meterComidas()
-# borrarTabla()
-# INSERT INTO backend_double_food SELECT ... FROM backend_food INNER JOIN backend_food
