@@ -51,6 +51,7 @@ Asegúrate de tener instalados los siguientes programas:
     - En Windows:
         1. Visita el repositorio de GitHub de [nvm-windows] (https://github.com/coreybutler/nvm-windows/releases) y descarga el instalador más reciente (archivo .zip o .exe).
         2. Sigue las instrucciones del instalador para completar la instalación. Asegúrate de seleccionar la opción para "Instalar Node.js" durante el proceso de instalación.
+        3. Es posible que necesites cerrar y abrir nuevamente la terminal para que puedan producirse los cambios.
     - En macOS o Linux:
         1. Instalar nvm con el siguiente comando:
             `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash`
@@ -85,7 +86,23 @@ Asegúrate de tener instalados los siguientes programas:
 
 ### `SQLite3`
 
+## Modulos y bibliotecas
 
+### Backend
+Para poder ejecutar correctamente el proyecto de Django, se deben instalar algunas dependencias escribiendo los siguientes comandos:
+    `pip install djangorestframework`
+    `pip install djangorestframework-simplejwt`
+    `pip install django-cors-headers`
+    `pip install reportlab`
+
+### Frontend
+Para poder ejecutar correctamente el proyecto de React, se deben instalar algunas dependencias y bibliotecas que han sido utilizadas para desarrollar el proyecto. Estas dependencias se ejecutan automáticamente siguiendo los siguientes pasos:
+1. Abre una terminal en Visual Studio Code y posicionate en la carpeta frontend con el comando: `cd ./frontend`
+2. Instala las dependencias con el siguiente comando: `npm install para intalar las dependencias`
+
+### Base de datos
+Para visualizar la base de datos del proyecto, puede instalarse una extension de VSC con el ID `alexcvzz.vscode-sqlite`.
+Una vez instalada, en la barra de búsqueda se debe escribir: `>SQLite: Open Database` y seleccionar la base de datos 'prueba.db'. 
 
 ## Ejecución del código
 
