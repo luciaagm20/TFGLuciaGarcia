@@ -1,6 +1,4 @@
 
-
-/* Navbar ============================= */
 .navbar {
   height: 70px;
   /* background: #e0ffe0; */
@@ -33,22 +31,13 @@
   background-color: transparent;
   color: darkgreen;
   border: 1px black;
-  font-size: 20px; /* Aumentar el tamaño de la letra */
+  font-size: 15px; 
   cursor: pointer;
   background: 0.3s, color 1s;
 }
 
 .navbar .adminButtons button:hover,
 .navbar .regularButtons button:hover {
-  font-weight: bold; /* Cambia el color del texto en hover */
+  font-weight: bold; 
 }
 
-/* .navbar .adminButtons button {
-  color: var(--font-dark); 
-}
-
-.navbar .adminButtons button:hover {
-  color: var(--border-light); 
-} */
-
-/* Modal and other components styling here */

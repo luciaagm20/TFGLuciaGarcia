@@ -4,15 +4,24 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../Button/Button";
+import ErrorMessagePage from "../ErrorMessage/ErrorMessagePage";
+
 
 const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
   const { id } = useParams();
   const [menuData, setMenuData] = useState(null);
   const [mealData, setMealData] = useState({});
-  // const [foodData, setFoodData] = useState({});
+
+  const [requestModalOpen, setRequestModalOpen] = useState(false);
+  const [signUpModalOpen, setSignUpModalOpen] = useState(false);
+  const [errorDownloadModalOpen, setErrorDownloadModalOpen] = useState(false);
+  const [errorMenuModalOpen, setErrorMenuModalOpen] = useState(false);
+
 
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const clientId = localStorage.getItem("clientId");
+
 
   useEffect(() => {
     const fetchMenuData = async () => {
@@ -25,8 +34,6 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
             },
           }
         );
-        // setMenuData(response.data?.[0]);
-        console.log(response);
         setMenuData(response.data);
       } catch (error) {
         console.error("Error al obtener los datos del menú:", error);
@@ -51,8 +58,7 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
         setMealData(mealsByDay);
       } catch (error) {
         console.error("Error al obtener los datos del menú:", error);
-        setLoggedIn(false);
-        navigate("/login");
+        setErrorMenuModalOpen(true)
       }
     };
 
@@ -66,7 +72,6 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
         const weekFoodIds = week.map((day) => day.food);
         return [...acc, ...weekFoodIds];
       }, []);
-      console.log("food_ids", food_ids, mealData);
       const fetchFoodData = async () => {
         try {
           const response = await axios.post(
@@ -94,8 +99,8 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
           setMealData(formattedMealData);
         } catch (error) {
           console.error("Error al obtener los datos del menú:", error);
-          setLoggedIn(false);
-          navigate("/");
+          setErrorMenuModalOpen(true)
+
         }
       };
 
@@ -121,12 +126,11 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
         link.href = url;
         link.setAttribute("download", `weekly_menu_${id}.pdf`);
         document.body.appendChild(link);
-        // Simular un clic en el enlace para iniciar la descarga
         link.click();
       })
       .catch((error) => {
         console.error("Error al descargar el menú en PDF:", error);
-        // Manejar errores si es necesario
+        setErrorDownloadModalOpen(true)
       });
   };
 
@@ -134,56 +138,33 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
     return <div>Loading...</div>;
   }
 
-  // return (
-  //   <>
-  //     <Navbar
-  //       isLoggedIn={isLoggedIn}
-  //       setLoggedIn={setLoggedIn}
-  //       isAdminUser={isAdminUser}
-  //       setAdminUser={setAdminUser}
-  //     />
-  //     <div className="menuPageContainer">
-  //       <h1>Weekly Menu</h1>
-  //       <span>{`${menuData?.start_date} - ${menuData?.end_date}`}</span>
-  //       <table>
-  //         <thead>
-  //           <tr>
-  //             <th>Monday</th>
-  //             <th>Tuesday</th>
-  //             <th>Wednesday</th>
-  //             <th>Thursday</th>
-  //             <th>Friday</th>
-  //             <th>Saturday</th>
-  //             <th>Sunday</th>
-  //           </tr>
-  //         </thead>
-  //         <tbody>
-  //           <tr>
-  //             {Object.values(mealData).map((el) => (
-  //               <td>
-  //                 {el.map((mealDay) => (
-  //                   <div>
-  //                     {mealDay.meal} <br />
-  //                     {`${mealDay.food} (${mealDay.calories} kcal)`}
-  //                   </div>
-  //                 ))}
-  //               </td>
-  //             ))}
-  //           </tr>
-  //         </tbody>
-  //       </table>
-  //       <button onClick={downloadPDF}>Descargar Menú Semanal en PDF</button>
-  //     </div>
-  //   </>
-  // );
   return (
     <>
     <Navbar
-          isLoggedIn={isLoggedIn}
-          setLoggedIn={setLoggedIn}
-          isAdminUser={isAdminUser}
-          setAdminUser={setAdminUser}
+        isLoggedIn={isLoggedIn}
+        setLoggedIn={setLoggedIn}
+        signUpModalOpen={signUpModalOpen}
+        setSignUpModalOpen={setSignUpModalOpen}
+        requestModalOpen={requestModalOpen}
+        setRequestModalOpen={setRequestModalOpen}
+        isAdminUser={isAdminUser}
+        setAdminUser={setAdminUser}
+        clientId={clientId}
+      />
+      {errorMenuModalOpen && (
+        <ErrorMessagePage
+          isOpen={errorMenuModalOpen}
+          onClose={() => setErrorMenuModalOpen(false)}
+          message={"Oops! It seems there was an error loading the menu. Please, try again."}
         />
+      )}
+      {errorDownloadModalOpen && (
+        <ErrorMessagePage
+          isOpen={errorDownloadModalOpen}
+          onClose={() => setErrorDownloadModalOpen(false)}
+          message={"Oops! It seems there was an error loading the PDF. Please, try again."}
+        />
+      )}
       <div className="menuPageContainer">
         
         <h1>Weekly Menu</h1>

@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import RequestPage from "../RequestPage/RequestPage";
+import ErrorMessagePage from "../ErrorMessage/ErrorMessagePage";
 
 
 const ClientPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
@@ -15,9 +16,9 @@ const ClientPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
   const token = localStorage.getItem("token");
   const [signUpModalOpen, setSignUpModalOpen] = useState(false);
   const [requestModalOpen, setRequestModalOpen] = useState(false);
+  const [errorClientModalOpen, setErrorClientModalOpen] = useState(false);
+  const [errorMenuModalOpen, setErrorMenuModalOpen] = useState(false);
 
-  console.log("is admin user clientPage app: " + isAdminUser)
-  console.log("clientId en clientPage: " + clientId)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,6 +34,7 @@ const ClientPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
         setClientName(response.data?.username);
       } catch (error) {
         console.error("Error al obtener los datos del cliente:", error);
+        setErrorClientModalOpen(true);
         setLoggedIn(false);
         navigate("/login");
       }
@@ -55,8 +57,7 @@ const ClientPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
         setMenuData(response.data);
       } catch (error) {
         console.error("Error al obtener los datos de los menus:", error);
-        setLoggedIn(false);
-        navigate("/");
+        setErrorMenuModalOpen(true);
       }
     };
 
@@ -76,6 +77,20 @@ const ClientPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
         setAdminUser={setAdminUser}
         clientId={clientId}
       />
+      {errorClientModalOpen && (
+        <ErrorMessagePage
+          isOpen={errorClientModalOpen}
+          onClose={() => setErrorClientModalOpen(false)}
+          message={"Error loading user data."}
+        />
+      )}
+      {errorMenuModalOpen && (
+        <ErrorMessagePage
+          isOpen={errorMenuModalOpen}
+          onClose={() => setErrorMenuModalOpen(false)}
+          message={"Error loading menu data."}
+        />
+      )}
       <div className="clientPageContainer">
         <h1>Welcome, {clientName}</h1>
         <h2>Weekly Menu</h2>

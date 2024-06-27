@@ -12,24 +12,16 @@ def meterCSV():
     cur = con.cursor()
     with open('ciqual_comas.csv', newline='') as csvfile:
         reader = csv.reader(csvfile, delimiter=';')
-        next(reader)  # Omitir la primera fila si contiene encabezados de columna
+        next(reader)  
         for row in reader:
-            # Generar la consulta SQL para insertar esta fila en la tabla
             cur.execute("INSERT INTO backend_food VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", row)
 
-    # Confirmar la inserción y cerrar la conexión
     con.commit()
     con.close()
 
 def columnaLactosa():
     con = sql.connect("sqlite3.db")
     cur = con.cursor()
-    # cur.execute(
-    #     """ALTER TABLE backend_food
-    #     ADD COLUMN has_lactose BOOLEAN
-    #     """
-    # )
-    # Actualizar los valores de la nueva columna basados en otra columna
     cur.execute(
         """UPDATE backend_food
         SET has_lactose = CASE
@@ -44,12 +36,6 @@ def columnaLactosa():
 def columnaMarisco():
     con = sql.connect("sqlite3.db")
     cur = con.cursor()
-    # cur.execute(
-    #     """ALTER TABLE backend_food
-    #     ADD COLUMN has_seafood INTEGER
-    #     """
-    # )
-    # Actualizar los valores de la nueva columna basados en otra columna
     cur.execute(
         """UPDATE backend_food
         SET has_seafood = CASE
@@ -64,12 +50,6 @@ def columnaMarisco():
 def columnaHuevo():
     con = sql.connect("sqlite3.db")
     cur = con.cursor()
-    # cur.execute(
-    #     """ALTER TABLE backend_food
-    #     ADD COLUMN has_egg INTEGER
-    #     """
-    # )
-    # Actualizar los valores de la nueva columna basados en otra columna
     cur.execute(
         """UPDATE backend_food
         SET has_egg = CASE

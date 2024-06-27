@@ -196,7 +196,6 @@ const AddFoodPage = ({
 
   const handleRegistration = async (foodData) => {
     try {
-      console.log(foodData);
       const response = await axios.post(
         "http://localhost:8000/api/food/",
         foodData,
@@ -206,7 +205,7 @@ const AddFoodPage = ({
           },
         }
       );
-      console.log("Alimento registrado con éxito:", response.data);
+      console.log("Alimento registrado con éxito")
     } catch (error) {
       console.error("Error al registrar el alimento:", error);
       navigate("/");

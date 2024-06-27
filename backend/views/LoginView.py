@@ -8,16 +8,12 @@ class MyTokenObtainPairView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data.get('user')
 
-        # Obtener el ID del cliente asociado con el usuario autenticado
-        # client_id = user.id
-        
-        # Generar el token de acceso
+        user = serializer.validated_data.get('user')
         token = serializer.validated_data.get('access')
         id = serializer.validated_data.get('client_id')
 
         return Response({
             'access': str(token),
-            'client_id': id,  # Devolver el ID del cliente en la respuesta
+            'client_id': id,  
         })

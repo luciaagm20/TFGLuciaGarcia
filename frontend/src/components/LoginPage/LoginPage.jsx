@@ -3,10 +3,12 @@ import { generatePath, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./loginPage.css";
 import Button from "../Button/Button";
+import ErrorMessagePage from "../ErrorMessage/ErrorMessagePage";
 
 const LoginPage = ({ setLoggedIn, setAdminUser }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -22,10 +24,6 @@ const LoginPage = ({ setLoggedIn, setAdminUser }) => {
         localStorage.setItem("token", access);
         localStorage.setItem("clientId", client_id);
 
-        // console.log("login " + clientId)
-        // console.log(localStorage.getItem("token"))
-        // console.log(localStorage.getItem("clientId"))
-
         if (clientId) setLoggedIn(true);
 
         axios
@@ -37,9 +35,8 @@ const LoginPage = ({ setLoggedIn, setAdminUser }) => {
             if (is_superuser) {
               localStorage.setItem("is_admin", true);
               setAdminUser(true);
-            }
-            else {
-              setAdminUser(false)
+            } else {
+              setAdminUser(false);
             }
 
             if (is_superuser) {
@@ -58,39 +55,48 @@ const LoginPage = ({ setLoggedIn, setAdminUser }) => {
       })
       .catch((error) => {
         console.error("Error al iniciar sesión:", error);
-        alert("Usuario o contraseña incorrectos");
+        setErrorModalOpen(true);
       });
   };
 
   return (
-    <div className="loginPageContainer">
-      <h2>Login</h2>
-      <label htmlFor="username">Username</label>
-      <div className="input-box">
-        <input
-          type="text"
-          placeholder="Username"
-          id="username"
-          name="username"
-          required
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+    <>
+      {errorModalOpen && (
+        <ErrorMessagePage
+          isOpen={errorModalOpen}
+          onClose={() => setErrorModalOpen(false)}
+          message={"Incorrect user or password"}
         />
+      )}
+      <div className="loginPageContainer">
+        <h2>Login</h2>
+        <label htmlFor="username">Username</label>
+        <div className="input-box">
+          <input
+            type="text"
+            placeholder="Username"
+            id="username"
+            name="username"
+            required
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
+        <label htmlFor="password">Password</label>
+        <div className="input-box">
+          <input
+            type="password"
+            placeholder="Password"
+            id="password"
+            name="password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <Button value="Login" onClick={handleLogin} disabled={false} />
       </div>
-      <label htmlFor="password">Password</label>
-      <div className="input-box">
-        <input
-          type="password"
-          placeholder="Password"
-          id="password"
-          name="password"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      <Button value="Login" onClick={handleLogin} disabled={false} />
-    </div>
+    </>
   );
 };
 

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Button from "../Button/Button";
+import ErrorMessagePage from "../ErrorMessage/ErrorMessagePage";
 
 const RequestListPage = ({
   isLoggedIn,
@@ -12,6 +13,10 @@ const RequestListPage = ({
   setAdminUser,
 }) => {
   const [requestData, setRequestData] = useState(null);
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
+  const [errorDeleteModalOpen, setErrorDeleteModalOpen] = useState(false);
+
+
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
@@ -25,9 +30,8 @@ const RequestListPage = ({
         });
         setRequestData(response.data);
       } catch (error) {
-        console.error("Error al obtener los datos de los clientes:", error);
-        setLoggedIn(false);
-        navigate("/login");
+        console.error("Error al obtener los datos de las solicitudes:", error);
+        setErrorModalOpen(true);
       }
     };
 
@@ -45,6 +49,7 @@ const RequestListPage = ({
       setRequestData(requestData.filter((request) => request.id !== requestId));
     } catch (error) {
       console.error("Error al eliminar:", error);
+      setErrorDeleteModalOpen(true);
     }
   };
 
@@ -56,6 +61,20 @@ const RequestListPage = ({
         isAdminUser={isAdminUser}
         setAdminUser={setAdminUser}
       />
+      {errorModalOpen && (
+        <ErrorMessagePage
+          isOpen={errorModalOpen}
+          onClose={() => setErrorModalOpen(false)}
+          message={"Error loading requests"}
+        />
+      )}
+      {errorDeleteModalOpen && (
+        <ErrorMessagePage
+          isOpen={errorDeleteModalOpen}
+          onClose={() => setErrorDeleteModalOpen(false)}
+          message={"Error deleting the request. Please, try again."}
+        />
+      )}
       <div className="requestListPageContainer">
         <h2>List of requests</h2>
         <div className="requestListContainer">

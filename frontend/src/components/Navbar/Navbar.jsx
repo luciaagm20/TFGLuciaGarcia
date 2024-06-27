@@ -18,8 +18,6 @@ const Navbar = ({
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const navigate = useNavigate();
 
-  console.log(clientId)
-
   return (
     <nav className="navbar">
       {isAdminUser && (

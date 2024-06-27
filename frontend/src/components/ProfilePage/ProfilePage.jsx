@@ -7,7 +7,8 @@ import "./profilePage.css";
 import axios from "axios";
 import Button from "../Button/Button";
 import RequestPage from "../RequestPage/RequestPage";
-import Modal from "../Modal/Modal";
+import ErrorMessagePage from "../ErrorMessage/ErrorMessagePage";
+
 
 const genderOptions = [
   { label: "Female", value: "Female" },
@@ -45,6 +46,9 @@ const ProfilePage = ({
   setAdminUser,
 }) => {
   const { clientId } = useParams();
+  const [errorDataModalOpen, setErrorDataModalOpen] = useState(false);
+  const [errorUpdateModalOpen, setErrorUpdateModalOpen] = useState(false);
+
   const [requestModalOpen, setRequestModalOpen] = useState(false);
   const [signUpModalOpen, setSignUpModalOpen] = useState(false);
   const [updatedName, setUpdatedName] = useState("");
@@ -62,7 +66,6 @@ const ProfilePage = ({
 
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  console.log("is admin user profile app: " + isAdminUser);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,7 +78,6 @@ const ProfilePage = ({
             },
           }
         );
-        console.log("response " + response.data?.username);
         setUpdatedName(response.data?.username);
         setUpdatedEmail(response.data?.email);
         setUpdatedPassword(response.data?.email);
@@ -104,8 +106,9 @@ const ProfilePage = ({
         });
       } catch (error) {
         console.error("Error al obtener los datos del cliente:", error);
-        setLoggedIn(false);
-        navigate("/login");
+        // setLoggedIn(false);
+        // navigate("/login");
+        setErrorDataModalOpen(true);
       }
     };
 
@@ -132,7 +135,6 @@ const ProfilePage = ({
 
   const updateProfile = async (formData) => {
     try {
-      console.log(formData);
       const response = await axios.put(
         `http://localhost:8000/api/clients/${clientId}/`,
         formData,
@@ -143,9 +145,9 @@ const ProfilePage = ({
         }
       );
     } catch (error) {
-      console.error("Error al obtener los datos del menú:", error);
-      setLoggedIn(false);
-      navigate("/");
+      console.error("Error al actualizar los datos del cliente:", error);
+      setErrorUpdateModalOpen(true);
+
     }
   };
 
@@ -162,6 +164,20 @@ const ProfilePage = ({
         setAdminUser={setAdminUser}
         clientId={clientId}
       />
+      {errorDataModalOpen && (
+        <ErrorMessagePage
+          isOpen={errorDataModalOpen}
+          onClose={() => setErrorDataModalOpen(false)}
+          message={"Oops! It seems there was an issue loading your data. Please try again"}
+        />
+      )}
+      {errorUpdateModalOpen && (
+        <ErrorMessagePage
+          isOpen={errorUpdateModalOpen}
+          onClose={() => setErrorUpdateModalOpen(false)}
+          message={"Oops! It seems there was an issue updating your data. Please try again"}
+        />
+      )}
       <div className="formWrapper">
         <Input
           label="Name"
@@ -212,7 +228,6 @@ const ProfilePage = ({
           type="number"
           placeholder="Type your age"
           required={true}
-          // onChange={setUpdatedAge}
           onChange={isAdminUser ? null : (e) => setUpdatedAge(e.target.value)}
         />
         <Input
@@ -221,7 +236,6 @@ const ProfilePage = ({
           type="number"
           placeholder="Type your height"
           required={true}
-          // onChange={setUpdatedHeight}
           onChange={
             isAdminUser ? null : (e) => setUpdatedHeight(e.target.value)
           }

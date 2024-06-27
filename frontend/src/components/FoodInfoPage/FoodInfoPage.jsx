@@ -6,6 +6,7 @@ import Navbar from "../Navbar/Navbar";
 import "./foodInfoPage.css";
 import axios from "axios";
 import Button from "../Button/Button";
+import ErrorMessagePage from "../ErrorMessage/ErrorMessagePage";
 
 const groupOptions = [
   { label: "starters and dishes", value: "starters and dishes", code: 1 },
@@ -157,6 +158,9 @@ const FoodInfoPage = ({
   setAdminUser,
 }) => {
   const { foodId } = useParams();
+  const [errorGetModalOpen, setErrorGetModalOpen] = useState(false);
+  const [errorUpdateModalOpen, setErrorUpdateModalOpen] = useState(false);
+
   const [updatedFoodName, setUpdatedFoodName] = useState("");
   const [updatedWater, setUpdatedWater] = useState(0);
   const [updatedProtein, setUpdatedProtein] = useState(0);
@@ -186,7 +190,6 @@ const FoodInfoPage = ({
             },
           }
         );
-        console.log("response " + response.data?.water);
         setUpdatedFoodName(response.data?.food_name);
         setUpdatedWater(response.data?.water);
         setUpdatedProtein(response.data?.protein);
@@ -211,21 +214,14 @@ const FoodInfoPage = ({
           },
         ]);
       } catch (error) {
-        console.error("Error al obtener los datos del cliente:", error);
-        setLoggedIn(false);
-        navigate("/login");
+        console.error("Error al obtener los datos del alimento:", error);
+        setErrorGetModalOpen(true);
       }
     };
 
     fetchData();
     // array vacio (de dependencias) porque solo quiero que se haga cuando se inicialice la página
   }, []);
-
-  //   const handleGroupChange = (selectedGroup) => {
-  //     setSelectedGroup(selectedGroup)
-  //     setSelectedSubGroup(null);
-  //     setUpdatedGroupCode(selectedGroup.code);
-  //   };
 
   const handleSubmitFood = () => {
     const formData = {
@@ -248,7 +244,6 @@ const FoodInfoPage = ({
 
   const updateFood = async (formData) => {
     try {
-      console.log(formData);
       const response = await axios.put(
         `http://localhost:8000/api/food/${foodId}/`,
         formData,
@@ -260,8 +255,7 @@ const FoodInfoPage = ({
       );
     } catch (error) {
       console.error("Error al modificar los datos:", error);
-      setLoggedIn(false);
-      navigate("/");
+      setErrorUpdateModalOpen(true);
     }
   };
 
@@ -273,6 +267,21 @@ const FoodInfoPage = ({
         isAdminUser={isAdminUser}
         setAdminUser={setAdminUser}
       />
+
+      {errorGetModalOpen && (
+        <ErrorMessagePage
+          isOpen={errorGetModalOpen}
+          onClose={() => setErrorGetModalOpen(false)}
+          message={"Error retrieving food data. Please, try again."}
+        />
+      )}
+      {errorUpdateModalOpen && (
+        <ErrorMessagePage
+          isOpen={errorUpdateModalOpen}
+          onClose={() => setErrorUpdateModalOpen(false)}
+          message={"Error modifying food data. Please, try again."}
+        />
+      )}
       <div className="foodInfoWrapper">
         <Input
           label="Food name"
@@ -280,8 +289,7 @@ const FoodInfoPage = ({
           type="text"
           placeholder="Food name"
           required={true}
-          // onChange={setUpdatedName}
-          onChange={(e) => setUpdatedFoodName(e.target.value)}
+          onChange={!isAdminUser ? null : (e) => setUpdatedFoodName(e.target.value)}
         />
         <Input
           label="Water"
@@ -289,8 +297,7 @@ const FoodInfoPage = ({
           type="number"
           placeholder="Water"
           required={true}
-          // onChange={setUpdatedEmail}
-          onChange={(e) => setUpdatedWater(e.target.value)}
+          onChange={!isAdminUser ? null : (e) => setUpdatedWater(e.target.value)}
         />
         <Input
           label="Protein"
@@ -298,8 +305,8 @@ const FoodInfoPage = ({
           type="number"
           placeholder="Protein"
           required={true}
-          // onChange={setUpdatedWeight}
-          onChange={(e) => setUpdatedProtein(e.target.value)}
+          onChange={!isAdminUser ? null : (e) => setUpdatedProtein(e.target.value)}
+
         />
         <Input
           label="Carbohidrates"
@@ -307,8 +314,8 @@ const FoodInfoPage = ({
           type="number"
           placeholder="Carbohidrates"
           required={true}
-          // onChange={setUpdatedAge}
-          onChange={(e) => setUpdatedCarbohidrates(e.target.value)}
+          onChange={!isAdminUser ? null : (e) => setUpdatedCarbohidrates(e.target.value)}
+
         />
         <Input
           label="Fats"
@@ -316,8 +323,8 @@ const FoodInfoPage = ({
           type="number"
           placeholder="Fats"
           required={true}
-          // onChange={setUpdatedHeight}
-          onChange={(e) => setUpdatedFats(e.target.value)}
+          onChange={!isAdminUser ? null : (e) => setUpdatedFats(e.target.value)}
+
         />
         <Input
           label="Sugars"
@@ -325,8 +332,8 @@ const FoodInfoPage = ({
           type="number"
           placeholder="Sugars"
           required={true}
-          // onChange={setUpdatedHeight}
-          onChange={(e) => setUpdatedSugars(e.target.value)}
+          onChange={!isAdminUser ? null : (e) => setUpdatedSugars(e.target.value)}
+
         />
         <Input
           label="Glucose"
@@ -334,8 +341,8 @@ const FoodInfoPage = ({
           type="number"
           placeholder="Glucose"
           required={true}
-          // onChange={setUpdatedHeight}
-          onChange={(e) => setUpdatedGlucose(e.target.value)}
+          onChange={!isAdminUser ? null : (e) => setUpdatedGlucose(e.target.value)}
+
         />
         <Input
           label="Lactose"
@@ -343,8 +350,8 @@ const FoodInfoPage = ({
           type="number"
           placeholder="Lactose"
           required={true}
-          // onChange={setUpdatedHeight}
-          onChange={(e) => setUpdatedLactose(e.target.value)}
+          onChange={!isAdminUser ? null : (e) => setUpdatedLactose(e.target.value)}
+
         />
         <Input
           label="Group code"
@@ -353,8 +360,6 @@ const FoodInfoPage = ({
           placeholder="Group code"
           required={true}
           disabled={true}
-          // onChange={setUpdatedHeight}
-          // onChange={(e) => setUpdatedGroupCode(e.target.value)}
         />
 
         <Input
@@ -364,12 +369,10 @@ const FoodInfoPage = ({
           placeholder="Subgroup code"
           required={true}
           disabled={true}
-          // onChange={setUpdatedHeight}
-          // onChange={(e) => setUpdatedSubgroupCode(e.target.value)}
         />
         <Dropdown
           options={groupOptions}
-          onChange={(selected) => {
+          onChange={!isAdminUser ? null : (selected) => {
             setSelectedGroup(selected);
             setSelectedSubGroup(subGroupOptions[selectedGroup?.value]);
             setUpdatedGroupCode(selected?.code);
@@ -382,7 +385,7 @@ const FoodInfoPage = ({
 
         <Dropdown
           options={subGroupOptions[selectedGroup?.value]}
-          onChange={(selected) => {
+          onChange={!isAdminUser ? null : (selected) => {
             setSelectedSubGroup(selected);
             setUpdatedSubgroupCode(selected?.code);
           }}
@@ -392,14 +395,17 @@ const FoodInfoPage = ({
           label="Subgroup"
         />
         <div className="buttons">
-          <Button
-            value="Save changes"
-            onClick={() => {
-              handleSubmitFood();
-              navigate("/list_food");
-            }}
-            disabled={!isAdminUser}
-          />
+          {isAdminUser && (
+            <Button
+              value="Save changes"
+              onClick={() => {
+                handleSubmitFood();
+                navigate("/list_food");
+              }}
+              disabled={!isAdminUser}
+            />
+          )}
+
           <Button
             value="Cancel"
             onClick={() => {

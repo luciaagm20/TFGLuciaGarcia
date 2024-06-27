@@ -8,7 +8,7 @@ import Modal from "../Modal/Modal";
 import Button from "../Button/Button";
 import Dropdown from "../Dropdown/Dropdown";
 import RequestPage from "../RequestPage/RequestPage";
-
+import ErrorMessagePage from "../ErrorMessage/ErrorMessagePage";
 
 const groupOptions = [
   { label: "starters and dishes", value: "starters and dishes" },
@@ -34,6 +34,10 @@ const FoodListPage = ({
 }) => {
   const [requestModalOpen, setRequestModalOpen] = useState(false);
   const [signUpModalOpen, setSignUpModalOpen] = useState(false);
+  const [errorFoodModalOpen, setErrorFoodModalOpen] = useState(false);
+  const [errorDeleteModalOpen, setErrorDeleteModalOpen] = useState(false);
+  const [errorFilterModalOpen, setErrorFilterModalOpen] = useState(false);
+
   const [foodData, setFoodData] = useState(null);
   const [postFoodModalOpen, setPostFoodModalOpen] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState("");
@@ -41,8 +45,6 @@ const FoodListPage = ({
   const token = localStorage.getItem("token");
   const clientId = localStorage.getItem("clientId");
 
-  console.log(token)
-  console.log("food list page id cliente: " + clientId)
 
   useEffect(() => {
     const fetchFoodData = async () => {
@@ -55,8 +57,7 @@ const FoodListPage = ({
         setFoodData(response.data);
       } catch (error) {
         console.error("Error al obtener los datos de los alimentos:", error);
-        setLoggedIn(false);
-        navigate("/login");
+        setErrorFoodModalOpen(true);
       }
     };
 
@@ -74,6 +75,7 @@ const FoodListPage = ({
       setFoodData(foodData.filter((food) => food.id !== foodId));
     } catch (error) {
       console.error("Error al eliminar el alimento:", error);
+      setErrorDeleteModalOpen(true);
     }
   };
 
@@ -92,6 +94,7 @@ const FoodListPage = ({
       setFoodData(response.data);
     } catch (error) {
       console.error("Error al filtrar alimentos por grupo:", error);
+      setErrorFilterModalOpen(true);
     }
   };
 
@@ -108,6 +111,28 @@ const FoodListPage = ({
         setAdminUser={setAdminUser}
         clientId={clientId}
       />
+
+      {errorFoodModalOpen && (
+        <ErrorMessagePage
+          isOpen={errorFoodModalOpen}
+          onClose={() => setErrorFoodModalOpen(false)}
+          message={"Error loading food data"}
+        />
+      )}
+      {errorDeleteModalOpen && (
+        <ErrorMessagePage
+          isOpen={errorDeleteModalOpen}
+          onClose={() => setErrorDeleteModalOpen(false)}
+          message={"Error deleting the food"}
+        />
+      )}
+      {errorFilterModalOpen && (
+        <ErrorMessagePage
+          isOpen={errorFilterModalOpen}
+          onClose={() => setErrorFilterModalOpen(false)}
+          message={"Error filtering the food"}
+        />
+      )}
       <div className="foodListPageContainer">
         <Dropdown
           options={groupOptions}
@@ -121,20 +146,6 @@ const FoodListPage = ({
           label="Groups"
         />
 
-        {/* <select
-          value={selectedGroup}
-          onChange={(e) => {
-            setSelectedGroup(e.target.value);
-            handleFilterByGroupName(e.target.value);
-          }}
-        >
-          <option value="">All Groups</option>
-          {groupOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select> */}
         {isAdminUser && (
           <Button
             value="Add new food"
@@ -191,7 +202,11 @@ const FoodListPage = ({
       >
         <AddFoodPage />
       </Modal>
-      <RequestPage isOpen={requestModalOpen} onClose={() => setRequestModalOpen(false)} clientId={clientId}/>
+      <RequestPage
+        isOpen={requestModalOpen}
+        onClose={() => setRequestModalOpen(false)}
+        clientId={clientId}
+      />
     </>
   );
 };

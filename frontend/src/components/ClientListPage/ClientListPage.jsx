@@ -4,7 +4,7 @@ import { useNavigate, generatePath } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Button from "../Button/Button";
-
+import ErrorMessagePage from "../ErrorMessage/ErrorMessagePage";
 
 const ClientListPage = ({
   isLoggedIn,
@@ -13,9 +13,10 @@ const ClientListPage = ({
   setAdminUser,
 }) => {
   const [clientsData, setClientsData] = useState(null);
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
+
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  console.log("is admin user clientPage Admin app: " + isAdminUser);
 
   useEffect(() => {
     const fetchClientsData = async () => {
@@ -28,8 +29,7 @@ const ClientListPage = ({
         setClientsData(response.data);
       } catch (error) {
         console.error("Error al obtener los datos de los clientes:", error);
-        setLoggedIn(false);
-        navigate("/login");
+        setErrorModalOpen(true);
       }
     };
 
@@ -44,6 +44,13 @@ const ClientListPage = ({
         isAdminUser={isAdminUser}
         setAdminUser={setAdminUser}
       />
+      {errorModalOpen && (
+        <ErrorMessagePage
+          isOpen={errorModalOpen}
+          onClose={() => setErrorModalOpen(false)}
+          message={"Error loading clients data"}
+        />
+      )}
       <div className="clientListPageContainer">
         <h2>List of registered users</h2>
         <div className="clientTableContainer">

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Modal from "../Modal/Modal";
 import Button from "../Button/Button";
+import ErrorMessagePage from "../ErrorMessage/ErrorMessagePage";
 
 
 const genderOptions = [
@@ -52,6 +53,7 @@ const RegistrationPage = ({ isOpen, onClose }) => {
   const [selectedMeals, setSelectedMeals] = useState([]);
   const [selectedGoal, setSelectedGoal] = useState(null);
   const [selectedActivity, setSelectedActivity] = useState(null);
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -75,7 +77,6 @@ const RegistrationPage = ({ isOpen, onClose }) => {
 
   const handleRegistration = async (userData) => {
     try {
-      console.log(userData);
       const response = await axios.post(
         "http://localhost:8000/api/clients/",
         userData
@@ -83,13 +84,21 @@ const RegistrationPage = ({ isOpen, onClose }) => {
       console.log("Usuario registrado con éxito:", response.data);
     } catch (error) {
       console.error("Error al registrar al usuario:", error);
-      // setLoggedIn(false);
-      navigate("/");
+      setErrorModalOpen(true);
     }
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <>
+      {errorModalOpen && (
+        <ErrorMessagePage
+          isOpen={errorModalOpen}
+          onClose={() => setErrorModalOpen(false)}
+          message={"Error registering the user. Please enter all data correctly."}
+        />
+      )}
+
+<Modal isOpen={isOpen} onClose={onClose}>
       <div className="registrationPageContainer">
         <div className="registration-box">
           <Input
@@ -190,15 +199,9 @@ const RegistrationPage = ({ isOpen, onClose }) => {
           disabled={false} 
         />
       </div>
-      {/* <button
-        onClick={() => {
-          handleSubmit();
-          onClose();
-        }}
-      >
-        Register
-      </button> */}
     </Modal>
+    </>
+    
   );
 };
 
