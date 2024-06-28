@@ -6,7 +6,6 @@ class Food(models.Model):
     subgroup_code = models.IntegerField(null=True)
     group_name = models.TextField(null=True)  
     subgroup_name = models.TextField(null=True)  
-    food_code = models.IntegerField(null=True)
     food_name = models.TextField(null=True)
     water = models.SmallIntegerField(null=True) 
     protein = models.SmallIntegerField(null=True)  

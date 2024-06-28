@@ -47,7 +47,6 @@ class MenuViewSet(viewsets.ModelViewSet):
             return Response({"detail": "id_client parameter is required"}, status=400)
         
         try:
-            # Aquí asumes que tienes un método en tu repositorio para obtener un cliente por su ID
             cliente = ClientService.read(client_id)
             if cliente is None:
                 return Response({"detail": "Client not found"}, status=404)
@@ -65,7 +64,6 @@ class MenuViewSet(viewsets.ModelViewSet):
         if not menu_id:
             return Response({"detail": "menu_id parameter is required"}, status=400)
         
-        # Obtener los datos del menú usando el menu_id
         menu_data = MenuService.read(menu_id)
         food_intake = FoodIntakeService.read_values(menu_id)
         if not menu_data:
@@ -76,55 +74,45 @@ class MenuViewSet(viewsets.ModelViewSet):
         start_date_str = start_date.strftime('%Y-%m-%d')
         end_date_str = end_date.strftime('%Y-%m-%d')
 
-        # Obtener todos los food_ids de food_intake
         food_ids = [item.food_id for item in food_intake if item.food_id is not None]
 
-        # Obtener los nombres de alimentos usando FoodService
         food_names = []
         for food_id in food_ids:
             food_names_response = FoodService.read_array_of_ids(food_id)
             if food_names_response:
                 food_names.append({'id': food_id, 'name': food_names_response.food_name})
 
-        # Crear la respuesta HTTP con el contenido del PDF
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="weekly_menu_{menu_id}.pdf"'
         
-       # Crear el objeto PDF usando ReportLab
         p = canvas.Canvas(response, pagesize=letter)
         p.setFont("Courier", 12)
         
-        # Convertir el color hexadecimal #87FA72 a RGB en el rango de 0 a 1
         r = 157 / 255.0
         g = 241 / 255.0
         b = 142 / 255.0
 
-        # Configurar el fondo con el nuevo color
         p.setFillColorRGB(r, g, b)
-        # Configurar el fondo verde claro
-        # p.setFillColorRGB(0.8, 0.9, 0.8)  # RGB para un verde claro
+        
         p.rect(0, 0, letter[0], letter[1], fill=1)
 
-        # Centrar el título "Weekly Menu"
         title = "Weekly Menu"
-        title_width = p.stringWidth(title, "Courier-Bold", 16)  # Ancho del texto
+        title_width = p.stringWidth(title, "Courier-Bold", 16) 
         p.setFont("Courier-Bold", 16)
-        p.setFillColorRGB(0, 0, 0)  # Color negro para el título
+        p.setFillColorRGB(0, 0, 0)  
         p.drawString((letter[0] - title_width) / 2, 750, title)
 
-        # Centrar las fechas
         p.setFont("Courier-Bold", 12)
         start_date_width = p.stringWidth(f"Start Date: {start_date_str}", "Courier-Bold", 12)
         p.drawString((letter[0] - start_date_width) / 2, 730, f"Start Date: {start_date_str}")
         end_date_width = p.stringWidth(f"End Date: {end_date_str}", "Courier-Bold", 12)
         p.drawString((letter[0] - end_date_width) / 2, 710, f"End Date: {end_date_str}")
 
-        # Crear un diccionario para mapear los días de la semana a sus datos
         days_of_week = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY']
         food_data_by_day = {day: [] for day in days_of_week}
         
         for item in food_intake:
-            day = item.day_of_week.upper()  # Convertir el día a mayúsculas
+            day = item.day_of_week.upper() 
             if day in days_of_week:
                 food_name = next((food['name'] for food in food_names if food['id'] == item.food_id), 'Unknown')
                 food_data_by_day[day].append({
@@ -133,7 +121,6 @@ class MenuViewSet(viewsets.ModelViewSet):
                     'calories': item.calories
                 })
     
-    # Agregar los datos de la ingesta de alimentos al PDF
         y_position = 690
         for day in days_of_week:
             p.drawString(40, y_position, day)
@@ -141,7 +128,7 @@ class MenuViewSet(viewsets.ModelViewSet):
             for meal in food_data_by_day[day]:
                 p.drawString(120, y_position, f"{meal['meal']} - {meal['food']} ({meal['calories']} kcal)")
                 y_position -= 16
-            y_position -= 7  # Espacio adicional entre días
+            y_position -= 7  
                 
         
         p.showPage()

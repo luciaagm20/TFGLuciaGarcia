@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 from datetime import timedelta
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -165,16 +166,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'backend.Client'
 
 # Configuración de Celery
+CELERY_TIMEZONE = 'UTC'
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 CELERY_BEAT_SCHEDULE = {
     'run_my_method_every_sunday': {
-        'task': 'backend.repositories.MenuRepository.create_weekly_menu',
+        'task': 'backend.tasks.create_weekly_menu',
         'schedule': {
             'type': 'crontab',
             'minute': 59,
             'hour': 23,
             'day_of_week': 'sunday',
         },
+        # 'schedule': crontab(),
     },
 }

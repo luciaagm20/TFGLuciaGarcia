@@ -230,14 +230,14 @@ const AddFoodPage = ({
           required={true}
           onChange={(e) => setRegisterFoodName(e.target.value)}
         />
-        <Input
+        {/* <Input
           label="Food code"
           value={registerFoodCode}
           type="number"
           placeholder="Food code"
           required={true}
           onChange={(e) => setRegisterFoodCode(e.target.value)}
-        />
+        /> */}
         <Input
           label="Water"
           value={registerWater}

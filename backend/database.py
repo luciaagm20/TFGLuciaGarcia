@@ -14,7 +14,7 @@ def meterCSV():
         reader = csv.reader(csvfile, delimiter=';')
         next(reader)  
         for row in reader:
-            cur.execute("INSERT INTO backend_food VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", row)
+            cur.execute("INSERT INTO backend_food VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", row)
 
     con.commit()
     con.close()

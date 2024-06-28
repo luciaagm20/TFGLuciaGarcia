@@ -3,7 +3,7 @@ import os
 from celery import Celery
 
 # Configura el entorno de Django
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'healthyMenu.settings')
 
 app = Celery('healthyMenu')
 

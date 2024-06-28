@@ -353,7 +353,8 @@ const FoodInfoPage = ({
           onChange={!isAdminUser ? null : (e) => setUpdatedLactose(e.target.value)}
 
         />
-        <Input
+        {isAdminUser && (
+          <Input
           label="Group code"
           value={updatedGroupCode}
           type="number"
@@ -361,8 +362,10 @@ const FoodInfoPage = ({
           required={true}
           disabled={true}
         />
-
-        <Input
+        )}
+        
+        {isAdminUser && (
+          <Input
           label="Subgroup code"
           value={updatedSubgroupCode}
           type="number"
@@ -370,6 +373,8 @@ const FoodInfoPage = ({
           required={true}
           disabled={true}
         />
+        )}
+        
         <Dropdown
           options={groupOptions}
           onChange={!isAdminUser ? null : (selected) => {

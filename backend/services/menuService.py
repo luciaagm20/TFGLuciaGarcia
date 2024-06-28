@@ -5,6 +5,7 @@ class MenuService:
      def insertFoodInnerJoin():
           return MenuRepository.insertFoodInnerJoin()
     
+     @staticmethod
      def create_weekly_menu(cliente):
           return MenuRepository.create_weekly_menu(cliente)
      
