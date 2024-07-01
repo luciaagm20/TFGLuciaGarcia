@@ -9,3 +9,8 @@
 .input:focus {
   border-color: #07080a;
 }
+
+.disabled-input {
+  color: #7d6c6c; 
+  cursor: not-allowed;
+}

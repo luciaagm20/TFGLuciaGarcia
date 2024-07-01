@@ -289,7 +289,10 @@ const FoodInfoPage = ({
           type="text"
           placeholder="Food name"
           required={true}
-          onChange={!isAdminUser ? null : (e) => setUpdatedFoodName(e.target.value)}
+          onChange={
+            !isAdminUser ? null : (e) => setUpdatedFoodName(e.target.value)
+          }
+          className={!isAdminUser ? "disabled-input" : ""}
         />
         <Input
           label="Water"
@@ -297,7 +300,10 @@ const FoodInfoPage = ({
           type="number"
           placeholder="Water"
           required={true}
-          onChange={!isAdminUser ? null : (e) => setUpdatedWater(e.target.value)}
+          onChange={
+            !isAdminUser ? null : (e) => setUpdatedWater(e.target.value)
+          }
+          className={!isAdminUser ? "disabled-input" : ""}
         />
         <Input
           label="Protein"
@@ -305,8 +311,10 @@ const FoodInfoPage = ({
           type="number"
           placeholder="Protein"
           required={true}
-          onChange={!isAdminUser ? null : (e) => setUpdatedProtein(e.target.value)}
-
+          onChange={
+            !isAdminUser ? null : (e) => setUpdatedProtein(e.target.value)
+          }
+          className={!isAdminUser ? "disabled-input" : ""}
         />
         <Input
           label="Carbohidrates"
@@ -314,8 +322,10 @@ const FoodInfoPage = ({
           type="number"
           placeholder="Carbohidrates"
           required={true}
-          onChange={!isAdminUser ? null : (e) => setUpdatedCarbohidrates(e.target.value)}
-
+          onChange={
+            !isAdminUser ? null : (e) => setUpdatedCarbohidrates(e.target.value)
+          }
+          className={!isAdminUser ? "disabled-input" : ""}
         />
         <Input
           label="Fats"
@@ -324,7 +334,7 @@ const FoodInfoPage = ({
           placeholder="Fats"
           required={true}
           onChange={!isAdminUser ? null : (e) => setUpdatedFats(e.target.value)}
-
+          className={!isAdminUser ? "disabled-input" : ""}
         />
         <Input
           label="Sugars"
@@ -332,8 +342,10 @@ const FoodInfoPage = ({
           type="number"
           placeholder="Sugars"
           required={true}
-          onChange={!isAdminUser ? null : (e) => setUpdatedSugars(e.target.value)}
-
+          onChange={
+            !isAdminUser ? null : (e) => setUpdatedSugars(e.target.value)
+          }
+          className={!isAdminUser ? "disabled-input" : ""}
         />
         <Input
           label="Glucose"
@@ -341,8 +353,10 @@ const FoodInfoPage = ({
           type="number"
           placeholder="Glucose"
           required={true}
-          onChange={!isAdminUser ? null : (e) => setUpdatedGlucose(e.target.value)}
-
+          onChange={
+            !isAdminUser ? null : (e) => setUpdatedGlucose(e.target.value)
+          }
+          className={!isAdminUser ? "disabled-input" : ""}
         />
         <Input
           label="Lactose"
@@ -350,55 +364,71 @@ const FoodInfoPage = ({
           type="number"
           placeholder="Lactose"
           required={true}
-          onChange={!isAdminUser ? null : (e) => setUpdatedLactose(e.target.value)}
+          onChange={
+            !isAdminUser ? null : (e) => setUpdatedLactose(e.target.value)
+          }
+          className={!isAdminUser ? "disabled-input" : ""}
+        />
 
-        />
-        {isAdminUser && (
-          <Input
-          label="Group code"
-          value={updatedGroupCode}
-          type="number"
-          placeholder="Group code"
-          required={true}
-          disabled={true}
-        />
-        )}
-        
-        {isAdminUser && (
-          <Input
-          label="Subgroup code"
-          value={updatedSubgroupCode}
-          type="number"
-          placeholder="Subgroup code"
-          required={true}
-          disabled={true}
-        />
-        )}
-        
         <Dropdown
-          options={groupOptions}
-          onChange={!isAdminUser ? null : (selected) => {
-            setSelectedGroup(selected);
-            setSelectedSubGroup(subGroupOptions[selectedGroup?.value]);
-            setUpdatedGroupCode(selected?.code);
-          }}
+          // options={groupOptions}
+          options={isAdminUser ? groupOptions: []}
+          onChange={
+            !isAdminUser
+              ? null
+              : (selected) => {
+                  setSelectedGroup(selected);
+                  setSelectedSubGroup(subGroupOptions[selectedGroup?.value]);
+                  setUpdatedGroupCode(selected?.code);
+                }
+          }
           placeholder="Select group"
           multipleSelect={false}
           value={selectedGroup}
           label="Group"
+          className={!isAdminUser ? "disabled-input" : ""}
         />
 
         <Dropdown
           options={subGroupOptions[selectedGroup?.value]}
-          onChange={!isAdminUser ? null : (selected) => {
-            setSelectedSubGroup(selected);
-            setUpdatedSubgroupCode(selected?.code);
-          }}
+          onChange={
+            !isAdminUser
+              ? null
+              : (selected) => {
+                  setSelectedSubGroup(selected);
+                  setUpdatedSubgroupCode(selected?.code);
+                }
+          }
           placeholder="Select subgroup"
           multipleSelect={false}
           value={selectedSubGroup}
           label="Subgroup"
+          className={!isAdminUser ? "disabled-input" : ""}
         />
+
+        {isAdminUser && (
+          <Input
+            label="Group code"
+            value={updatedGroupCode}
+            type="number"
+            placeholder="Group code"
+            required={true}
+            disabled={true}
+            className="disabled-input"
+          />
+        )}
+
+        {isAdminUser && (
+          <Input
+            label="Subgroup code"
+            value={updatedSubgroupCode}
+            type="number"
+            placeholder="Subgroup code"
+            required={true}
+            disabled={true}
+            className="disabled-input"
+          />
+        )}
         <div className="buttons">
           {isAdminUser && (
             <Button

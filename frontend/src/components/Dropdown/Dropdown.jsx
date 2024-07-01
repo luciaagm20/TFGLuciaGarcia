@@ -8,6 +8,7 @@ const Dropdown = ({
   label,
   multipleSelect,
   placeholder,
+  className,
   ...props
 }) => {
   return (
@@ -19,6 +20,7 @@ const Dropdown = ({
       placeholder={placeholder}
       onChange={onChange}
       value={value}
+      className={className}
       {...props}
     />
     </div>
