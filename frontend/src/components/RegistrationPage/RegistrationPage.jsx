@@ -94,7 +94,7 @@ const RegistrationPage = ({ isOpen, onClose }) => {
         <ErrorMessagePage
           isOpen={errorModalOpen}
           onClose={() => setErrorModalOpen(false)}
-          message={"Error registering the user. Please enter all data correctly."}
+          message={"Error registering the user. Please fill in all fields correctly and try again."}
         />
       )}
 

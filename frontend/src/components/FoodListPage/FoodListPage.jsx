@@ -71,7 +71,6 @@ const FoodListPage = ({
           Authorization: `Bearer ${token}`,
         },
       });
-      // Filtrar la comida eliminada de la lista
       setFoodData(foodData.filter((food) => food.id !== foodId));
     } catch (error) {
       console.error("Error al eliminar el alimento:", error);

@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Button from "../Button/Button";
 import Navbar from "../Navbar/Navbar";
+import ErrorMessagePage from "../ErrorMessage/ErrorMessagePage";
+
 
 const groupOptions = [
   { label: "starters and dishes", value: "starters and dishes", code: 1 },
@@ -156,6 +158,8 @@ const AddFoodPage = ({
   isAdminUser,
   setAdminUser,
 }) => {
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
+
   const [registerFoodName, setRegisterFoodName] = useState("");
   const [registerWater, setRegisterWater] = useState(0);
   const [registerProtein, setRegisterProtein] = useState(0);
@@ -208,12 +212,11 @@ const AddFoodPage = ({
       console.log("Alimento registrado con éxito")
     } catch (error) {
       console.error("Error al registrar el alimento:", error);
-      navigate("/");
+      setErrorModalOpen(true);
     }
   };
 
   return (
-    // <Modal isOpen={isOpen} onClose={onClose}>
     <>
       <Navbar
         isLoggedIn={isLoggedIn}
@@ -221,6 +224,13 @@ const AddFoodPage = ({
         isAdminUser={isAdminUser}
         setAdminUser={setAdminUser}
       />
+      {errorModalOpen && (
+        <ErrorMessagePage
+          isOpen={errorModalOpen}
+          onClose={() => setErrorModalOpen(false)}
+          message={"Error registering the food. Please fill in all fields correctly and try again."}
+        />
+      )}
       <div className="addFoodPageContainer">
         <Input
           label="Food name"
@@ -230,14 +240,6 @@ const AddFoodPage = ({
           required={true}
           onChange={(e) => setRegisterFoodName(e.target.value)}
         />
-        {/* <Input
-          label="Food code"
-          value={registerFoodCode}
-          type="number"
-          placeholder="Food code"
-          required={true}
-          onChange={(e) => setRegisterFoodCode(e.target.value)}
-        /> */}
         <Input
           label="Water"
           value={registerWater}

@@ -105,7 +105,7 @@ const ClientPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
               />
             ))
           ) : (
-            <p>No hay menús disponibles aún.</p>
+            <p>No menus available yet.</p>
           )}
         </div>
         <RequestPage isOpen={requestModalOpen} onClose={() => setRequestModalOpen(false)} clientId={clientId}/>

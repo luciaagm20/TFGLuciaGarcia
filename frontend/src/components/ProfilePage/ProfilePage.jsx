@@ -106,8 +106,6 @@ const ProfilePage = ({
         });
       } catch (error) {
         console.error("Error al obtener los datos del cliente:", error);
-        // setLoggedIn(false);
-        // navigate("/login");
         setErrorDataModalOpen(true);
       }
     };
