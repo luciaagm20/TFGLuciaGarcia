@@ -84,18 +84,32 @@ const ProfilePage = ({
         setUpdatedWeight(response.data?.weight);
         setUpdatedAge(response.data?.age);
         setUpdatedHeight(response.data?.height);
-        setSelectedAllergy({
-          label: response.data?.allergies,
-          value: response.data?.allergies,
-        });
+        // setSelectedAllergy({
+        //   label: response.data?.allergies,
+        //   value: response.data?.allergies,
+        // });
+        if (response.data?.allergies) {
+          const allergies = response.data.allergies.map(allergy => ({
+            label: allergy,
+            value: allergy
+          }));
+          setSelectedAllergy(allergies);
+        }
         setSelectedGender({
           label: response.data?.gender,
           value: response.data?.gender,
         });
-        setSelectedMeals({
-          label: response.data?.number_meals,
-          value: response.data?.number_meals,
-        });
+        // setSelectedMeals({
+        //   label: response.data?.meals,
+        //   value: response.data?.meals,
+        // });
+        if (response.data?.meals) {
+          const meals = response.data.meals.map(meal => ({
+            label: meal,
+            value: meal
+          }));
+          setSelectedMeals(meals);
+        }
         setSelectedGoal({
           label: response.data?.goal,
           value: response.data?.goal,
@@ -119,14 +133,14 @@ const ProfilePage = ({
       username: updatedName,
       email: updatedEmail,
       password: updatedPassword,
-      number_meals: selectedMeals.value,
+      meals: selectedMeals.map(meal => meal.value),
       weight: updatedWeight,
       age: updatedAge,
       height: updatedHeight,
       gender: selectedGender.value,
       activity: selectedActivity.value,
       goal: selectedGoal.value,
-      allergies: selectedAllergy.value,
+      allergies: selectedAllergy.map(allergy => allergy.value),
     };
     updateProfile(formData);
   };
@@ -183,7 +197,6 @@ const ProfilePage = ({
           type="text"
           placeholder="Type your Username"
           required={true}
-          // onChange={setUpdatedName}
           disabled={isAdminUser}
           onChange={(e) => setUpdatedName(e.target.value)}
         />
@@ -193,7 +206,6 @@ const ProfilePage = ({
           type="email"
           placeholder="Type your Email"
           required={true}
-          // onChange={setUpdatedEmail}
           onChange={isAdminUser ? null : (e) => setUpdatedEmail(e.target.value)}
         />
         {!isAdminUser && (
@@ -263,7 +275,8 @@ const ProfilePage = ({
           }
           placeholder="Select Meals"
           multipleSelect={true}
-          value={selectedMeals}
+          // value={selectedMeals}
+          value={selectedMeals.length > 0 ? selectedMeals : [{ label: "No meals selected", value: "" }]}
           label="Meals"
         />
         <Dropdown

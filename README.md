@@ -113,7 +113,7 @@ Una vez instalada, en la barra de búsqueda se debe escribir: `>SQLite: Open Dat
    cd TFGLuciaGarcia
 
 2. Abre la carpeta en Visual Studio Code.
-3. Abre la terminal y posicionate en 
+3. Abre la terminal.
 4. Para ejecutar la aplicación entera hay que seguir los siguientes pasos:
     - Ejecuta el backend con el comando: `python manage.py runserver`
     - Añade otra terminal y posicionate en la carpeta de frontend con el comando: `cd ./frontend`

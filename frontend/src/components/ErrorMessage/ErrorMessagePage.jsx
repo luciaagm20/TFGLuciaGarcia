@@ -2,20 +2,6 @@ import Modal from "../Modal/Modal";
 import "./errorMessagePage.css";
 import ReactDom from "react-dom";
 
-// const ErrorMessagePage = ({ isOpen, onClose, message }) => {
-
-//   return (
-//     <Modal isOpen={isOpen} onClose={onClose}>
-//       <div className="errorMessage">
-//         <label htmlFor="Request">Error</label>
-//         <p>{message}</p>
-//       </div>
-//     </Modal>
-//   );
-// };
-
-// export default ErrorMessagePage;
-
 const ErrorMessagePage = ({ isOpen, onClose, message }) => {
   if (!isOpen) return null;
   return ReactDom.createPortal(
