@@ -142,7 +142,7 @@ const RegistrationPage = ({ isOpen, onClose }) => {
             onChange={(e) => setRegisterAge(e.target.value)}
           />
           <Input
-            label="Height"
+            label="Height (cm)"
             value={registerHeight}
             type="number"
             placeholder="Type your height"
