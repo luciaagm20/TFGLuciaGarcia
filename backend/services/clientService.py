@@ -10,11 +10,8 @@ class ClientService:
           return ClientRepository.listClient()
 
      def read(client_id):
-          # try:
           return ClientRepository.read(client_id)
         
-        # except Client.DoesNotExist:
-        #     raise ClientDoesntExistException()
 
 
      def save(username, gender, email, password, weight, age, height, meals, goal, allergies, is_superuser):
@@ -22,9 +19,9 @@ class ClientService:
                MenuService.insertFoodInnerJoin()
 
           client = ClientRepository.save(username, gender, email, password, weight, age, height, meals, goal, allergies, is_superuser)
-          # Lógica adicional para crear el menú basado en las alergias
-          # ClientService.create_menu(client)
-          MenuService.create_weekly_menu(client)
+
+          if not is_superuser:
+               MenuService.create_weekly_menu(client)
 
           return client
 

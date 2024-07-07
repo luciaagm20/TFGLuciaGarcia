@@ -11,13 +11,14 @@ const Navbar = ({
   signUpModalOpen,
   requestModalOpen,
   setRequestModalOpen,
+  passwordModalOpen,
+  setPasswordModalOpen,
   isAdminUser,
   setAdminUser,
   clientId,
 }) => {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const navigate = useNavigate();
-
   return (
     <nav className="navbar">
       {isAdminUser && (
@@ -27,6 +28,9 @@ const Navbar = ({
           </button>
           <button onClick={() => navigate("/list_food")}>List Food</button>
           <button onClick={() => navigate("/list_requests")}>Requests</button>
+          <button onClick={() => setPasswordModalOpen(!passwordModalOpen)}>
+            Change Password
+          </button>
         </div>
       )}
       <div className="regularButtons">
@@ -35,10 +39,10 @@ const Navbar = ({
             if (!isLoggedIn) {
               setLoginModalOpen(!loginModalOpen);
             } else {
-                setLoggedIn(false);
-                setAdminUser(false);
-                localStorage.clear();
-                navigate("/");
+              setLoggedIn(false);
+              setAdminUser(false);
+              localStorage.clear();
+              navigate("/");
             }
           }}
         >

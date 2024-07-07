@@ -8,6 +8,8 @@ import ClientListPage from "./components/ClientListPage/ClientListPage";
 import FoodListPage from "./components/FoodListPage/FoodListPage";
 import FoodInfoPage from "./components/FoodInfoPage/FoodInfoPage";
 import RegistrationPage from "./components/RegistrationPage/RegistrationPage";
+import ChangePasswordPage from "./components/ChangePasswordAdmin/ChangePasswordPage";
+
 import "./App.css";
 import axios from "axios";
 import LoginPage from "./components/LoginPage/LoginPage";

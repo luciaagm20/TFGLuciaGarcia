@@ -48,6 +48,7 @@ const ProfilePage = ({
   const { clientId } = useParams();
   const [errorDataModalOpen, setErrorDataModalOpen] = useState(false);
   const [errorUpdateModalOpen, setErrorUpdateModalOpen] = useState(false);
+  const [errorDeleteModalOpen, setErrorDeleteModalOpen] = useState(false);
 
   const [requestModalOpen, setRequestModalOpen] = useState(false);
   const [signUpModalOpen, setSignUpModalOpen] = useState(false);
@@ -80,14 +81,11 @@ const ProfilePage = ({
         );
         setUpdatedName(response.data?.username);
         setUpdatedEmail(response.data?.email);
-        setUpdatedPassword(response.data?.email);
+        setUpdatedPassword(response.data?.password);
         setUpdatedWeight(response.data?.weight);
         setUpdatedAge(response.data?.age);
         setUpdatedHeight(response.data?.height);
-        // setSelectedAllergy({
-        //   label: response.data?.allergies,
-        //   value: response.data?.allergies,
-        // });
+
         if (response.data?.allergies) {
           const allergies = response.data.allergies.map(allergy => ({
             label: allergy,
@@ -99,10 +97,7 @@ const ProfilePage = ({
           label: response.data?.gender,
           value: response.data?.gender,
         });
-        // setSelectedMeals({
-        //   label: response.data?.meals,
-        //   value: response.data?.meals,
-        // });
+
         if (response.data?.meals) {
           const meals = response.data.meals.map(meal => ({
             label: meal,
@@ -163,6 +158,19 @@ const ProfilePage = ({
     }
   };
 
+  const handleDelete = async (clientId) => {
+    try {
+      await axios.delete(`http://localhost:8000/api/clients/${clientId}/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } catch (error) {
+      console.error("Error al eliminar el cliente:", error);
+      setErrorDeleteModalOpen(true);
+    }
+  };
+
   return (
     <>
       <Navbar
@@ -188,6 +196,13 @@ const ProfilePage = ({
           isOpen={errorUpdateModalOpen}
           onClose={() => setErrorUpdateModalOpen(false)}
           message={"Oops! It seems there was an issue updating your data. Please try again"}
+        />
+      )}
+      {errorDeleteModalOpen && (
+        <ErrorMessagePage
+          isOpen={errorDeleteModalOpen}
+          onClose={() => setErrorDeleteModalOpen(false)}
+          message={"Oops! It seems there was an issue deleting your account. Please try again"}
         />
       )}
       <div className="formWrapper">
@@ -227,7 +242,6 @@ const ProfilePage = ({
           type="number"
           placeholder="Type your weight"
           required={true}
-          // onChange={setUpdatedWeight}
           onChange={
             isAdminUser ? null : (e) => setUpdatedWeight(e.target.value)
           }
@@ -275,7 +289,6 @@ const ProfilePage = ({
           }
           placeholder="Select Meals"
           multipleSelect={true}
-          // value={selectedMeals}
           value={selectedMeals.length > 0 ? selectedMeals : [{ label: "No meals selected", value: "" }]}
           label="Meals"
         />
@@ -302,6 +315,16 @@ const ProfilePage = ({
             handleSubmitProfile();
             const path = generatePath("/client_page/:clientId", { clientId });
             navigate(path);
+          }}
+          disabled={isAdminUser}
+        />
+      )}
+      {!isAdminUser && (
+        <Button
+          value="Delete account"
+          onClick={() => {
+            handleDelete(clientId); 
+            navigate("/home");
           }}
           disabled={isAdminUser}
         />

@@ -1,5 +1,5 @@
-from itertools import chain, product
-from random import choice, random
+from itertools import product
+from random import choice
 from datetime import timedelta, datetime
 from ..models import Food, FoodIntake, WeeklyMenu, FoodJoin
 from django.db.models import F, Value

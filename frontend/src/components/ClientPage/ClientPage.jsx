@@ -64,6 +64,7 @@ const ClientPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
     fetchData();
   }, []);
 
+
   return (
     <>
       <Navbar

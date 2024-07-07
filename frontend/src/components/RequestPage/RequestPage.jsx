@@ -4,7 +4,6 @@ import Modal from "../Modal/Modal";
 import axios from "axios";
 import "./requestPage.css";
 
-import Input from "../Input/Input";
 import Button from "../Button/Button";
 import ErrorMessagePage from "../ErrorMessage/ErrorMessagePage";
 

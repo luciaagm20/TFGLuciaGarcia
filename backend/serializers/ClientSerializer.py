@@ -8,7 +8,6 @@ class ClientSerializer(serializers.ModelSerializer):
     password = serializers.CharField(required=True, style={'input_type': 'password'})
     email = serializers.EmailField(required=True)
     username = serializers.CharField(required=True)
-    # Poniendo esto ya se asegura de que no puedas poner letras y que age no pueda tener decimales y salta un mensaje de error 
     weight = serializers.FloatField(required=True)  
     age = serializers.IntegerField(required=True)
     height = serializers.FloatField(required=True)

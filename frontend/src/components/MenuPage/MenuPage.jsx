@@ -2,7 +2,7 @@ import Navbar from "../Navbar/Navbar";
 import "./menuPage.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, generatePath } from "react-router-dom";
 import Button from "../Button/Button";
 import ErrorMessagePage from "../ErrorMessage/ErrorMessagePage";
 
@@ -17,11 +17,9 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
   const [errorDownloadModalOpen, setErrorDownloadModalOpen] = useState(false);
   const [errorMenuModalOpen, setErrorMenuModalOpen] = useState(false);
 
-
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const clientId = localStorage.getItem("clientId");
-
 
   useEffect(() => {
     const fetchMenuData = async () => {
@@ -58,7 +56,7 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
         setMealData(mealsByDay);
       } catch (error) {
         console.error("Error al obtener los datos del menú:", error);
-        setErrorMenuModalOpen(true)
+        setErrorMenuModalOpen(true);
       }
     };
 
@@ -99,14 +97,12 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
           setMealData(formattedMealData);
         } catch (error) {
           console.error("Error al obtener los datos del menú:", error);
-          setErrorMenuModalOpen(true)
-
+          setErrorMenuModalOpen(true);
         }
       };
 
       fetchFoodData();
     }
-    // esto es lo que tiene que cambiar para que entre en el useEffect
   }, [Object.keys(mealData).length]);
 
   const downloadPDF = () => {
@@ -130,8 +126,25 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
       })
       .catch((error) => {
         console.error("Error al descargar el menú en PDF:", error);
-        setErrorDownloadModalOpen(true)
+        setErrorDownloadModalOpen(true);
       });
+  };
+
+  const handleNewMenu = async (clientId) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/menu/create-weekly-menu/",
+        { id_client: clientId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Menú creado con éxito")
+    } catch (error) {
+      console.error("Error al crear el menú:", error);
+    }
   };
 
   if (!menuData) {
@@ -140,7 +153,7 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
 
   return (
     <>
-    <Navbar
+      <Navbar
         isLoggedIn={isLoggedIn}
         setLoggedIn={setLoggedIn}
         signUpModalOpen={signUpModalOpen}
@@ -155,18 +168,21 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
         <ErrorMessagePage
           isOpen={errorMenuModalOpen}
           onClose={() => setErrorMenuModalOpen(false)}
-          message={"Oops! It seems there was an error loading the menu. Please, try again."}
+          message={
+            "Oops! It seems there was an error loading the menu. Please, try again."
+          }
         />
       )}
       {errorDownloadModalOpen && (
         <ErrorMessagePage
           isOpen={errorDownloadModalOpen}
           onClose={() => setErrorDownloadModalOpen(false)}
-          message={"Oops! It seems there was an error loading the PDF. Please, try again."}
+          message={
+            "Oops! It seems there was an error loading the PDF. Please, try again."
+          }
         />
       )}
       <div className="menuPageContainer">
-        
         <h1>Weekly Menu</h1>
         <span>{`${menuData?.start_date}`}</span>
         <span>{`${menuData?.end_date}`}</span>
@@ -186,6 +202,17 @@ const MenuPage = ({ isLoggedIn, setLoggedIn, isAdminUser, setAdminUser }) => {
           ))}
         </div>
         <Button value="Download PDF" onClick={downloadPDF} disabled={false} />
+        <Button
+          value="Request a new menu"
+          onClick={() => {
+            handleNewMenu(clientId);
+            const path = generatePath("/client_page/:clientId", {
+              clientId: clientId,
+            });
+            navigate(path);
+          }}
+          disabled={false}
+        />
       </div>
     </>
   );

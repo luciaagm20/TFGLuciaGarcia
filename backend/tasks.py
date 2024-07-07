@@ -14,8 +14,9 @@ def create_weekly_menu():
         clients = ClientService.listClient()
         for client in clients:
             try:
-                menu = MenuService.create_weekly_menu(client)
-                serializer = MenuSerializer(menu)
+                if not client.is_superuser:
+                    menu = MenuService.create_weekly_menu(client)
+                    serializer = MenuSerializer(menu)
 
             except Exception as e:
                 print(f"Error creating menu for client {client.id}: {e}")

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Button from "../Button/Button";
 import ErrorMessagePage from "../ErrorMessage/ErrorMessagePage";
+import ChangePasswordPage from "../ChangePasswordAdmin/ChangePasswordPage";
 
 const ClientListPage = ({
   isLoggedIn,
@@ -14,9 +15,13 @@ const ClientListPage = ({
 }) => {
   const [clientsData, setClientsData] = useState(null);
   const [errorModalOpen, setErrorModalOpen] = useState(false);
+  const [passwordModalOpen, setPasswordModalOpen] = useState(false);
+  const [errorDeleteModalOpen, setErrorDeleteModalOpen] = useState(false);
+
 
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const clientId = localStorage.getItem("clientId");
 
   useEffect(() => {
     const fetchClientsData = async () => {
@@ -36,6 +41,21 @@ const ClientListPage = ({
     fetchClientsData();
   }, [token, setLoggedIn, navigate]);
 
+  const handleDelete = async (clientId) => {
+    try {
+      await axios.delete(`http://localhost:8000/api/clients/${clientId}/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setClientsData(clientsData.filter((client) => client.id !== clientId));
+    } catch (error) {
+      console.error("Error al eliminar el cliente:", error);
+      setErrorDeleteModalOpen(true);
+    }
+  };
+  console.log(passwordModalOpen)
+
   return (
     <>
       <Navbar
@@ -43,12 +63,21 @@ const ClientListPage = ({
         setLoggedIn={setLoggedIn}
         isAdminUser={isAdminUser}
         setAdminUser={setAdminUser}
+        passwordModalOpen={passwordModalOpen}
+        setPasswordModalOpen={setPasswordModalOpen}
       />
       {errorModalOpen && (
         <ErrorMessagePage
           isOpen={errorModalOpen}
           onClose={() => setErrorModalOpen(false)}
           message={"Error loading clients data"}
+        />
+      )}
+      {errorDeleteModalOpen && (
+        <ErrorMessagePage
+          isOpen={errorDeleteModalOpen}
+          onClose={() => setErrorDeleteModalOpen(false)}
+          message={"Oops! It seems there was an issue deleting the account. Please try again"}
         />
       )}
       <div className="clientListPageContainer">
@@ -99,7 +128,7 @@ const ClientListPage = ({
   
                       <Button
                         value="Delete"
-                        onClick={() => navigate(`/delete/${data.id}`)}
+                        onClick={() => handleDelete(data.id)}
                         disabled={false}
                       />
                       </div>
@@ -110,6 +139,7 @@ const ClientListPage = ({
             </tbody>
           </table>
         </div>
+        <ChangePasswordPage isOpen={passwordModalOpen} onClose={() => setPasswordModalOpen(false)} clientId={clientId}/>
       </div>
     </>
   );

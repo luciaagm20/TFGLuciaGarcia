@@ -90,7 +90,7 @@ class ClientViewSet(viewsets.ModelViewSet):
     def destroy(self, request, pk=None):
         user = self.request.user
         if not user.is_superuser and str(user.id) != pk:
-            return Response({"detail": "No tienes permiso para realizar esta acción."}, status=status.HTTP_403_FORBIDDEN)
+            return Response({"detail": "No permission."}, status=status.HTTP_403_FORBIDDEN)
 
         ClientService.delete(pk)
         return Response(status=status.HTTP_204_NO_CONTENT)

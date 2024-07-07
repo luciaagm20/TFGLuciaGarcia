@@ -18,7 +18,6 @@ class Client(AbstractUser):
     activity = models.CharField(max_length=20,choices=Activity.CHOICES, default="Sedentary")
     goal = models.CharField(max_length=20, choices=Goal.CHOICES, default="Maintenance")
     allergies = models.ManyToManyField(Allergies, blank=True)
-    # text = models.TextField(blank=False)
 
 
     groups = models.ManyToManyField(
