@@ -377,22 +377,17 @@ class MenuRepository:
     
     @staticmethod
     def create_menu(menu_semanal, caloriasBasales, meals, allergies=None):
-            print("menu normal")
             if allergies is None:
                 allergies = []
         
-            print("Creating menu with allergies:", allergies)
             foodJoin = FoodJoin.objects.all()
 
             # Filtrar por alergias
             if 'lactose' in allergies:
-                print("filtro lactosa")
                 foodJoin = foodJoin.filter(has_lactose=False)
             if 'seafood' in allergies:
-                print("filtro marisco")
                 foodJoin = foodJoin.filter(has_seafood=False)
             if 'egg' in allergies:
-                print("filtro huevo")
                 foodJoin = foodJoin.filter(has_egg=False)
 
             verdura_y_plato = foodJoin.filter(group_code_one=201).filter(group_code_two=1).order_by('calories')

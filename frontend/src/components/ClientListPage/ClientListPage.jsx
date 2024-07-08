@@ -99,7 +99,7 @@ const ClientListPage = ({
               </tr>
             </thead>
             <tbody>
-              {clientsData?.map((data) => {
+              {clientsData?.filter(client => !client.is_superuser).map((data) => {
                 return (
                   <tr key={data.id}>
                     <td>{data.email}</td>

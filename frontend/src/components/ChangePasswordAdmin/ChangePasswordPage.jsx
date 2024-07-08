@@ -43,7 +43,6 @@ const ChangePasswordPage = ({ isOpen, onClose, clientId }) => {
         );
         setUpdatedName(response.data?.username);
         setUpdatedEmail(response.data?.email);
-        setUpdatedPassword(response.data?.password);
         setUpdatedWeight(response.data?.weight);
         setUpdatedAge(response.data?.age);
         setUpdatedHeight(response.data?.height);

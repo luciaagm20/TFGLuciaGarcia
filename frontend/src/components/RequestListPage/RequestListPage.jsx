@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Button from "../Button/Button";
 import ErrorMessagePage from "../ErrorMessage/ErrorMessagePage";
+import ChangePasswordPage from "../ChangePasswordAdmin/ChangePasswordPage";
+
 
 const RequestListPage = ({
   isLoggedIn,
@@ -15,10 +17,12 @@ const RequestListPage = ({
   const [requestData, setRequestData] = useState(null);
   const [errorModalOpen, setErrorModalOpen] = useState(false);
   const [errorDeleteModalOpen, setErrorDeleteModalOpen] = useState(false);
+  const [passwordModalOpen, setPasswordModalOpen] = useState(false);
 
 
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const clientId = localStorage.getItem("clientId");
 
   useEffect(() => {
     const fetchRequestData = async () => {
@@ -60,6 +64,8 @@ const RequestListPage = ({
         setLoggedIn={setLoggedIn}
         isAdminUser={isAdminUser}
         setAdminUser={setAdminUser}
+        passwordModalOpen={passwordModalOpen}
+        setPasswordModalOpen={setPasswordModalOpen}
       />
       {errorModalOpen && (
         <ErrorMessagePage
@@ -110,6 +116,7 @@ const RequestListPage = ({
             </tbody>
           </table>
         </div>
+        <ChangePasswordPage isOpen={passwordModalOpen} onClose={() => setPasswordModalOpen(false)} clientId={clientId}/>
       </div>
     </>
   );

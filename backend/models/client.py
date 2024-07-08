@@ -1,11 +1,11 @@
 from django.db import models
 
 
-from backend.models.Meal import Meal
-from backend.models.Allergies import Allergies
-from backend.models.Goal import Goal
-from backend.models.Gender import Gender
-from backend.models.Activity import Activity
+from backend.models.meal import Meal
+from backend.models.allergies import Allergies
+from backend.models.goal import Goal
+from backend.models.gender import Gender
+from backend.models.activity import Activity
 from django.contrib.auth.models import AbstractUser, Group, Permission
 
 

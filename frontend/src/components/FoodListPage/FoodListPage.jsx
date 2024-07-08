@@ -9,6 +9,8 @@ import Button from "../Button/Button";
 import Dropdown from "../Dropdown/Dropdown";
 import RequestPage from "../RequestPage/RequestPage";
 import ErrorMessagePage from "../ErrorMessage/ErrorMessagePage";
+import ChangePasswordPage from "../ChangePasswordAdmin/ChangePasswordPage";
+
 
 const groupOptions = [
   { label: "starters and dishes", value: "starters and dishes" },
@@ -32,6 +34,7 @@ const FoodListPage = ({
   isAdminUser,
   setAdminUser,
 }) => {
+  const [passwordModalOpen, setPasswordModalOpen] = useState(false);
   const [requestModalOpen, setRequestModalOpen] = useState(false);
   const [signUpModalOpen, setSignUpModalOpen] = useState(false);
   const [errorFoodModalOpen, setErrorFoodModalOpen] = useState(false);
@@ -44,7 +47,6 @@ const FoodListPage = ({
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const clientId = localStorage.getItem("clientId");
-
 
   useEffect(() => {
     const fetchFoodData = async () => {
@@ -106,6 +108,8 @@ const FoodListPage = ({
         setSignUpModalOpen={setSignUpModalOpen}
         requestModalOpen={requestModalOpen}
         setRequestModalOpen={setRequestModalOpen}
+        passwordModalOpen={passwordModalOpen}
+        setPasswordModalOpen={setPasswordModalOpen}
         isAdminUser={isAdminUser}
         setAdminUser={setAdminUser}
         clientId={clientId}
@@ -201,6 +205,11 @@ const FoodListPage = ({
       >
         <AddFoodPage />
       </Modal>
+      <ChangePasswordPage
+        isOpen={passwordModalOpen}
+        onClose={() => setPasswordModalOpen(false)}
+        clientId={clientId}
+      />
       <RequestPage
         isOpen={requestModalOpen}
         onClose={() => setRequestModalOpen(false)}

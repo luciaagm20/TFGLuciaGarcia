@@ -9,7 +9,6 @@ import Button from "../Button/Button";
 import RequestPage from "../RequestPage/RequestPage";
 import ErrorMessagePage from "../ErrorMessage/ErrorMessagePage";
 
-
 const genderOptions = [
   { label: "Female", value: "Female" },
   { label: "Male", value: "Male" },
@@ -81,15 +80,14 @@ const ProfilePage = ({
         );
         setUpdatedName(response.data?.username);
         setUpdatedEmail(response.data?.email);
-        setUpdatedPassword(response.data?.password);
         setUpdatedWeight(response.data?.weight);
         setUpdatedAge(response.data?.age);
         setUpdatedHeight(response.data?.height);
 
         if (response.data?.allergies) {
-          const allergies = response.data.allergies.map(allergy => ({
+          const allergies = response.data.allergies.map((allergy) => ({
             label: allergy,
-            value: allergy
+            value: allergy,
           }));
           setSelectedAllergy(allergies);
         }
@@ -99,9 +97,9 @@ const ProfilePage = ({
         });
 
         if (response.data?.meals) {
-          const meals = response.data.meals.map(meal => ({
+          const meals = response.data.meals.map((meal) => ({
             label: meal,
-            value: meal
+            value: meal,
           }));
           setSelectedMeals(meals);
         }
@@ -128,14 +126,14 @@ const ProfilePage = ({
       username: updatedName,
       email: updatedEmail,
       password: updatedPassword,
-      meals: selectedMeals.map(meal => meal.value),
+      meals: selectedMeals.map((meal) => meal.value),
       weight: updatedWeight,
       age: updatedAge,
       height: updatedHeight,
       gender: selectedGender.value,
       activity: selectedActivity.value,
       goal: selectedGoal.value,
-      allergies: selectedAllergy.map(allergy => allergy.value),
+      allergies: selectedAllergy.map((allergy) => allergy.value),
     };
     updateProfile(formData);
   };
@@ -154,7 +152,6 @@ const ProfilePage = ({
     } catch (error) {
       console.error("Error al actualizar los datos del cliente:", error);
       setErrorUpdateModalOpen(true);
-
     }
   };
 
@@ -188,21 +185,27 @@ const ProfilePage = ({
         <ErrorMessagePage
           isOpen={errorDataModalOpen}
           onClose={() => setErrorDataModalOpen(false)}
-          message={"Oops! It seems there was an issue loading your data. Please try again"}
+          message={
+            "Oops! It seems there was an issue loading your data. Please try again"
+          }
         />
       )}
       {errorUpdateModalOpen && (
         <ErrorMessagePage
           isOpen={errorUpdateModalOpen}
           onClose={() => setErrorUpdateModalOpen(false)}
-          message={"Oops! It seems there was an issue updating your data. Please try again"}
+          message={
+            "Oops! It seems there was an issue updating your data. Please try again"
+          }
         />
       )}
       {errorDeleteModalOpen && (
         <ErrorMessagePage
           isOpen={errorDeleteModalOpen}
           onClose={() => setErrorDeleteModalOpen(false)}
-          message={"Oops! It seems there was an issue deleting your account. Please try again"}
+          message={
+            "Oops! It seems there was an issue deleting your account. Please try again"
+          }
         />
       )}
       <div className="formWrapper">
@@ -289,7 +292,11 @@ const ProfilePage = ({
           }
           placeholder="Select Meals"
           multipleSelect={true}
-          value={selectedMeals.length > 0 ? selectedMeals : [{ label: "No meals selected", value: "" }]}
+          value={
+            selectedMeals.length > 0
+              ? selectedMeals
+              : [{ label: "No meals selected", value: "" }]
+          }
           label="Meals"
         />
         <Dropdown
@@ -309,36 +316,39 @@ const ProfilePage = ({
           label="Activity"
         />
         {!isAdminUser && (
-        <Button
-          value="Save changes"
-          onClick={() => {
-            handleSubmitProfile();
-            const path = generatePath("/client_page/:clientId", { clientId });
-            navigate(path);
-          }}
-          disabled={isAdminUser}
-        />
-      )}
-      {!isAdminUser && (
+          <Button
+            value="Save changes"
+            onClick={() => {
+              handleSubmitProfile();
+              const path = generatePath("/client_page/:clientId", { clientId });
+              navigate(path);
+            }}
+            disabled={isAdminUser}
+          />
+        )}
+
         <Button
           value="Delete account"
           onClick={() => {
-            handleDelete(clientId); 
+            handleDelete(clientId);
             navigate("/home");
           }}
-          disabled={isAdminUser}
+          disabled={false}
         />
-      )}
-      <Button
-        value="Cancel"
-        onClick={() => {
-          navigate(-1);
-        }}
-        disabled={false}
-      />
-      <RequestPage isOpen={requestModalOpen} onClose={() => setRequestModalOpen(false)} clientId={clientId}/>
+
+        <Button
+          value="Cancel"
+          onClick={() => {
+            navigate(-1);
+          }}
+          disabled={false}
+        />
+        <RequestPage
+          isOpen={requestModalOpen}
+          onClose={() => setRequestModalOpen(false)}
+          clientId={clientId}
+        />
       </div>
-      
     </>
   );
 };

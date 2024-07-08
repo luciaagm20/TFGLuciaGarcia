@@ -95,6 +95,8 @@ Para poder ejecutar correctamente el proyecto de Django, se deben instalar algun
     `pip install djangorestframework-simplejwt`
     `pip install django-cors-headers`
     `pip install reportlab`
+    `pip install celery`
+
 
 ### Frontend
 Para poder ejecutar correctamente el proyecto de React, se deben instalar algunas dependencias y bibliotecas que han sido utilizadas para desarrollar el proyecto. Estas dependencias se ejecutan automáticamente siguiendo los siguientes pasos:

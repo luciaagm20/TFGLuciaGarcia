@@ -1,5 +1,5 @@
 from django.db import models
-from backend.models.Client import Client
+from backend.models.client import Client
 
 
 class Requests(models.Model):
