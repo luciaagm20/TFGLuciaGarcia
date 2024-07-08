@@ -88,6 +88,13 @@ Asegúrate de tener instalados los siguientes programas:
 ### `SQLite3`
 
 ## Modulos y bibliotecas
+1. Descarga el .zip o clona el repositorio:
+   ```bash
+   git clone https://github.com/luciaagm20/TFGLuciaGarcia.git
+   cd TFGLuciaGarcia
+2. Abre la carpeta en Visual Studio Code.
+3. Abre la terminal.
+    - Posiciónate en el proyecto principal: `cd ./TFGLuciaGarcia-master`
 
 ### Backend
 Para poder ejecutar correctamente el proyecto de Django, se deben instalar algunas dependencias escribiendo los siguientes comandos:
@@ -117,6 +124,7 @@ Una vez instalada, en la barra de búsqueda se debe escribir: `>SQLite: Open Dat
 2. Abre la carpeta en Visual Studio Code.
 3. Abre la terminal.
 4. Para ejecutar la aplicación entera hay que seguir los siguientes pasos:
+    - Posiciónate en el proyecto principal: `cd ./TFGLuciaGarcia-master`
     - Ejecuta el backend con el comando: `python manage.py runserver`
     - Añade otra terminal y posicionate en la carpeta de frontend con el comando: `cd ./frontend`
     - Ejecuta el frontend con el comando: `npm runserver`
