@@ -231,7 +231,7 @@ const ProfilePage = ({
         {!isAdminUser && (
           <Input
             label="Password"
-            value=""
+            value={updatedPassword}
             type="password"
             placeholder="Type new password"
             required={true}

@@ -169,7 +169,6 @@ const FoodInfoPage = ({
   const [updatedSugars, setUpdatedSugars] = useState(0);
   const [updatedGlucose, setUpdatedGlucose] = useState(0);
   const [updatedLactose, setUpdatedLactose] = useState(0);
-  const [updatedFoodCode, setUpdatedFoodCode] = useState(0);
   const [updatedGroupCode, setUpdatedGroupCode] = useState(0);
   const [updatedSubgroupCode, setUpdatedSubgroupCode] = useState(0);
 
@@ -198,7 +197,6 @@ const FoodInfoPage = ({
         setUpdatedSugars(response.data?.sugars);
         setUpdatedGlucose(response.data?.glucose);
         setUpdatedLactose(response.data?.lactose);
-        setUpdatedFoodCode(response.data?.food_code);
         setUpdatedGroupCode(response.data?.group_code);
         setUpdatedSubgroupCode(response.data?.subgroup_code);
         setSelectedGroup([
@@ -227,18 +225,18 @@ const FoodInfoPage = ({
     const formData = {
       group_code: updatedGroupCode,
       subgroup_code: updatedSubgroupCode,
-      group_name: selectedGroup.value,
-      subgroup_name: selectedSubGroup.value,
-      food_code: updatedFoodCode,
+      group_name: selectedGroup[0]?.label,
+      subgroup_name: selectedSubGroup[0]?.label,
       food_name: updatedFoodName,
-      water: updatedWater,
-      protein: updatedProtein,
-      carbohydrates: updatedCarbohidrates,
-      fats: updatedFats,
-      sugars: updatedSugars,
-      glucose: updatedGlucose,
-      lactose: updatedLactose,
+      water: parseFloat(updatedWater), 
+      protein: parseFloat(updatedProtein),
+      carbohydrates: parseFloat(updatedCarbohidrates),
+      fats: parseFloat(updatedFats),
+      sugars: parseFloat(updatedSugars),
+      glucose: parseFloat(updatedGlucose),
+      lactose: parseFloat(updatedLactose),
     };
+    console.log(formData)
     updateFood(formData);
   };
 
@@ -372,7 +370,7 @@ const FoodInfoPage = ({
 
         <Dropdown
           // options={groupOptions}
-          options={isAdminUser ? groupOptions: []}
+          options={isAdminUser ? groupOptions : []}
           onChange={
             !isAdminUser
               ? null

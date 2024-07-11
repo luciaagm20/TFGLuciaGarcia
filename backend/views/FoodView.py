@@ -35,7 +35,6 @@ class FoodViewSet(viewsets.ModelViewSet):
                 subgroup_code = serializer.data.get("subgroup_code"),
                 group_name = serializer.data.get("group_name"),
                 subgroup_name = serializer.data.get("subgroup_name"),
-                food_code = serializer.data.get("food_code"),
                 food_name = serializer.data.get("food_name"),
                 water = serializer.data.get("water"),
                 protein = serializer.data.get("protein"),
@@ -52,25 +51,28 @@ class FoodViewSet(viewsets.ModelViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk=None):
-        data = request.data
-        food = FoodService.update(
-            id=pk,
-            group_code = data.get("group_code"),
-            subgroup_code = data.get("subgroup_code"),
-            group_name = data.get("group_name"),
-            subgroup_name = data.get("subgroup_name"),
-            food_code = data.get("food_code"),
-            food_name = data.get("food_name"),
-            water = data.get("water"),
-            protein = data.get("protein"),
-            carbohydrates = data.get("carbohydrates"),
-            fats = data.get("fats"),
-            sugars = data.get("sugars"),
-            glucose = data.get("glucose"),
-            lactose = data.get("lactose")
-        )
-        serializer = FoodSerializer(food)
-        return Response(serializer.data)
+        food = FoodService.read(pk)
+        serializer = FoodSerializer(food, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            food = FoodService.update(
+                food_id=pk,
+                group_code = serializer.validated_data.get("group_code", food.group_code),
+                subgroup_code = serializer.validated_data.get("subgroup_code", food.subgroup_code),
+                group_name = serializer.validated_data.get("group_name", food.group_name),
+                subgroup_name = serializer.validated_data.get("subgroup_name", food.subgroup_name),
+                food_name = serializer.validated_data.get("food_name", food.food_name),
+                water = serializer.validated_data.get("water", food.water),
+                protein = serializer.validated_data.get("protein", food.protein),
+                carbohydrates = serializer.validated_data.get("carbohydrates", food.carbohydrates),
+                fats = serializer.validated_data.get("fats", food.fats),
+                sugars = serializer.validated_data.get("sugars", food.sugars),
+                glucose = serializer.validated_data.get("glucose", food.glucose),
+                lactose = serializer.validated_data.get("lactose", food.lactose)
+                
+            )
+            serializer = FoodSerializer(food)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
         FoodService.delete(pk)

@@ -340,6 +340,7 @@ const AddFoodPage = ({
             value="Save food"
             onClick={() => {
               handleSubmit();
+              navigate("/list_food");
             }}
             disabled={false}
           />

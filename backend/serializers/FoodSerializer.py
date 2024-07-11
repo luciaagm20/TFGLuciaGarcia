@@ -6,7 +6,6 @@ class FoodSerializer(serializers.ModelSerializer):
     subgroup_code = serializers.IntegerField(required=False)
     group_name = serializers.CharField(required=False)  
     subgroup_name = serializers.CharField(required=False)  
-    food_code = serializers.IntegerField(required=False)
     food_name = serializers.CharField(required=False)
     water = serializers.FloatField(required=False) 
     protein = serializers.FloatField(required=False)  
@@ -25,4 +24,29 @@ class FoodSerializer(serializers.ModelSerializer):
 
         # fields = ["id", "food_name", "group_code", "subgroup_code", "group_name", "food_code", "water"]
 
-        
+    # def validate_has_lactose(self, value):
+    #     lactose = self.initial_data.get('lactose', None)
+    #     if value is not None:
+    #         return value
+    #     elif lactose > 0.5:
+    #         return True
+    #     else:
+    #         return False
+    
+    # def validate_has_seafood(self, value):
+    #     subgroup_code = self.initial_data.get('subgroup_code', None)
+    #     if value is not None:
+    #         return value
+    #     elif subgroup_code == 407 or subgroup_code == 408:
+    #         return True
+    #     else:
+    #         return False
+    
+    # def validate_has_egg(self, value):
+    #     subgroup_code = self.initial_data.get('subgroup_code', None)
+    #     if value is not None:
+    #         return value
+    #     elif subgroup_code == 410:
+    #         return True
+    #     else:
+    #         return False
