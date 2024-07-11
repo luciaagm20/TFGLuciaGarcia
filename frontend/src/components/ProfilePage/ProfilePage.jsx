@@ -80,6 +80,7 @@ const ProfilePage = ({
         );
         setUpdatedName(response.data?.username);
         setUpdatedEmail(response.data?.email);
+        setUpdatedPassword(response.data?.password);
         setUpdatedWeight(response.data?.weight);
         setUpdatedAge(response.data?.age);
         setUpdatedHeight(response.data?.height);
@@ -135,6 +136,7 @@ const ProfilePage = ({
       goal: selectedGoal.value,
       allergies: selectedAllergy.map((allergy) => allergy.value),
     };
+    console.log(formData)
     updateProfile(formData);
   };
 
@@ -229,7 +231,7 @@ const ProfilePage = ({
         {!isAdminUser && (
           <Input
             label="Password"
-            value={updatedPassword}
+            value=""
             type="password"
             placeholder="Type new password"
             required={true}
